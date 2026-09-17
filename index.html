@@ -1,1 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cobra Unblocker | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+</head>
+<body>
 
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-snake brand-icon"></i>
+            <h2>COBRA</h2>
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="#"><i class="fa-solid fa-gamepad"></i> Games</a>
+            <a href="#"><i class="fa-solid fa-comments"></i> Chat Zone</a>
+            <a href="#"><i class="fa-solid fa-music"></i> Music Zone</a>
+            <a href="#"><i class="fa-solid fa-film"></i> Movies Zone</a>
+            <a href="#"><i class="fa-solid fa-cubes"></i> Apps Zone</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-wrapper">
+        
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search games, movies, apps...">
+            </div>
+            <div class="user-profile">
+                <span class="status-dot"></span>
+                <p>CobraUser</p>
+                <img src="Assets/Img/default-avatar.png" alt="Profile" onerror="this.src='https://placeholder.com'">
+            </div>
+        </header>
+
+        <!-- DASHBOARD CONTAINER -->
+        <main class="dashboard-content">
+            
+            <!-- HERO HERO BANNER (Utilizing your Vids folder) -->
+            <section class="hero-banner">
+                <video autoplay muted loop class="hero-video">
+                    <source src="Assets/Vids/hero-bg.mp4" type="video/mp4">
+                </video>
+                <div class="hero-overlay">
+                    <h1>WELCOME TO THE NEST</h1>
+                    <p>Unblock your favorite entertainment entirely unrestricted.</p>
+                    <button class="btn-primary">Play Featured Game</button>
+                </div>
+            </section>
+
+            <!-- TWO-COLUMN GRID (Main Feed + Sidebar Widgets) -->
+            <div class="content-grid">
+                
+                <!-- LEFT COLUMN: GAMES / RECENT -->
+                <div class="feed-section">
+                    <h3 class="section-title">Recently Played</h3>
+                    <div class="card-grid">
+                        <!-- Card 1 -->
+                        <div class="game-card">
+                            <div class="thumb-container">
+                                <img src="Assets/Thumbnails/game1.jpg" alt="Game Title" onerror="this.src='https://placeholder.com'">
+                            </div>
+                            <h4>Slope Unblocked</h4>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="game-card">
+                            <div class="thumb-container">
+                                <img src="Assets/Thumbnails/game2.jpg" alt="Game Title" onerror="this.src='https://placeholder.com'">
+                            </div>
+                            <h4>1v1.LOL</h4>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="game-card">
+                            <div class="thumb-container">
+                                <img src="Assets/Thumbnails/game3.jpg" alt="Game Title" onerror="this.src='https://placeholder.com'">
+                            </div>
+                            <h4>Retro Bowl</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: CHAT ZONE PREVIEW -->
+                <div class="widget-section">
+                    <h3 class="section-title">Live Chat Feed</h3>
+                    <div class="chat-preview-box">
+                        <div class="chat-msg"><strong>[Admin] Venom:</strong> Welcome to Cobra Unblocker!</div>
+                        <div class="chat-msg"><strong>User772:</strong> Anyone up for some 1v1?</div>
+                        <div class="chat-msg"><strong>GamerX:</strong> Proxy speed is crazy fast right now.</div>
+                        <div class="chat-input-placeholder">
+                            <input type="text" placeholder="Type to chat..." disabled>
+                            <button><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

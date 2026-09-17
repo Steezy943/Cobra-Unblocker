@@ -1,44 +1,112 @@
-/* Custom Font Link from your Assets folder */
+/* Custom Font Link targeting your precise repository path */
 @font-face {
-    font-family: 'CobraFont';
-    src: url('Assets/Fonts/your-font-file.ttf') format('truetype'); /* Replace with your actual font file name */
+    font-family: 'SnakeStitch';
+    src: url('Assets/Fonts/SnakeStitch.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 :root {
-    --bg-black: #0f0f12;
-    --sidebar-black: #16161a;
-    --card-black: #1f1f24;
-    --cobra-yellow: #ffdd00;
-    --cobra-yellow-hover: #e6c800;
+    --bg-black: #0a0a0c;
+    --sidebar-black: #121214;
+    --card-black: #1a1a1e;
+    --cobra-white: #ffffff;
+    --cobra-white-muted: #e0e0e4;
     --text-white: #ffffff;
-    --text-gray: #a0a0a5;
+    --text-gray: #8e8e93;
+    --border-gray: #2c2c32;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Falls back safely if custom font isn't loaded yet */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background-color: var(--bg-black);
     color: var(--text-white);
-    display: flex;
     min-height: 100vh;
     overflow-x: hidden;
 }
 
-/* SIDEBAR STYLES */
+/* ==========================================================================
+   SPLASH SCREEN PRELOADER (1s Fade-in, 0.5s Hold, 1s Fade-out)
+   ========================================================================== */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeOutScreen 0.5s ease forwards;
+    animation-delay: 2.5s;
+    pointer-events: none;
+}
+
+.splash-logo {
+    max-width: 180px;
+    height: auto;
+    opacity: 0;
+    animation: logoSequence 2.5s ease-in-out forwards;
+}
+
+@keyframes logoSequence {
+    0% { opacity: 0; transform: scale(0.9); }
+    40% { opacity: 1; transform: scale(1); } 
+    60% { opacity: 1; }                      
+    100% { opacity: 0; transform: scale(1.05); } 
+}
+
+@keyframes fadeOutScreen {
+    to { opacity: 0; visibility: hidden; }
+}
+
+.site-container {
+    display: flex;
+    min-height: 100vh;
+    opacity: 0;
+    animation: fadeInContent 0.5s ease forwards;
+    animation-delay: 2.7s;
+}
+
+@keyframes fadeInContent {
+    to { opacity: 1; }
+}
+
+/* ==========================================================================
+   ROUTING VIEW ZONES
+   ========================================================================== */
+.view-zone {
+    display: none;
+}
+
+.view-zone.active {
+    display: block;
+}
+
+.coming-soon-text {
+    color: var(--text-gray);
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   LAYOUT COMPONENTS
+   ========================================================================== */
 .sidebar {
     width: 260px;
     background-color: var(--sidebar-black);
     display: flex;
     flex-direction: column;
     padding: 2rem 1.5rem;
-    border-right: 1px solid #2a2a30;
+    border-right: 1px solid var(--border-gray);
     position: fixed;
     height: 100vh;
 }
@@ -48,10 +116,9 @@ body {
 }
 
 .logo-text {
-    font-family: 'CobraFont', sans-serif;
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: var(--cobra-yellow);
+    font-family: 'SnakeStitch', sans-serif;
+    font-size: 2.5rem;
+    color: var(--cobra-white);
     letter-spacing: 2px;
 }
 
@@ -72,24 +139,22 @@ body {
 }
 
 .nav-item:hover, .nav-item.active {
-    background-color: rgba(255, 221, 0, 0.1);
-    color: var(--cobra-yellow);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--cobra-white);
     padding-left: 1.25rem;
 }
 
 .sidebar-footer {
-    color: #4a4a50;
+    color: #44444a;
     font-size: 0.85rem;
 }
 
-/* MAIN CONTENT STYLES */
 .main-content {
-    margin-left: 260px; /* Offset for modern fixed sidebar */
+    margin-left: 260px;
     flex-grow: 1;
     padding: 2rem;
 }
 
-/* TOP BAR */
 .top-bar {
     display: flex;
     justify-content: space-between;
@@ -101,7 +166,7 @@ body {
     width: 350px;
     padding: 0.75rem 1.2rem;
     background-color: var(--sidebar-black);
-    border: 1px solid #2a2a30;
+    border: 1px solid var(--border-gray);
     border-radius: 25px;
     color: white;
     outline: none;
@@ -109,7 +174,7 @@ body {
 }
 
 .search-input:focus {
-    border-color: var(--cobra-yellow);
+    border-color: var(--cobra-white);
 }
 
 .user-profile {
@@ -119,59 +184,118 @@ body {
     background: var(--sidebar-black);
     padding: 0.5rem 1rem;
     border-radius: 20px;
+    border: 1px solid var(--border-gray);
 }
 
 .status-dot {
     width: 8px;
     height: 8px;
-    background-color: #00ff66;
+    background-color: #ffffff;
     border-radius: 50%;
 }
 
-/* DASHBOARD LAYOUT */
+/* ==========================================================================
+   PROXY BUTTON FEATURE CARD (Web.jpg Container)
+   ========================================================================== */
+.proxy-button-card {
+    grid-column: 1 / -1;
+    position: relative;
+    height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border-gray);
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s;
+}
+
+.proxy-button-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--cobra-white);
+}
+
+.proxy-card-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.proxy-button-card:hover .proxy-card-bg {
+    transform: scale(1.03);
+}
+
+.proxy-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(10,10,12,0.95) 0%, rgba(10,10,12,0.6) 50%, rgba(0,0,0,0.2) 100%);
+    display: flex;
+    align-items: center;
+    padding: 2.5rem;
+}
+
+.proxy-card-content {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.proxy-card-content .badge {
+    background-color: var(--cobra-white);
+    color: black;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.25rem 0.6rem;
+    text-transform: uppercase;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.proxy-card-content h2 {
+    font-size: 2rem;
+    color: var(--cobra-white);
+    letter-spacing: 0.5px;
+}
+
+.proxy-card-content p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.launch-btn {
+    background-color: transparent;
+    color: var(--cobra-white);
+    border: 1px solid var(--cobra-white);
+    padding: 0.6rem 1.2rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.proxy-button-card:hover .launch-btn {
+    background-color: var(--cobra-white);
+    color: black;
+}
+
+/* DASHBOARD GRID */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
 }
 
-.hero-banner {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(22,22,26,0.9) 100%), url('Assets/Img/banner-bg.jpg'); /* Safe fallback path */
-    background-size: cover;
-    border: 2px solid var(--cobra-yellow);
-    padding: 3rem;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-}
-
-.hero-banner h1 {
-    font-size: 3rem;
-    color: var(--cobra-yellow);
-}
-
-.cta-btn {
-    background-color: var(--cobra-yellow);
-    color: black;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.cta-btn:hover {
-    background-color: var(--cobra-yellow-hover);
-}
-
 /* CARDS */
 .section-title {
     margin-bottom: 1rem;
     font-size: 1.5rem;
+    letter-spacing: 0.5px;
 }
 
 .card-grid {
@@ -191,14 +315,13 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: var(--cobra-yellow);
+    border-color: var(--cobra-white);
 }
 
 .card-thumb {
     width: 100%;
     height: 130px;
     object-fit: cover;
-    background-color: #333; /* Placeholder if no image */
 }
 
 .card-info {
@@ -222,12 +345,12 @@ body {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    border: 1px solid #2a2a30;
+    border: 1px solid var(--border-gray);
 }
 
 .widget-title {
     margin-bottom: 1rem;
-    color: var(--cobra-yellow);
+    color: var(--cobra-white);
 }
 
 .chat-preview-box {
@@ -241,7 +364,7 @@ body {
 
 .widget-input {
     background-color: var(--bg-black);
-    border: 1px solid #2a2a30;
+    border: 1px solid var(--border-gray);
     padding: 0.75rem;
     border-radius: 8px;
     color: white;
@@ -249,5 +372,5 @@ body {
 }
 
 .widget-input:focus {
-    border-color: var(--cobra-yellow);
+    border-color: var(--cobra-white);
 }

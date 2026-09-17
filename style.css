@@ -1,261 +1,253 @@
-/* --- GLOBAL STYLES & RESET --- */
+/* Custom Font Link from your Assets folder */
+@font-face {
+    font-family: 'CobraFont';
+    src: url('Assets/Fonts/your-font-file.ttf') format('truetype'); /* Replace with your actual font file name */
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --bg-black: #0f0f12;
+    --sidebar-black: #16161a;
+    --card-black: #1f1f24;
+    --cobra-yellow: #ffdd00;
+    --cobra-yellow-hover: #e6c800;
+    --text-white: #ffffff;
+    --text-gray: #a0a0a5;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* We can change this to your custom font later */
-}
-
-:root {
-    --bg-dark: #0f1115;
-    --bg-card: #181c24;
-    --bg-sidebar: #0a0b0d;
-    --cobra-green: #39ff14; /* Neon green accent */
-    --text-main: #ffffff;
-    --text-muted: #8b949e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Falls back safely if custom font isn't loaded yet */
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
+    background-color: var(--bg-black);
+    color: var(--text-white);
     display: flex;
     min-height: 100vh;
     overflow-x: hidden;
 }
 
-/* --- SIDEBAR --- */
+/* SIDEBAR STYLES */
 .sidebar {
-    width: 250px;
-    background-color: var(--bg-sidebar);
-    padding: 20px;
-    position: fixed;
-    height: 100vh;
-    border-right: 1px solid #1f242e;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.2rem;
-    color: var(--cobra-green);
-    margin-bottom: 40px;
-    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
-}
-
-.nav-links a {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    color: var(--text-muted);
-    text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    transition: 0.2s ease;
-}
-
-.nav-links a:hover, .nav-links a.active {
-    color: var(--text-main);
-    background-color: var(--bg-card);
-    border-left: 4px solid var(--cobra-green);
-}
-
-/* --- MAIN LAYOUT MECHANICS --- */
-.main-wrapper {
-    margin-left: 250px;
-    width: calc(100% - 250px);
+    width: 260px;
+    background-color: var(--sidebar-black);
     display: flex;
     flex-direction: column;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid #2a2a30;
+    position: fixed;
+    height: 100vh;
 }
 
-.top-header {
-    height: 70px;
-    background-color: rgba(15, 17, 21, 0.85);
-    backdrop-filter: blur(10px);
+.logo-area {
+    margin-bottom: 3rem;
+}
+
+.logo-text {
+    font-family: 'CobraFont', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--cobra-yellow);
+    letter-spacing: 2px;
+}
+
+.nav-links {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-grow: 1;
+}
+
+.nav-item {
+    color: var(--text-gray);
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: rgba(255, 221, 0, 0.1);
+    color: var(--cobra-yellow);
+    padding-left: 1.25rem;
+}
+
+.sidebar-footer {
+    color: #4a4a50;
+    font-size: 0.85rem;
+}
+
+/* MAIN CONTENT STYLES */
+.main-content {
+    margin-left: 260px; /* Offset for modern fixed sidebar */
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+/* TOP BAR */
+.top-bar {
+    display: flex;
     justify-content: space-between;
-    padding: 0 30px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.search-bar {
-    display: flex;
     align-items: center;
-    background: #1f242e;
-    padding: 8px 15px;
-    border-radius: 20px;
-    width: 300px;
+    margin-bottom: 2rem;
 }
 
-.search-bar input {
-    background: none;
-    border: none;
+.search-input {
+    width: 350px;
+    padding: 0.75rem 1.2rem;
+    background-color: var(--sidebar-black);
+    border: 1px solid #2a2a30;
+    border-radius: 25px;
     color: white;
-    margin-left: 10px;
     outline: none;
-    width: 100%;
+    transition: border 0.2s;
+}
+
+.search-input:focus {
+    border-color: var(--cobra-yellow);
 }
 
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-.user-profile img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid var(--cobra-green);
+    gap: 0.5rem;
+    background: var(--sidebar-black);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
 }
 
 .status-dot {
     width: 8px;
     height: 8px;
-    background: var(--cobra-green);
+    background-color: #00ff66;
     border-radius: 50%;
-    display: inline-block;
 }
 
-/* --- HERO VIDEO BANNER --- */
-.dashboard-content {
-    padding: 30px;
+/* DASHBOARD LAYOUT */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
 }
 
 .hero-banner {
-    position: relative;
-    height: 250px;
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(22,22,26,0.9) 100%), url('Assets/Img/banner-bg.jpg'); /* Safe fallback path */
+    background-size: cover;
+    border: 2px solid var(--cobra-yellow);
+    padding: 3rem;
     border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 30px;
-}
-
-.hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(15,17,21,0.95) 30%, rgba(15,17,21,0.3));
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 40px;
+    gap: 1rem;
+    align-items: flex-start;
 }
 
-.hero-overlay h1 {
-    font-size: 2.2rem;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
+.hero-banner h1 {
+    font-size: 3rem;
+    color: var(--cobra-yellow);
 }
 
-.btn-primary {
-    background: var(--cobra-green);
+.cta-btn {
+    background-color: var(--cobra-yellow);
     color: black;
     border: none;
-    padding: 10px 20px;
+    padding: 0.75rem 1.5rem;
     font-weight: bold;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    width: fit-content;
-    margin-top: 15px;
-    box-shadow: 0 4px 15px rgba(57, 255, 20, 0.4);
+    transition: background 0.2s;
 }
 
-/* --- TWO COLUMN CONTENT --- */
-.content-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
+.cta-btn:hover {
+    background-color: var(--cobra-yellow-hover);
 }
 
+/* CARDS */
 .section-title {
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
 }
 
-/* Game Cards */
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
+    gap: 1.25rem;
 }
 
-.game-card {
-    background: var(--bg-card);
+.card {
+    background-color: var(--card-black);
     border-radius: 12px;
-    padding: 12px;
-    transition: 0.3s ease;
-    border: 1px solid #242b38;
-}
-
-.game-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--cobra-green);
-}
-
-.thumb-container {
-    width: 100%;
-    height: 110px;
-    background: #11141a;
-    border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    border: 1px solid transparent;
 }
 
-.thumb-container img {
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cobra-yellow);
+}
+
+.card-thumb {
     width: 100%;
-    height: 100%;
+    height: 130px;
     object-fit: cover;
+    background-color: #333; /* Placeholder if no image */
 }
 
-/* Chat Widget */
-.chat-preview-box {
-    background: var(--bg-card);
-    border-radius: 12px;
-    height: 250px;
-    padding: 15px;
+.card-info {
+    padding: 1rem;
+}
+
+.card-info h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.card-info span {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
+/* CHAT WIDGET */
+.widget {
+    background-color: var(--sidebar-black);
+    border-radius: 16px;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid #242b38;
+    border: 1px solid #2a2a30;
 }
 
-.chat-msg {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
+.widget-title {
+    margin-bottom: 1rem;
+    color: var(--cobra-yellow);
 }
 
-.chat-input-placeholder {
+.chat-preview-box {
+    flex-grow: 1;
     display: flex;
-    background: #11141a;
-    border-radius: 6px;
-    padding: 5px;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    min-height: 200px;
 }
 
-.chat-input-placeholder input {
-    background: none;
-    border: none;
+.widget-input {
+    background-color: var(--bg-black);
+    border: 1px solid #2a2a30;
+    padding: 0.75rem;
+    border-radius: 8px;
     color: white;
-    width: 100%;
-    padding: 5px;
     outline: none;
 }
 
-.chat-input-placeholder button {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    padding: 0 10px;
+.widget-input:focus {
+    border-color: var(--cobra-yellow);
 }

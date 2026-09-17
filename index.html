@@ -3,108 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cobra Unblocker | Dashboard</title>
+    <title>Cobra</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fa-solid fa-snake brand-icon"></i>
-            <h2>COBRA</h2>
-        </div>
-        <nav class="nav-links">
-            <a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="#"><i class="fa-solid fa-gamepad"></i> Games</a>
-            <a href="#"><i class="fa-solid fa-comments"></i> Chat Zone</a>
-            <a href="#"><i class="fa-solid fa-music"></i> Music Zone</a>
-            <a href="#"><i class="fa-solid fa-film"></i> Movies Zone</a>
-            <a href="#"><i class="fa-solid fa-cubes"></i> Apps Zone</a>
-        </nav>
-    </aside>
+    <!-- INTRO SPLASH SCREEN ANIMATION -->
+    <div class="splash-screen">
+        <img src="Assets/Img/SiteLogo.png" alt="Cobra Logo" class="splash-logo">
+    </div>
 
-    <!-- MAIN CONTENT AREA -->
-    <div class="main-wrapper">
+    <!-- MAIN DASHBOARD CONTAINER -->
+    <div class="site-container">
         
-        <!-- TOP HEADER -->
-        <header class="top-header">
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search games, movies, apps...">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <span class="logo-text">COBRA</span>
             </div>
-            <div class="user-profile">
-                <span class="status-dot"></span>
-                <p>CobraUser</p>
-                <img src="Assets/Img/default-avatar.png" alt="Profile" onerror="this.src='https://placeholder.com'">
+            <nav class="nav-links">
+                <a href="#" class="nav-item active" data-zone="games-zone">🎮 Games Zone</a>
+                <a href="#" class="nav-item" data-zone="proximity-zone">📍 Proximity</a>
+                <a href="#" class="nav-item" data-zone="chat-zone">💬 Chat Zone</a>
+                <a href="#" class="nav-item" data-zone="music-zone">🎵 Music Zone</a>
+                <a href="#" class="nav-item" data-zone="movies-zone">🎬 Movies Zone</a>
+                <a href="#" class="nav-item" data-zone="apps-zone">📱 Apps Zone</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>© 2026 Cobra</p>
             </div>
-        </header>
+        </aside>
 
-        <!-- DASHBOARD CONTAINER -->
-        <main class="dashboard-content">
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
             
-            <!-- HERO HERO BANNER (Utilizing your Vids folder) -->
-            <section class="hero-banner">
-                <video autoplay muted loop class="hero-video">
-                    <source src="Assets/Vids/hero-bg.mp4" type="video/mp4">
-                </video>
-                <div class="hero-overlay">
-                    <h1>WELCOME TO THE NEST</h1>
-                    <p>Unblock your favorite entertainment entirely unrestricted.</p>
-                    <button class="btn-primary">Play Featured Game</button>
+            <!-- TOP BAR -->
+            <header class="top-bar">
+                <div class="search-container">
+                    <input type="text" placeholder="Search games, music, movies..." class="search-input">
                 </div>
-            </section>
+                <div class="user-profile">
+                    <div class="status-dot"></div>
+                    <span class="username">Player_One</span>
+                </div>
+            </header>
 
-            <!-- TWO-COLUMN GRID (Main Feed + Sidebar Widgets) -->
-            <div class="content-grid">
-                
-                <!-- LEFT COLUMN: GAMES / RECENT -->
-                <div class="feed-section">
-                    <h3 class="section-title">Recently Played</h3>
-                    <div class="card-grid">
-                        <!-- Card 1 -->
-                        <div class="game-card">
-                            <div class="thumb-container">
-                                <img src="Assets/Thumbnails/game1.jpg" alt="Game Title" onerror="this.src='https://placeholder.com'">
+            <!-- ZONE PANELS -->
+            
+            <!-- 1. GAMES ZONE (MAIN DASHBOARD) -->
+            <div id="games-zone" class="view-zone active">
+                <section class="dashboard-grid">
+                    
+                    <!-- DYNAMIC PROXY PORTAL CALL-TO-ACTION CARD -->
+                    <div class="proxy-button-card" data-zone="apps-zone">
+                        <img src="Assets/Img/Web.jpg" alt="Launch Proxy" class="proxy-card-bg">
+                        <div class="proxy-card-overlay">
+                            <div class="proxy-card-content">
+                                <span class="badge">Unblocked Apps</span>
+                                <h2>Launch Secure Web Proxy</h2>
+                                <p>Bypass restrictions and browse securely with high-speed stealth nodes.</p>
+                                <button class="launch-btn">Launch Session →</button>
                             </div>
-                            <h4>Slope Unblocked</h4>
-                        </div>
-                        <!-- Card 2 -->
-                        <div class="game-card">
-                            <div class="thumb-container">
-                                <img src="Assets/Thumbnails/game2.jpg" alt="Game Title" onerror="this.src='https://placeholder.com'">
-                            </div>
-                            <h4>1v1.LOL</h4>
-                        </div>
-                        <!-- Card 3 -->
-                        <div class="game-card">
-                            <div class="thumb-container">
-                                <img src="Assets/Thumbnails/game3.jpg" alt="Game Title" onerror="this.src='https://placeholder.com'">
-                            </div>
-                            <h4>Retro Bowl</h4>
                         </div>
                     </div>
-                </div>
 
-                <!-- RIGHT COLUMN: CHAT ZONE PREVIEW -->
-                <div class="widget-section">
-                    <h3 class="section-title">Live Chat Feed</h3>
-                    <div class="chat-preview-box">
-                        <div class="chat-msg"><strong>[Admin] Venom:</strong> Welcome to Cobra Unblocker!</div>
-                        <div class="chat-msg"><strong>User772:</strong> Anyone up for some 1v1?</div>
-                        <div class="chat-msg"><strong>GamerX:</strong> Proxy speed is crazy fast right now.</div>
-                        <div class="chat-input-placeholder">
-                            <input type="text" placeholder="Type to chat..." disabled>
-                            <button><i class="fa-solid fa-paper-plane"></i></button>
+                    <!-- TRENDING GAMES -->
+                    <div class="content-section">
+                        <h2 class="section-title">Trending Games</h2>
+                        <div class="card-grid">
+                            <div class="card">
+                                <img src="Assets/Thumbnails/SiteLogo.png" alt="Game Thumbnail" class="card-thumb">
+                                <div class="card-info">
+                                    <h3>Slope</h3>
+                                    <span>Action</span>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <img src="Assets/Thumbnails/SiteLogo.png" alt="Game Thumbnail" class="card-thumb">
+                                <div class="card-info">
+                                    <h3>Retro Bowl</h3>
+                                    <span>Sports</span>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <img src="Assets/Thumbnails/SiteLogo.png" alt="Game Thumbnail" class="card-thumb">
+                                <div class="card-info">
+                                    <h3>1v1.LOL</h3>
+                                    <span>Shooter</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                    <!-- LIVE CHAT PREVIEW WIDGET -->
+                    <div class="widget chat-widget">
+                        <h3 class="widget-title">Global Chat</h3>
+                        <div class="chat-preview-box">
+                            <p><strong>Hex_Cobra:</strong> Yo, this site is fast.</p>
+                            <p><strong>Guest832:</strong> Anyone up for 1v1?</p>
+                            <p><strong>Admin:</strong> Update coming tonight!</p>
+                        </div>
+                        <input type="text" placeholder="Type a message..." class="widget-input">
+                    </div>
+                </section>
             </div>
+
+            <!-- 2. PROXIMITY ZONE -->
+            <div id="proximity-zone" class="view-zone">
+                <h2 class="section-title">📍 Proximity Zone</h2>
+                <p class="coming-soon-text">Connecting nearby players... Feature coming soon.</p>
+            </div>
+
+            <!-- 3. CHAT ZONE -->
+            <div id="chat-zone" class="view-zone">
+                <h2 class="section-title">💬 Full Chat Zone</h2>
+                <p class="coming-soon-text">Global public chat rooms loading...</p>
+            </div>
+
+            <!-- 4. MUSIC ZONE -->
+            <div id="music-zone" class="view-zone">
+                <h2 class="section-title">🎵 Music Zone</h2>
+                <p class="coming-soon-text">Stream your playlist while gaming.</p>
+            </div>
+
+            <!-- 5. MOVIES ZONE -->
+            <div id="movies-zone" class="view-zone">
+                <h2 class="section-title">🎬 Movies Zone</h2>
+                <p class="coming-soon-text">Unblocked streaming movies panel.</p>
+            </div>
+
+            <!-- 6. APPS ZONE -->
+            <div id="apps-zone" class="view-zone">
+                <h2 class="section-title">📱 Apps Zone</h2>
+                <p class="coming-soon-text">Unblocked web application proxies.</p>
+            </div>
+
         </main>
     </div>
 
+    <!-- LINK ROUTER SCRIPT -->
+    <script src="script.js"></script>
 </body>
 </html>

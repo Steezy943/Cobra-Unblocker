@@ -477,3 +477,80 @@ body {
     height: 100%;
     border: none;
 }
+/* ==========================================================================
+   PORTAL HOMEPAGE DASHBOARD HERO STYLES
+   ========================================================================== */
+.portal-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    width: 100%;
+    min-height: 70vh;
+}
+
+.portal-welcome {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.portal-search-box {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 3rem;
+}
+
+.portal-search-input {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
+    background-color: var(--sidebar-black);
+    border: 1px solid var(--border-gray);
+    color: white;
+    border-radius: 30px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.portal-search-input:focus {
+    border-color: var(--cobra-white);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.portal-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .portal-buttons-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.portal-hub-btn {
+    background-color: var(--sidebar-black);
+    color: var(--text-white);
+    border: 1px solid var(--border-gray);
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.portal-hub-btn:hover {
+    transform: translateY(-3px);
+    background-color: var(--card-black);
+    border-color: var(--cobra-white);
+}

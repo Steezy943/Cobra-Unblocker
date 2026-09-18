@@ -7,26 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const hubButtons = document.querySelectorAll(".portal-hub-btn");
 
     // ==========================================
-    // 🎮 CENTRALIZED GAMES LIST CATALOG
+    // 🎮 FIXED GAMES LIST CATALOGUE (Matches your repo!)
     // ==========================================
     const gamesList = [
-        { fileName: "slope.html", title: "Slope", category: "Action" },
-        { fileName: "retro-bowl.html", title: "Retro Bowl", category: "Sports" },
-        { fileName: "1v1-lol.html", title: "1v1.LOL", category: "Shooter" },
-        { fileName: "subway-surfers.html", title: "Subway Surfers", category: "Arcade" }
+        { fileName: "How2Fish.html", title: "How 2 Fish", category: "Casual" }
     ];
 
-    // Global router handler
     function switchZone(zoneId) {
         viewZones.forEach(zone => zone.classList.remove("active"));
         const targetZone = document.getElementById(zoneId);
         if (targetZone) {
             targetZone.classList.add("active");
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
-    // Assign clicks to central hub portal landing grid buttons
+    // Grid navigation link execution
     hubButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const targetZoneId = btn.getAttribute("data-zone");
@@ -34,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Home & Settings Action triggers
     if (homeBtn) {
         homeBtn.addEventListener("click", () => switchZone("dashboard-zone"));
     }
@@ -42,22 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
         settingsToggle.addEventListener("click", () => switchZone("settings-zone"));
     }
 
-    // ==========================================
-    // DYNAMIC GAMES RENDERING LOGIC
-    // ==========================================
+    // Dynamic library generation loop
     function renderGames(filterText = "") {
         if (!gamesGrid) return;
         gamesGrid.innerHTML = "";
 
         const filtered = gamesList.filter(game => 
-            game.title.toLowerCase().includes(filterText.toLowerCase()) ||
-            game.category.toLowerCase().includes(filterText.toLowerCase())
+            game.title.toLowerCase().includes(filterText.toLowerCase())
         );
-
-        if (filtered.length === 0) {
-            gamesGrid.innerHTML = `<p class="coming-soon-text">No games found matching your search.</p>`;
-            return;
-        }
 
         filtered.forEach(game => {
             const baseName = game.fileName.replace(".html", "");
@@ -69,9 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="card-thumb-container">
                     <img src="${thumbPath}" alt="${game.title}" class="card-thumb" 
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="fallback-thumb-box">
-                        🎮
-                    </div>
+                    <div class="fallback-thumb-box">🎮</div>
                 </div>
                 <div class="card-info">
                     <h3>${game.title}</h3>
@@ -87,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Portal Search shifts views seamlessly and focuses filter inputs
+    // Text tracking input filter mapping
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
             const value = e.target.value;
@@ -98,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Game execution inside sandboxed iframe element blocks
     function launchGameFrame(fileName, title) {
         const gamePath = `games/${fileName}`;
         document.getElementById("game-frame-title").textContent = title;
@@ -114,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
-            if (!popup) return alert("Please allow popups to open games in about:blank cloaking!");
+            if (!popup) return alert("Allow popups for about:blank execution!");
             popup.document.body.style.margin = "0";
             popup.document.body.style.height = "100vh";
             const newIframe = popup.document.createElement("iframe");
@@ -126,6 +109,5 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    // Execute catalog rendering loop immediately
     renderGames();
 });

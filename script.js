@@ -41,7 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Adventure", 
             gameUrl: "https://steezy943.github.io/Peak-Port/",
             thumbUrl: "Assets/Thumbnails/Peak.jpg"
-        }   //  Correctly closes the object
+        },   //  Correctly closes the object
+        { 
+            title: "How To Fish", 
+            category: "Adventure/Action", 
+            gameUrl: "https://steezy943.github.io/HowToFishPort/",
+            thumbUrl: "Assets/Thumbnails/HowToFish.png" // Set this directly to your explicit asset image path!
+        }
     ];      // 🆗 Correctly closes the array
 
     // Core Router Handler

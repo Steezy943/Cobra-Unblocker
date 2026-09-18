@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Adventure", 
             gameUrl: "https://steezy943.github.io/Peak-Port/",
             thumbUrl: "Assets/Thumbnails/Peak.jpg" // Set this directly to your explicit asset image path!
-        jpg
+        }
     ];
 
     // Core Router Handler

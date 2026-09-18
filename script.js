@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Interface elements selectors
     const viewZones = document.querySelectorAll(".view-zone");
     const settingsToggle = document.getElementById("settings-toggle");
     const homeBtn = document.getElementById("btn-home");
@@ -7,28 +8,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const hubButtons = document.querySelectorAll(".portal-hub-btn");
 
     // ==========================================================================
-    // 🎮 COBRA RAW URL GAME LIST CONFIGURATION
-    // To add more games, just add a new item block inside this array.
-    // Use any raw code link, repository path, or hosted game site URL!
+    // 🎮 COBRA NETWORK DYNAMIC LINK CONFIGURATION CATALOGUE
+    // To scale up your site, just paste your GitHub Pages URLs or raw links here!
     // ==========================================================================
     const gamesList = [
         { 
-            title: "How To Fish", 
+            title: "Untitled Goose Game", 
             category: "Casual", 
-            gameUrl: "https://steezy943.github.io/HowToFishPort/" // You can replace this path with a direct raw website link too!
+            gameUrl: "https://steezy943.github.io/untitled-goose-game/" 
+            // 💡 Pro-Tip: ://githack.com bypasses GitHub raw source execution protection rules!
         }
     ];
 
-    // Global site view controller
+    // Core Router Handler (Switches view frames cleanly)
     function switchZone(zoneId) {
         viewZones.forEach(zone => zone.classList.remove("active"));
         const targetZone = document.getElementById(zoneId);
         if (targetZone) {
             targetZone.classList.add("active");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
-    // Assign dashboard button grid navigation mapping
+    // Map click triggers to primary hub navigation portal buttons
     hubButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const targetZoneId = btn.getAttribute("data-zone");
@@ -36,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Universal navigation layout listeners
     if (homeBtn) {
         homeBtn.addEventListener("click", () => switchZone("dashboard-zone"));
     }
@@ -44,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================================================
-    // DYNAMIC GAMES ENGINE (Renders clean cards based on game title text)
+    // DYNAMIC ARCADE GENERATION ENGINE
     // ==========================================================================
     function renderGames(filterText = "") {
         if (!gamesGrid) return;
@@ -55,12 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         if (filtered.length === 0) {
-            gamesGrid.innerHTML = `<p class="coming-soon-text">No games cataloged yet.</p>`;
+            gamesGrid.innerHTML = `<p class="coming-soon-text">No unblocked elements matched your lookup.</p>`;
             return;
         }
 
         filtered.forEach(game => {
-            // Strip spaces to try and find a thumbnail, using fallback icon safely if not found
+            // Normalizes spaces to query thumbnail assets cleanly
             const cleanName = game.title.replace(/\s+/g, '');
             const thumbPath = `Assets/Thumbnails/${cleanName}.jpg`;
 
@@ -78,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
 
-            // Click maps straight to the raw link loader function
+            // Frame redirection payload execution trigger
             card.addEventListener("click", () => {
                 launchGameUrl(game.gameUrl, game.title);
             });
@@ -87,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Sync portal entry search tracking
+    // Central dashboard search input portal intercept router
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
             const value = e.target.value;
@@ -98,41 +101,49 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Raw link launcher wrapper utilizing sandboxed frame controls
+    // ==========================================================================
+    // ARCADE VIEWPORT SANDBOX LOADER & STEALTH UTILITY SYSTEM
+    // ==========================================================================
     function launchGameUrl(targetUrl, title) {
         document.getElementById("game-frame-title").textContent = title;
         const iframe = document.getElementById("cobra-game-iframe");
         
-        // Directly injects the raw URL string right into the iframe
+        // Feed destination string right into the active page panel iframe chassis
         iframe.src = targetUrl;
-
         switchZone("player-zone");
 
-        // Native hardware full screen panel utility
+        // Action Trigger 1: Native fullscreen viewport overlay toggle
         document.getElementById("btn-fullscreen").onclick = () => {
             if (iframe.requestFullscreen) iframe.requestFullscreen();
             else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
         };
 
-        // Advanced anonymous about:blank tab injection utility
+        // Action Trigger 2: Advanced cloaked completely anonymous window generation
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
-            if (!popup) return alert("Please allow popups to launch stealth window session!");
+            if (!popup) {
+                alert("Please clear browser blocking pop-up alerts to run about:blank cloaking session!");
+                return;
+            }
             
+            // Generate clean target layout within the detached empty tab layout
             popup.document.body.style.margin = "0";
             popup.document.body.style.height = "100vh";
             popup.document.body.style.backgroundColor = "#000000";
+            popup.document.body.style.overflow = "hidden";
             
             const newIframe = popup.document.createElement("iframe");
             newIframe.src = targetUrl;
             newIframe.style.width = "100%";
             newIframe.style.height = "100%";
             newIframe.style.border = "none";
+            newIframe.style.display = "block";
             
             popup.document.body.appendChild(newIframe);
         };
     }
 
-    // Force call calculation loop execution instantly
+    // Bootstrap and populate catalog immediately on application lifecycle ready event
     renderGames();
 });

@@ -1,0 +1,86 @@
+/* Dark Overlay Background */
+.disclaimer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75); /* Dimmed background behind the alert */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999; /* Sits on top of all page elements */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* Visibility Trigger Class */
+.disclaimer-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Disclaimer Box Card */
+.disclaimer-content {
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Centered Top Logo */
+.disclaimer-logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-height: 70px; /* Adjust scale based on your logo shape */
+    width: auto;
+    object-fit: contain;
+}
+
+/* Alert text block formatting */
+.disclaimer-text {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* GitHub Hyperlink Styling */
+.disclaimer-link {
+    color: #38bdf8; /* Soft cyan color for clear legibility on black */
+    text-decoration: underline;
+}
+.disclaimer-link:hover {
+    color: #ffffff;
+}
+
+/* WIP Disclaimer details */
+.wip-text {
+    font-style: italic;
+    color: #a3a3a3;
+}
+
+/* Solid White "OK" Button */
+.disclaimer-btn {
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #ffffff;
+    padding: 10px 30px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Color inversion on hover */
+.disclaimer-btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}

@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { 
             title: "PEAK", 
             category: "Adventure", 
-            gameUrl: "https://steezy943.github.io/Peak-Port/?cdn=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fwasmdotrip%2FPeak-Port%40main",
+            gameUrl: "https://steezy943.github.io/Peak-Port/",
             thumbUrl: "Assets/Thumbnails/Peak.jpg" // Set this directly to your explicit asset image path!
         jpg
     ];

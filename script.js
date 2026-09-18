@@ -29,6 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Action", 
             gameUrl: "https://steezy943.github.io/Half-Life/",
             thumbUrl: "Assets/Thumbnails/Half Life 1.jpg" // Set this directly to your explicit asset image path!
+        },
+        { 
+            title: "Karlson", 
+            category: "Action", 
+            gameUrl: "https://steezy943.github.io/KarlsonWebPort/",
+            thumbUrl: "Assets/Thumbnails/Karlson.png" // Set this directly to your explicit asset image path!
         }
     ];
 

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ==========================================
     // 🎮 CENTRALIZED GAMES LIST CONFIGURATION
-    // Just add the filename here when adding new games!
+    // Make sure your filenames inside your games/ folder match these exactly!
     // ==========================================
     const gamesList = [
         { fileName: "slope.html", title: "Slope", category: "Action" },
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // RENDERING & INTERACTION LOGIC
+    // DYNAMIC GAMES RENDERING LOGIC
     // ==========================================
     function renderGames(filterText = "") {
         if (!gamesGrid) return;
@@ -62,18 +62,29 @@ document.addEventListener("DOMContentLoaded", () => {
             game.category.toLowerCase().includes(filterText.toLowerCase())
         );
 
+        if (filtered.length === 0) {
+            gamesGrid.innerHTML = `<p class="coming-soon-text">No games found matching your search.</p>`;
+            return;
+        }
+
         filtered.forEach(game => {
-            // Auto-strips .html and targets Assets/Thumbnails/filename.jpg
             const baseName = game.fileName.replace(".html", "");
             const thumbPath = `Assets/Thumbnails/${baseName}.jpg`;
 
             const card = document.createElement("div");
             card.className = "card";
             card.innerHTML = `
-                <img src="${thumbPath}" alt="${game.title}" class="card-thumb" onerror="this.src='Assets/Thumbnails/SiteLogo.png'">
+                <div style="position:relative; width:100%; height:130px; background-color:#1a1a1e;">
+                    <img src="${thumbPath}" alt="${game.title}" class="card-thumb" 
+                         style="width:100%; height:100%; object-fit:cover;"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="fallback-thumb-box" style="display:none; width:100%; height:100%; background-color:#25252b; align-items:center; justify-content:center; color:#8e8e93; font-weight:bold; font-size:1.2rem;">
+                        🎮
+                    </div>
+                </div>
                 <div class="card-info">
-                    <h3>${game.title}</h3>
-                    <span>${game.category}</span>
+                    <h3 style="color:#ffffff; margin-bottom:0.25rem;">${game.title}</h3>
+                    <span style="color:#8e8e93; font-size:0.8rem;">${game.category}</span>
                 </div>
             `;
 
@@ -102,17 +113,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         switchZone("player-zone");
 
-        // Action Buttons Setup
+        // Fullscreen Setup
         document.getElementById("btn-fullscreen").onclick = () => {
             if (iframe.requestFullscreen) iframe.requestFullscreen();
             else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
             else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
         };
 
+        // About Blank Setup
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
             if (!popup) {
-                alert("Please allow popups for Cobra to open games in about:blank cloaking!");
+                alert("Please allow popups to utilize stealth about:blank cloaking!");
                 return;
             }
             popup.document.body.style.margin = "0";
@@ -128,6 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    // Initialize list load
+    // Force load the initial collection rendering directly on launch
     renderGames();
 });

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { 
             title: "How To Fish", 
             category: "Casual", 
-            gameUrl: "https://raw.githubusercontent.com/NotRexed/HowToFishPort/refs/heads/main/index.html" // You can replace this path with a direct raw website link too!
+            gameUrl: "https://steezy943.github.io/HowToFishPort/" // You can replace this path with a direct raw website link too!
         }
     ];
 

@@ -9,18 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ==========================================================================
     // 🎮 COBRA NETWORK DYNAMIC LINK CONFIGURATION CATALOGUE
-    // To scale up your site, just paste your GitHub Pages URLs or raw links here!
+    // You can now specify both the EXACT game link and EXACT thumbnail path!
     // ==========================================================================
     const gamesList = [
         { 
             title: "Untitled Goose Game", 
             category: "Casual", 
-            gameUrl: "https://steezy943.github.io/untitled-goose-game/" 
-            // 💡 Pro-Tip: ://githack.com bypasses GitHub raw source execution protection rules!
+            gameUrl: "https://steezy943.github.io/untitled-goose-game/",
+            thumbUrl: "Assets/Thumbnails/Untitled Goose Game.jpg" // Set this directly to your explicit asset image path!
         }
     ];
 
-    // Core Router Handler (Switches view frames cleanly)
+    // Core Router Handler
     function switchZone(zoneId) {
         viewZones.forEach(zone => zone.classList.remove("active"));
         const targetZone = document.getElementById(zoneId);
@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Universal navigation layout listeners
     if (homeBtn) {
         homeBtn.addEventListener("click", () => switchZone("dashboard-zone"));
     }
@@ -47,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================================================
-    // DYNAMIC ARCADE GENERATION ENGINE
+    // DYNAMIC ARCADE GENERATION ENGINE (Circular + Swirl Layouts)
     // ==========================================================================
     function renderGames(filterText = "") {
         if (!gamesGrid) return;
@@ -63,21 +62,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         filtered.forEach(game => {
-            // Normalizes spaces to query thumbnail assets cleanly
-            const cleanName = game.title.replace(/\s+/g, '');
-            const thumbPath = `Assets/Thumbnails/${cleanName}.jpg`;
-
             const card = document.createElement("div");
-            card.className = "card";
+            card.className = "card-circle-wrapper";
             card.innerHTML = `
-                <div class="card-thumb-container">
-                    <img src="${thumbPath}" alt="${game.title}" class="card-thumb" 
+                <div class="card-circle-inner">
+                    <img src="${game.thumbUrl}" alt="${game.title}" class="card-circle-thumb" 
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="fallback-thumb-box">🎮</div>
-                </div>
-                <div class="card-info">
-                    <h3>${game.title}</h3>
-                    <span>${game.category}</span>
+                    <div class="fallback-circle-box">🎮</div>
+                    
+                    <!-- SWIRL TEXT CONTAINER LAYER -->
+                    <div class="swirl-text-overlay">
+                        <div class="swirl-title">${game.title}</div>
+                        <div class="swirl-category">${game.category}</div>
+                    </div>
                 </div>
             `;
 
@@ -90,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Central dashboard search input portal intercept router
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
             const value = e.target.value;
@@ -101,49 +97,37 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ==========================================================================
-    // ARCADE VIEWPORT SANDBOX LOADER & STEALTH UTILITY SYSTEM
-    // ==========================================================================
     function launchGameUrl(targetUrl, title) {
         document.getElementById("game-frame-title").textContent = title;
         const iframe = document.getElementById("cobra-game-iframe");
         
-        // Feed destination string right into the active page panel iframe chassis
         iframe.src = targetUrl;
         switchZone("player-zone");
 
-        // Action Trigger 1: Native fullscreen viewport overlay toggle
         document.getElementById("btn-fullscreen").onclick = () => {
             if (iframe.requestFullscreen) iframe.requestFullscreen();
             else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
-            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
         };
 
-        // Action Trigger 2: Advanced cloaked completely anonymous window generation
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
             if (!popup) {
-                alert("Please clear browser blocking pop-up alerts to run about:blank cloaking session!");
+                alert("Please clear browser blocking pop-up alerts!");
                 return;
             }
-            
-            // Generate clean target layout within the detached empty tab layout
             popup.document.body.style.margin = "0";
             popup.document.body.style.height = "100vh";
             popup.document.body.style.backgroundColor = "#000000";
-            popup.document.body.style.overflow = "hidden";
             
             const newIframe = popup.document.createElement("iframe");
             newIframe.src = targetUrl;
             newIframe.style.width = "100%";
             newIframe.style.height = "100%";
             newIframe.style.border = "none";
-            newIframe.style.display = "block";
             
             popup.document.body.appendChild(newIframe);
         };
     }
 
-    // Bootstrap and populate catalog immediately on application lifecycle ready event
     renderGames();
 });

@@ -70,6 +70,7 @@ body {
 
 .site-container {
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
     opacity: 0;
     animation: fadeInContent 0.5s ease forwards;
@@ -85,6 +86,7 @@ body {
    ========================================================================== */
 .view-zone {
     display: none;
+    width: 100%;
 }
 
 .view-zone.active {
@@ -95,45 +97,43 @@ body {
     color: var(--text-gray);
     margin-top: 1rem;
     font-size: 1.1rem;
+    text-align: center;
 }
 
 /* ==========================================================================
    HEADER TOP BAR (Centered Navigation & Settings)
    ========================================================================== */
 .top-bar {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    align-items: center;
-    margin-bottom: 2rem;
-    width: 100%;
-}
-.search-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
     width: 100%;
+    background-color: transparent;
 }
-
-.search-input {
-    width: 100%;
-    max-width: 450px;
-    padding: 0.75rem 1.5rem;
+.home-icon-btn {
     background-color: var(--sidebar-black);
     border: 1px solid var(--border-gray);
-    border-radius: 25px;
-    color: white;
-    outline: none;
-    text-align: center;
-    transition: border-color 0.2s, max-width 0.2s;
+    color: var(--text-white);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, transform 0.2s;
 }
 
-.search-input:focus {
+.home-icon-btn:hover {
     border-color: var(--cobra-white);
-    max-width: 500px;
+    transform: scale(1.05);
 }
 
 .top-bar-right {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 1rem;
 }
@@ -178,171 +178,120 @@ body {
 }
 
 /* ==========================================================================
-   SIDEBAR LAYOUT
+   MAIN CORE CONTAINER LAYOUT
    ========================================================================== */
-.sidebar {
-    width: 260px;
-    background-color: var(--sidebar-black);
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 1.5rem;
-    border-right: 1px solid var(--border-gray);
-    position: fixed;
-    height: 100vh;
-}
-
-.logo-area {
-    margin-bottom: 3rem;
-}
-
-.logo-text {
-    font-family: 'SnakeStitch', sans-serif;
-    font-size: 2.5rem;
-    color: var(--cobra-white);
-    letter-spacing: 2px;
-}
-
-.nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    flex-grow: 1;
-}
-
-.nav-item {
-    color: var(--text-gray);
-    text-decoration: none;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.nav-item:hover, .nav-item.active {
-    background-color: rgba(255, 255, 255, 0.08);
-    color: var(--cobra-white);
-    padding-left: 1.25rem;
-}
-
-.sidebar-footer {
-    color: #44444a;
-    font-size: 0.85rem;
-}
-
 .main-content {
-    margin-left: 260px;
     flex-grow: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 2rem;
 }
+
 /* ==========================================================================
-   PROXY BUTTON FEATURE CARD (Web.jpg Container)
+   PORTAL HOMEPAGE DASHBOARD HERO STYLES (Perfect Center Setup)
    ========================================================================== */
-.proxy-button-card {
-    grid-column: 1 / -1;
-    position: relative;
-    height: 220px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid var(--border-gray);
-    cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s;
-}
-
-.proxy-button-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--cobra-white);
-}
-
-.proxy-card-bg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.proxy-button-card:hover .proxy-card-bg {
-    transform: scale(1.03);
-}
-
-.proxy-card-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(10,10,12,0.95) 0%, rgba(10,10,12,0.6) 50%, rgba(0,0,0,0.2) 100%);
-    display: flex;
-    align-items: center;
-    padding: 2.5rem;
-}
-
-.proxy-card-content {
-    max-width: 500px;
+.portal-hero {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1rem;
+    width: 100%;
+    min-height: 65vh;
 }
 
-.proxy-card-content .badge {
-    background-color: var(--cobra-white);
-    color: black;
-    font-size: 0.75rem;
-    font-weight: 800;
-    padding: 0.25rem 0.6rem;
-    text-transform: uppercase;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-}
-
-.proxy-card-content h2 {
-    font-size: 2rem;
-    color: var(--cobra-white);
-    letter-spacing: 0.5px;
-}
-
-.proxy-card-content p {
+.sub-welcome {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 4px;
     color: var(--text-gray);
-    font-size: 0.95rem;
-    line-height: 1.4;
     margin-bottom: 0.5rem;
 }
 
-.launch-btn {
-    background-color: transparent;
+.portal-logo-text {
+    font-family: 'SnakeStitch', sans-serif;
+    font-size: 5rem;
     color: var(--cobra-white);
-    border: 1px solid var(--cobra-white);
-    padding: 0.6rem 1.2rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    letter-spacing: 4px;
+    margin-bottom: 2.5rem;
+}
+.portal-search-box {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 3.5rem;
 }
 
-.proxy-button-card:hover .launch-btn {
-    background-color: var(--cobra-white);
-    color: black;
+.portal-search-input {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
+    background-color: var(--sidebar-black);
+    border: 1px solid var(--border-gray);
+    color: white;
+    border-radius: 30px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.portal-search-input:focus {
+    border-color: var(--cobra-white);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.portal-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 850px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .portal-buttons-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .portal-logo-text {
+        font-size: 3.5rem;
+    }
+}
+
+.portal-hub-btn {
+    background-color: var(--sidebar-black);
+    color: var(--text-white);
+    border: 1px solid var(--border-gray);
+    padding: 1.2rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.portal-hub-btn:hover {
+    transform: translateY(-3px);
+    background-color: var(--card-black);
+    border-color: var(--cobra-white);
 }
 
 /* ==========================================================================
-   DASHBOARD CARDS & GRID LAYOUT
+   DYNAMIC GAMES GRID CATALOG
    ========================================================================== */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-}
-
 .section-title {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
     letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-gray);
+    padding-bottom: 0.5rem;
 }
 
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
 }
 
 .card {
@@ -358,10 +307,28 @@ body {
     border-color: var(--cobra-white);
 }
 
+.card-thumb-container {
+    position: relative; 
+    width: 100%; 
+    height: 140px; 
+    background-color: #141417;
+}
+
 .card-thumb {
     width: 100%;
-    height: 130px;
+    height: 100%;
     object-fit: cover;
+}
+
+.fallback-thumb-box {
+    display: flex; 
+    width: 100%; 
+    height: 100%; 
+    background-color: #1f1f24; 
+    align-items: center; 
+    justify-content: center; 
+    color: #8e8e93; 
+    font-size: 1.8rem;
 }
 
 .card-info {
@@ -369,8 +336,9 @@ body {
 }
 
 .card-info h3 {
-    font-size: 1rem;
+    font-size: 1.05rem;
     margin-bottom: 0.25rem;
+    color: var(--text-white);
 }
 
 .card-info span {
@@ -378,45 +346,8 @@ body {
     color: var(--text-gray);
 }
 
-/* CHAT WIDGET */
-.widget {
-    background-color: var(--sidebar-black);
-    border-radius: 16px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border-gray);
-}
-
-.widget-title {
-    margin-bottom: 1rem;
-    color: var(--cobra-white);
-}
-
-.chat-preview-box {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    font-size: 0.9rem;
-    min-height: 200px;
-}
-
-.widget-input {
-    background-color: var(--bg-black);
-    border: 1px solid var(--border-gray);
-    padding: 0.75rem;
-    border-radius: 8px;
-    color: white;
-    outline: none;
-}
-
-.widget-input:focus {
-    border-color: var(--cobra-white);
-}
-
 /* ==========================================================================
-   🎮 GAME CHASSIS & PLAYER CONTROLS STYLES
+   🎮 GAME CHASSIS & PLAYER VIEWPORT STYLES
    ========================================================================== */
 .player-container {
     width: 100%;
@@ -461,7 +392,7 @@ body {
 .iframe-wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%;
+    padding-bottom: 56.25%; /* Fixed 16:9 aspect ratio standard */
     height: 0;
     border-radius: 8px;
     overflow: hidden;
@@ -476,81 +407,4 @@ body {
     width: 100%;
     height: 100%;
     border: none;
-}
-/* ==========================================================================
-   PORTAL HOMEPAGE DASHBOARD HERO STYLES
-   ========================================================================== */
-.portal-hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 4rem 2rem;
-    width: 100%;
-    min-height: 70vh;
-}
-
-.portal-welcome {
-    font-size: 3.5rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-}
-
-.portal-search-box {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 3rem;
-}
-
-.portal-search-input {
-    width: 100%;
-    padding: 1.2rem 2rem;
-    font-size: 1.1rem;
-    background-color: var(--sidebar-black);
-    border: 1px solid var(--border-gray);
-    color: white;
-    border-radius: 30px;
-    outline: none;
-    text-align: center;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.portal-search-input:focus {
-    border-color: var(--cobra-white);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.portal-buttons-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-    max-width: 800px;
-    width: 100%;
-}
-
-@media (max-width: 900px) {
-    .portal-buttons-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.portal-hub-btn {
-    background-color: var(--sidebar-black);
-    color: var(--text-white);
-    border: 1px solid var(--border-gray);
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
-}
-
-.portal-hub-btn:hover {
-    transform: translateY(-3px);
-    background-color: var(--card-black);
-    border-color: var(--cobra-white);
 }

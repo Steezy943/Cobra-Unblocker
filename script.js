@@ -6,13 +6,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const portalSearch = document.querySelector(".portal-search-input");
     const hubButtons = document.querySelectorAll(".portal-hub-btn");
 
-    // ==========================================
-    // 🎮 FIXED GAMES LIST CATALOGUE (Matches your repo!)
-    // ==========================================
+    // ==========================================================================
+    // 🎮 COBRA RAW URL GAME LIST CONFIGURATION
+    // To add more games, just add a new item block inside this array.
+    // Use any raw code link, repository path, or hosted game site URL!
+    // ==========================================================================
     const gamesList = [
-        { fileName: "How2Fish.html", title: "How 2 Fish", category: "Casual" }
+        { 
+            title: "How To Fish", 
+            category: "Casual", 
+            gameUrl: "https://raw.githubusercontent.com/NotRexed/HowToFishPort/refs/heads/main/index.html" // You can replace this path with a direct raw website link too!
+        }
     ];
 
+    // Global site view controller
     function switchZone(zoneId) {
         viewZones.forEach(zone => zone.classList.remove("active"));
         const targetZone = document.getElementById(zoneId);
@@ -21,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Grid navigation link execution
+    // Assign dashboard button grid navigation mapping
     hubButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const targetZoneId = btn.getAttribute("data-zone");
@@ -36,7 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
         settingsToggle.addEventListener("click", () => switchZone("settings-zone"));
     }
 
-    // Dynamic library generation loop
+    // ==========================================================================
+    // DYNAMIC GAMES ENGINE (Renders clean cards based on game title text)
+    // ==========================================================================
     function renderGames(filterText = "") {
         if (!gamesGrid) return;
         gamesGrid.innerHTML = "";
@@ -45,9 +54,15 @@ document.addEventListener("DOMContentLoaded", () => {
             game.title.toLowerCase().includes(filterText.toLowerCase())
         );
 
+        if (filtered.length === 0) {
+            gamesGrid.innerHTML = `<p class="coming-soon-text">No games cataloged yet.</p>`;
+            return;
+        }
+
         filtered.forEach(game => {
-            const baseName = game.fileName.replace(".html", "");
-            const thumbPath = `Assets/Thumbnails/${baseName}.jpg`;
+            // Strip spaces to try and find a thumbnail, using fallback icon safely if not found
+            const cleanName = game.title.replace(/\s+/g, '');
+            const thumbPath = `Assets/Thumbnails/${cleanName}.jpg`;
 
             const card = document.createElement("div");
             card.className = "card";
@@ -63,15 +78,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
 
+            // Click maps straight to the raw link loader function
             card.addEventListener("click", () => {
-                launchGameFrame(game.fileName, game.title);
+                launchGameUrl(game.gameUrl, game.title);
             });
 
             gamesGrid.appendChild(card);
         });
     }
 
-    // Text tracking input filter mapping
+    // Sync portal entry search tracking
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
             const value = e.target.value;
@@ -82,32 +98,41 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function launchGameFrame(fileName, title) {
-        const gamePath = `games/${fileName}`;
+    // Raw link launcher wrapper utilizing sandboxed frame controls
+    function launchGameUrl(targetUrl, title) {
         document.getElementById("game-frame-title").textContent = title;
         const iframe = document.getElementById("cobra-game-iframe");
-        iframe.src = gamePath;
+        
+        // Directly injects the raw URL string right into the iframe
+        iframe.src = targetUrl;
 
         switchZone("player-zone");
 
+        // Native hardware full screen panel utility
         document.getElementById("btn-fullscreen").onclick = () => {
             if (iframe.requestFullscreen) iframe.requestFullscreen();
             else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
         };
 
+        // Advanced anonymous about:blank tab injection utility
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
-            if (!popup) return alert("Allow popups for about:blank execution!");
+            if (!popup) return alert("Please allow popups to launch stealth window session!");
+            
             popup.document.body.style.margin = "0";
             popup.document.body.style.height = "100vh";
+            popup.document.body.style.backgroundColor = "#000000";
+            
             const newIframe = popup.document.createElement("iframe");
-            newIframe.src = window.location.origin + "/" + gamePath;
+            newIframe.src = targetUrl;
             newIframe.style.width = "100%";
             newIframe.style.height = "100%";
             newIframe.style.border = "none";
+            
             popup.document.body.appendChild(newIframe);
         };
     }
 
+    // Force call calculation loop execution instantly
     renderGames();
 });

@@ -36,12 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
             gameUrl: "https://steezy943.github.io/KarlsonWebPort/",
             thumbUrl: "Assets/Thumbnails/Karlson.png" // Set this directly to your explicit asset image path!
         },
-        { 
+                { 
             title: "PEAK", 
             category: "Adventure", 
             gameUrl: "https://steezy943.github.io/Peak-Port/",
-            thumbUrl: "Assets/Thumbnails/Peak.jpg" // Set this directly to your explicit asset image path!
-        };
+            thumbUrl: "Assets/Thumbnails/Peak.jpg"
+        }   //  Correctly closes the object
+    ];      // 🆗 Correctly closes the array
 
     // Core Router Handler
     function switchZone(zoneId) {

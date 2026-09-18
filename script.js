@@ -17,6 +17,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Casual", 
             gameUrl: "https://steezy943.github.io/untitled-goose-game/",
             thumbUrl: "Assets/Thumbnails/Untitled Goose Game.jpg" // Set this directly to your explicit asset image path!
+        },
+        { 
+            title: "Hollow Knight", 
+            category: "Action", 
+            gameUrl: "https://steezy943.github.io/hollowknightport/",
+            thumbUrl: "Assets/Thumbnails/Hollow Knight.webp" // Set this directly to your explicit asset image path!
         }
     ];
 

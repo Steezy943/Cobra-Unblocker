@@ -54,45 +54,31 @@
 
             <!-- ZONE PANELS -->
             
-            <!-- 1. GAMES ZONE (MAIN DASHBOARD) -->
+            <!-- 1. GAMES ZONE (PURE GAMES LIST ONLY) -->
             <div id="games-zone" class="view-zone active">
-                <section class="dashboard-grid">
-                    
-                    <!-- DYNAMIC PROXY PORTAL CALL-TO-ACTION CARD -->
-                    <div class="proxy-button-card" data-zone="proxy-zone">
-                        <img src="Assets/Img/Web.jpg" alt="Launch Proxy" class="proxy-card-bg">
-                        <div class="proxy-card-overlay">
-                            <div class="proxy-card-content">
-                                <span class="badge">Unblocked Proxy</span>
-                                <h2>Launch Secure Web Proxy</h2>
-                                <p>Bypass restrictions and browse securely with high-speed stealth nodes.</p>
-                                <button class="launch-btn">Launch Session →</button>
-                            </div>
+                <!-- DYNAMIC PROXY PORTAL CALL-TO-ACTION CARD -->
+                <div class="proxy-button-card" data-zone="proxy-zone">
+                    <img src="Assets/Img/Web.jpg" alt="Launch Proxy" class="proxy-card-bg">
+                    <div class="proxy-card-overlay">
+                        <div class="proxy-card-content">
+                            <span class="badge">Unblocked Proxy</span>
+                            <h2>Launch Secure Web Proxy</h2>
+                            <p>Bypass restrictions and browse securely with high-speed stealth nodes.</p>
+                            <button class="launch-btn">Launch Session →</button>
                         </div>
                     </div>
+                </div>
 
-                    <!-- DYNAMIC GAMES INJECT GRID -->
-                    <div class="content-section">
-                        <h2 class="section-title">Trending Games</h2>
-                        <div class="card-grid" id="games-grid-container">
-                            <!-- Injected dynamically via script.js -->
-                        </div>
+                <!-- ALL GAMES INJECTION WRAPPER -->
+                <div class="content-section" style="margin-top: 2rem;">
+                    <h2 class="section-title">All Unblocked Games</h2>
+                    <div class="card-grid" id="games-grid-container">
+                        <!-- JavaScript will forcibly inject game cards directly into here -->
                     </div>
-
-                    <!-- LIVE CHAT PREVIEW WIDGET -->
-                    <div class="widget chat-widget">
-                        <h3 class="widget-title">Global Chat</h3>
-                        <div class="chat-preview-box">
-                            <p><strong>Hex_Cobra:</strong> Yo, this site is fast.</p>
-                            <p><strong>Guest832:</strong> Anyone up for 1v1?</p>
-                            <p><strong>Admin:</strong> Update coming tonight!</p>
-                        </div>
-                        <input type="text" placeholder="Type a message..." class="widget-input">
-                    </div>
-                </section>
+                </div>
             </div>
 
-            <!-- GAME VIEWPORT LAYER (Hidden until game clicked) -->
+            <!-- GAME VIEWPORT LAYER (Launches iframe cleanly) -->
             <div id="player-zone" class="view-zone">
                 <div class="player-container">
                     <div class="player-header">

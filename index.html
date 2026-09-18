@@ -13,50 +13,32 @@
         <img src="Assets/Img/SiteLogo.png" alt="Cobra Logo" class="splash-logo">
     </div>
 
-    <!-- MAIN DASHBOARD CONTAINER -->
+    <!-- MAIN APP WRAPPER -->
     <div class="site-container">
         
-        <!-- SIDEBAR NAVIGATION -->
-        <aside class="sidebar">
-            <div class="logo-area">
-                <span class="logo-text">COBRA</span>
-            </div>
-            <nav class="nav-links">
-                <a href="#" class="nav-item active" data-zone="dashboard-zone">🏠 Dashboard</a>
-                <a href="#" class="nav-item" data-zone="games-zone">🎮 Games Zone</a>
-                <a href="#" class="nav-item" data-zone="proxy-zone">🔒 Proxy / Unblocker</a>
-                <a href="#" class="nav-item" data-zone="chat-zone">💬 Chat Zone</a>
-                <a href="#" class="nav-item" data-zone="music-zone">🎵 Music Zone</a>
-                <a href="#" class="nav-item" data-zone="movies-zone">🎬 Movies Zone</a>
-                <a href="#" class="nav-item" data-zone="apps-zone">📱 Apps Zone</a>
-            </nav>
-            <div class="sidebar-footer">
-                <p>© 2026 Cobra</p>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTENT AREA -->
-        <main class="main-content">
-            
-            <!-- TOP BAR CONTROL -->
-            <header class="top-bar">
-                <div class="top-bar-left"></div>
-                <div></div> <!-- Empty middle block (search moved to dashboard center) -->
-                <div class="top-bar-right">
-                    <button class="settings-btn" id="settings-toggle" title="Settings" data-zone="settings-zone">⚙️</button>
-                    <div class="user-profile">
-                        <div class="status-dot"></div>
-                        <span class="username">Player_One</span>
-                    </div>
+        <!-- TOP CONTROL BAR -->
+        <header class="top-bar">
+            <!-- Clicking Home brings you right back to the central search menu -->
+            <button class="home-icon-btn" id="btn-home" title="Go to Dashboard">🏠</button>
+            <div class="top-bar-right">
+                <button class="settings-btn" id="settings-toggle" title="Settings" data-zone="settings-zone">⚙️</button>
+                <div class="user-profile">
+                    <div class="status-dot"></div>
+                    <span class="username">Player_One</span>
                 </div>
-            </header>
+            </div>
+        </header>
 
-            <!-- ZONE PANELS -->
+        <!-- MAIN LAYOUT AREA -->
+        <main class="main-content">
 
-            <!-- 0. THE MAIN PORTAL DASHBOARD -->
+            <!-- ========================================================== -->
+            <!-- 0. THE MAIN SEARCH HUB ENGAGEMENT VIEW                     -->
+            <!-- ========================================================== -->
             <div id="dashboard-zone" class="view-zone active">
                 <div class="portal-hero">
-                    <h1 class="portal-welcome">Welcome to Cobra</h1>
+                    <span class="sub-welcome">WELCOME TO</span>
+                    <h1 class="portal-logo-text">COBRA</h1>
                     
                     <div class="portal-search-box">
                         <input type="text" placeholder="Search unblocked elements, proxy sites, games..." class="portal-search-input">
@@ -70,34 +52,25 @@
                         <button class="portal-hub-btn" data-zone="movies-zone">🎬 Movie Stream</button>
                         <button class="portal-hub-btn" data-zone="chat-zone">💬 Chat Room</button>
                         <button class="portal-hub-btn" data-zone="apps-zone">📱 Unblocked Apps</button>
-                        <button class="portal-hub-btn" data-zone="settings-zone">⚙️ System Settings</button>
                     </div>
                 </div>
             </div>
             
-            <!-- 1. GAMES ZONE -->
+            <!-- ========================================================== -->
+            <!-- 1. GAMES ZONE                                              -->
+            <!-- ========================================================== -->
             <div id="games-zone" class="view-zone">
-                <div class="proxy-button-card" data-zone="proxy-zone">
-                    <img src="Assets/Img/Web.jpg" alt="Launch Proxy" class="proxy-card-bg">
-                    <div class="proxy-card-overlay">
-                        <div class="proxy-card-content">
-                            <span class="badge">Unblocked Proxy</span>
-                            <h2>Launch Secure Web Proxy</h2>
-                            <p>Bypass restrictions and browse securely with high-speed stealth nodes.</p>
-                            <button class="launch-btn">Launch Session →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-section" style="margin-top: 2rem;">
+                <div class="content-section">
                     <h2 class="section-title">All Unblocked Games</h2>
                     <div class="card-grid" id="games-grid-container">
-                        <!-- Instanced via script.js -->
+                        <!-- Injected dynamically via script.js -->
                     </div>
                 </div>
             </div>
 
-            <!-- GAME VIEWPORT LAYER -->
+            <!-- ========================================================== -->
+            <!-- GAME VIEWPORT LAYER (Launches iframe neatly)               -->
+            <!-- ========================================================== -->
             <div id="player-zone" class="view-zone">
                 <div class="player-container">
                     <div class="player-header">

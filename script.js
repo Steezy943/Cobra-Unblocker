@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             title: "How To Fish", 
             category: "Adventure/Action", 
             gameUrl: "https://steezy943.github.io/HowToFishPort/",
-            thumbUrl: "Assets/Thumbnails/HowToFish.jpg" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/How To Fish.jpg" // Set this directly to your explicit asset image path!
         }
     ];      // 🆗 Correctly closes the array
 

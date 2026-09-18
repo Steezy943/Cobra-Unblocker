@@ -75,6 +75,7 @@ body {
     opacity: 0;
     animation: fadeInContent 0.5s ease forwards;
     animation-delay: 2.7s;
+    width: 100%;
 }
 
 @keyframes fadeInContent {
@@ -95,13 +96,13 @@ body {
 
 .coming-soon-text {
     color: var(--text-gray);
-    margin-top: 1rem;
+    margin-top: 2rem;
     font-size: 1.1rem;
     text-align: center;
 }
 
 /* ==========================================================================
-   HEADER TOP BAR (Centered Navigation & Settings)
+   HEADER TOP BAR (Fully Cleaned Alignment)
    ========================================================================== */
 .top-bar {
     display: flex;
@@ -109,7 +110,6 @@ body {
     align-items: center;
     padding: 1.5rem 2.5rem;
     width: 100%;
-    background-color: transparent;
 }
 .home-icon-btn {
     background-color: var(--sidebar-black);
@@ -392,7 +392,7 @@ body {
 .iframe-wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%; /* Fixed 16:9 aspect ratio standard */
+    padding-bottom: 56.25%;
     height: 0;
     border-radius: 8px;
     overflow: hidden;

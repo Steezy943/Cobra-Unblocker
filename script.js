@@ -23,6 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Action", 
             gameUrl: "https://steezy943.github.io/hollowknightport/",
             thumbUrl: "Assets/Thumbnails/Hollow Knight.webp" // Set this directly to your explicit asset image path!
+        },
+        { 
+            title: "Half Life", 
+            category: "Action", 
+            gameUrl: "https://steezy943.github.io/Half-Life/",
+            thumbUrl: "Assets/Thumbnails/Half Life 1.webp" // Set this directly to your explicit asset image path!
         }
     ];
 

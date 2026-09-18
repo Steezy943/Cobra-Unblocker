@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             gameUrl: "https://steezy943.github.io/Peak-Port/",
             thumbUrl: "Assets/Thumbnails/Peak.jpg" // Set this directly to your explicit asset image path!
         }
-    ];
+        };
 
     // Core Router Handler
     function switchZone(zoneId) {

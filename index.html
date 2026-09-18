@@ -39,15 +39,10 @@
             
             <!-- TOP BAR -->
             <header class="top-bar">
-                <!-- Left spacer keeps layout aligned now that search is middle-bound -->
                 <div class="top-bar-left"></div>
-                
-                <!-- Centered Search Bar Container -->
                 <div class="search-container">
                     <input type="text" placeholder="Search games, music, movies..." class="search-input">
                 </div>
-                
-                <!-- Right Controls Area (Profile + Settings) -->
                 <div class="top-bar-right">
                     <button class="settings-btn" id="settings-toggle" title="Settings">⚙️</button>
                     <div class="user-profile">
@@ -76,31 +71,11 @@
                         </div>
                     </div>
 
-                    <!-- TRENDING GAMES -->
+                    <!-- DYNAMIC GAMES INJECT GRID -->
                     <div class="content-section">
                         <h2 class="section-title">Trending Games</h2>
-                        <div class="card-grid">
-                            <div class="card">
-                                <img src="Assets/Thumbnails/SiteLogo.png" alt="Game Thumbnail" class="card-thumb">
-                                <div class="card-info">
-                                    <h3>Slope</h3>
-                                    <span>Action</span>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="Assets/Thumbnails/SiteLogo.png" alt="Game Thumbnail" class="card-thumb">
-                                <div class="card-info">
-                                    <h3>Retro Bowl</h3>
-                                    <span>Sports</span>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="Assets/Thumbnails/SiteLogo.png" alt="Game Thumbnail" class="card-thumb">
-                                <div class="card-info">
-                                    <h3>1v1.LOL</h3>
-                                    <span>Shooter</span>
-                                </div>
-                            </div>
+                        <div class="card-grid" id="games-grid-container">
+                            <!-- Injected dynamically via script.js -->
                         </div>
                     </div>
 
@@ -115,6 +90,22 @@
                         <input type="text" placeholder="Type a message..." class="widget-input">
                     </div>
                 </section>
+            </div>
+
+            <!-- GAME VIEWPORT LAYER (Hidden until game clicked) -->
+            <div id="player-zone" class="view-zone">
+                <div class="player-container">
+                    <div class="player-header">
+                        <h2 id="game-frame-title">Loading Game...</h2>
+                        <div class="player-controls">
+                            <button class="control-btn" id="btn-about-blank">🌐 Open about:blank</button>
+                            <button class="control-btn" id="btn-fullscreen">📺 Fullscreen</button>
+                        </div>
+                    </div>
+                    <div class="iframe-wrapper">
+                        <iframe id="cobra-game-iframe" src="" allowfullscreen></iframe>
+                    </div>
+                </div>
             </div>
 
             <!-- 2. PROXY / UNBLOCKER ZONE -->

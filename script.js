@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const proxyCard = document.querySelector(".proxy-button-card");
     const settingsToggle = document.getElementById("settings-toggle");
     const gamesGrid = document.getElementById("games-grid-container");
-    const searchInput = document.querySelector(".search-input");
+    const portalSearch = document.querySelector(".portal-search-input");
+    const hubButtons = document.querySelectorAll(".portal-hub-btn");
 
     // ==========================================
     // 🎮 CENTRALIZED GAMES LIST CONFIGURATION
-    // Make sure your filenames inside your games/ folder match these exactly!
     // ==========================================
     const gamesList = [
         { fileName: "slope.html", title: "Slope", category: "Action" },
@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
         { fileName: "subway-surfers.html", title: "Subway Surfers", category: "Arcade" }
     ];
 
-    // Reusable function to clear panels and activate targeted zone
     function switchZone(zoneId) {
         navItems.forEach(nav => {
             nav.classList.remove("active");
@@ -33,12 +32,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Sidebar navigation clicks
+    // Nav bar mapping clicks
     navItems.forEach(item => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
-            const targetZoneId = item.getAttribute("data-zone");
-            switchZone(targetZoneId);
+            switchZone(item.getAttribute("data-zone"));
+        });
+    });
+
+    // Central dashboard grid button routing
+    hubButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            switchZone(btn.getAttribute("data-zone"));
         });
     });
 
@@ -96,50 +101,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Live search functionality
-    if (searchInput) {
-        searchInput.addEventListener("input", (e) => {
+    // Main Portal Search jumps directly to games view and displays filtered options
+    if (portalSearch) {
+        portalSearch.addEventListener("input", (e) => {
+            switchZone("games-zone");
             renderGames(e.target.value);
+            // Autofills search text downward
+            portalSearch.value = "";
         });
     }
 
-    // Launch Game Frame View
     function launchGameFrame(fileName, title) {
         const gamePath = `games/${fileName}`;
         document.getElementById("game-frame-title").textContent = title;
-        
         const iframe = document.getElementById("cobra-game-iframe");
         iframe.src = gamePath;
 
         switchZone("player-zone");
 
-        // Fullscreen Setup
         document.getElementById("btn-fullscreen").onclick = () => {
             if (iframe.requestFullscreen) iframe.requestFullscreen();
             else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
-            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
         };
 
-        // About Blank Setup
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
-            if (!popup) {
-                alert("Please allow popups to utilize stealth about:blank cloaking!");
-                return;
-            }
+            if (!popup) return alert("Please allow popups!");
             popup.document.body.style.margin = "0";
             popup.document.body.style.height = "100vh";
-            
             const newIframe = popup.document.createElement("iframe");
             newIframe.src = window.location.origin + "/" + gamePath;
             newIframe.style.width = "100%";
             newIframe.style.height = "100%";
             newIframe.style.border = "none";
-            
             popup.document.body.appendChild(newIframe);
         };
     }
 
-    // Force load the initial collection rendering directly on launch
     renderGames();
 });

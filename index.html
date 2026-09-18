@@ -23,7 +23,7 @@
             </div>
             <nav class="nav-links">
                 <a href="#" class="nav-item active" data-zone="games-zone">🎮 Games Zone</a>
-                <a href="#" class="nav-item" data-zone="proximity-zone">📍 Proximity</a>
+                <a href="#" class="nav-item" data-zone="proxy-zone">🔒 Proxy / Unblocker</a>
                 <a href="#" class="nav-item" data-zone="chat-zone">💬 Chat Zone</a>
                 <a href="#" class="nav-item" data-zone="music-zone">🎵 Music Zone</a>
                 <a href="#" class="nav-item" data-zone="movies-zone">🎬 Movies Zone</a>
@@ -39,12 +39,21 @@
             
             <!-- TOP BAR -->
             <header class="top-bar">
+                <!-- Left spacer keeps layout aligned now that search is middle-bound -->
+                <div class="top-bar-left"></div>
+                
+                <!-- Centered Search Bar Container -->
                 <div class="search-container">
                     <input type="text" placeholder="Search games, music, movies..." class="search-input">
                 </div>
-                <div class="user-profile">
-                    <div class="status-dot"></div>
-                    <span class="username">Player_One</span>
+                
+                <!-- Right Controls Area (Profile + Settings) -->
+                <div class="top-bar-right">
+                    <button class="settings-btn" id="settings-toggle" title="Settings">⚙️</button>
+                    <div class="user-profile">
+                        <div class="status-dot"></div>
+                        <span class="username">Player_One</span>
+                    </div>
                 </div>
             </header>
 
@@ -55,11 +64,11 @@
                 <section class="dashboard-grid">
                     
                     <!-- DYNAMIC PROXY PORTAL CALL-TO-ACTION CARD -->
-                    <div class="proxy-button-card" data-zone="apps-zone">
+                    <div class="proxy-button-card" data-zone="proxy-zone">
                         <img src="Assets/Img/Web.jpg" alt="Launch Proxy" class="proxy-card-bg">
                         <div class="proxy-card-overlay">
                             <div class="proxy-card-content">
-                                <span class="badge">Unblocked Apps</span>
+                                <span class="badge">Unblocked Proxy</span>
                                 <h2>Launch Secure Web Proxy</h2>
                                 <p>Bypass restrictions and browse securely with high-speed stealth nodes.</p>
                                 <button class="launch-btn">Launch Session →</button>
@@ -108,10 +117,10 @@
                 </section>
             </div>
 
-            <!-- 2. PROXIMITY ZONE -->
-            <div id="proximity-zone" class="view-zone">
-                <h2 class="section-title">📍 Proximity Zone</h2>
-                <p class="coming-soon-text">Connecting nearby players... Feature coming soon.</p>
+            <!-- 2. PROXY / UNBLOCKER ZONE -->
+            <div id="proxy-zone" class="view-zone">
+                <h2 class="section-title">🔒 Proxy / Unblocker</h2>
+                <p class="coming-soon-text">Stealth browser node terminal config loading...</p>
             </div>
 
             <!-- 3. CHAT ZONE -->
@@ -136,6 +145,12 @@
             <div id="apps-zone" class="view-zone">
                 <h2 class="section-title">📱 Apps Zone</h2>
                 <p class="coming-soon-text">Unblocked web application proxies.</p>
+            </div>
+
+            <!-- 7. SETTINGS PANEL VIEW -->
+            <div id="settings-zone" class="view-zone">
+                <h2 class="section-title">⚙️ Cobra Configuration Settings</h2>
+                <p class="coming-soon-text">Adjust theme preferences, tab cloaking, and navigation options.</p>
             </div>
 
         </main>

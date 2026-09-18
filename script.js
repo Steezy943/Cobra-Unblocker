@@ -35,7 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Action", 
             gameUrl: "https://steezy943.github.io/KarlsonWebPort/",
             thumbUrl: "Assets/Thumbnails/Karlson.png" // Set this directly to your explicit asset image path!
-        }
+        },
+        { 
+            title: "PEAK", 
+            category: "Adventure", 
+            gameUrl: "https://steezy943.github.io/Peak-Port/?cdn=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fwasmdotrip%2FPeak-Port%40main",
+            thumbUrl: "Assets/Thumbnails/Peak.jpg" // Set this directly to your explicit asset image path!
+        jpg
     ];
 
     // Core Router Handler

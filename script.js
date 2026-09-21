@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             thumbUrl: "Assets/Thumbnails/Cat Goes Fishing.jpg" // Set this directly to your explicit asset image path!
         },
         { 
-            title: "Geometry Dash", 
+            title: "Geometry Dash [Beta]", 
             category: "Adventure/Intense", 
             gameUrl: "https://steezy943.github.io/geometry-dash-web-full/",
             thumbUrl: "Assets/Thumbnails/Geometry Dash.png" // Set this directly to your explicit asset image path!

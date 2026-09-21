@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { 
             title: "Geometry Dash", 
             category: "Adventure/Peacful", 
-            gameUrl: "https://steezy943.github.io/slendytubbies-port/",
+            gameUrl: "https://steezy943.github.io/geometry-dash-webport/",
             thumbUrl: "Assets/Thumbnails/Geometry Dash.png" // Set this directly to your explicit asset image path!
         }
     ];      // 🆗 Correctly closes the array

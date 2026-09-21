@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const homeBtn = document.getElementById("btn-home");
     const gamesGrid = document.getElementById("games-grid-container");
     const portalSearch = document.querySelector(".portal-search-input");
+    const gamesSearchInput = document.getElementById("games-search-input"); // New inside games-zone
     const hubButtons = document.querySelectorAll(".portal-hub-btn");
 
     // ==========================================================================
@@ -16,69 +17,69 @@ document.addEventListener("DOMContentLoaded", () => {
             title: "Untitled Goose Game", 
             category: "Casual", 
             gameUrl: "https://steezy943.github.io/untitled-goose-game/",
-            thumbUrl: "Assets/Thumbnails/Untitled Goose Game.jpg" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Untitled Goose Game.jpg" 
         },
         { 
             title: "Hollow Knight", 
             category: "Action", 
             gameUrl: "https://steezy943.github.io/hollowknightport/",
-            thumbUrl: "Assets/Thumbnails/Hollow Knight.webp" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Hollow Knight.webp" 
         },
         { 
             title: "Half Life", 
             category: "Action", 
             gameUrl: "https://steezy943.github.io/Half-Life/",
-            thumbUrl: "Assets/Thumbnails/Half Life 1.jpg" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Half Life 1.jpg" 
         },
         { 
             title: "Karlson", 
             category: "Action", 
             gameUrl: "https://steezy943.github.io/KarlsonWebPort/",
-            thumbUrl: "Assets/Thumbnails/Karlson.png" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Karlson.png" 
         },
-                { 
+        { 
             title: "PEAK", 
             category: "Adventure", 
             gameUrl: "https://steezy943.github.io/Peak-Port/",
             thumbUrl: "Assets/Thumbnails/Peak.jpg"
-        },   //  Correctly closes the object
+        },
         { 
             title: "How To Fish", 
             category: "Adventure/Action", 
             gameUrl: "https://steezy943.github.io/HowToFishPort/",
-            thumbUrl: "Assets/Thumbnails/HowToFish.jpg" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/HowToFish.jpg" 
         },
         { 
             title: "Slendy Tubbies", 
             category: "Adventure/Horror", 
             gameUrl: "https://steezy943.github.io/slendytubbies-port/",
-            thumbUrl: "Assets/Thumbnails/slendytubbies.jpg" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/slendytubbies.jpg" 
         },
         { 
             title: "Cat Goes Fishing", 
             category: "Adventure/Peacful", 
             gameUrl: "https://steezy943.github.io/Cat-Goes-Fishing-Port/",
-            thumbUrl: "Assets/Thumbnails/Cat Goes Fishing.jpg" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Cat Goes Fishing.jpg" 
         },
         { 
             title: "Geometry Dash [Beta]", 
             category: "Adventure/Intense", 
             gameUrl: "https://steezy943.github.io/geometry-dash-web-full/",
-            thumbUrl: "Assets/Thumbnails/Geometry Dash.png" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Geometry Dash.png" 
         },
         { 
             title: "GD FULL V1", 
             category: "Rythm/Platformer", 
             gameUrl: "https://steezy943.github.io/Geometry-Dash-Full1/",
-            thumbUrl: "Assets/Thumbnails/Geometry Dash V1.png" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Geometry Dash V1.png" 
         },
         { 
             title: "Ultrakill", 
             category: "Action/Shooter/Platformer", 
             gameUrl: "https://steezy943.github.io/Ultrakill-Port/",
-            thumbUrl: "Assets/Thumbnails/Ultrakill.jpg" // Set this directly to your explicit asset image path!
+            thumbUrl: "Assets/Thumbnails/Ultrakill.jpg" 
         }
-    ];      // 🆗 Correctly closes the array
+    ];
 
     // Core Router Handler
     function switchZone(zoneId) {
@@ -99,7 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (homeBtn) {
-        homeBtn.addEventListener("click", () => switchZone("dashboard-zone"));
+        homeBtn.addEventListener("click", () => {
+            // Reset searches when returning home
+            if (portalSearch) portalSearch.value = "";
+            if (gamesSearchInput) gamesSearchInput.value = "";
+            renderGames();
+            switchZone("dashboard-zone");
+        });
     }
     if (settingsToggle) {
         settingsToggle.addEventListener("click", () => switchZone("settings-zone"));
@@ -147,13 +154,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Handles the search box on the Dashboard View
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
             const value = e.target.value;
             if (value.trim() !== "") {
+                // Synchronize values so the games-zone input displays what was typed
+                if (gamesSearchInput) gamesSearchInput.value = value;
                 switchZone("games-zone");
                 renderGames(value);
             }
+        });
+    }
+
+    // NEW: Handles the persistent search box within the dedicated Games Zone
+    if (gamesSearchInput) {
+        gamesSearchInput.addEventListener("input", (e) => {
+            const value = e.target.value;
+            renderGames(value);
         });
     }
 

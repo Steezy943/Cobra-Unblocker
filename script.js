@@ -78,6 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Action/Shooter/Platformer", 
             gameUrl: "https://steezy943.github.io/Ultrakill-Port/",
             thumbUrl: "Assets/Thumbnails/Ultrakill.jpg" 
+        },
+        { 
+            title: "Hollow Knight Silksong", 
+            category: "Action/Platformer", 
+            gameUrl: "https://steezy943.github.io/hollow-knight-silksong/",
+            thumbUrl: "Assets/Thumbnails/HollowKnightSilk.jpg" 
         }
     ];
 

@@ -53,6 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Adventure/Horror", 
             gameUrl: "https://steezy943.github.io/slendytubbies-port/",
             thumbUrl: "Assets/Thumbnails/slendytubbies.jpg" // Set this directly to your explicit asset image path!
+        },
+        { 
+            title: "Cat Goes Fishing", 
+            category: "Adventure/Peacful", 
+            gameUrl: "https://steezy943.github.io/slendytubbies-port/",
+            thumbUrl: "Assets/Thumbnails/Cat Goes Fishing.jpg" // Set this directly to your explicit asset image path!
         }
     ];      // 🆗 Correctly closes the array
 

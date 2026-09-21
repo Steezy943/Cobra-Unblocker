@@ -71,6 +71,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Rythm/Platformer", 
             gameUrl: "https://steezy943.github.io/Geometry-Dash-Full1/",
             thumbUrl: "Assets/Thumbnails/Geometry Dash V1.png" // Set this directly to your explicit asset image path!
+        },
+        { 
+            title: "Ultrakill", 
+            category: "Action/Shooter/Platformer", 
+            gameUrl: "https://steezy943.github.io/Ultrakill-Port/",
+            thumbUrl: "Assets/Thumbnails/Ultrakill.jpg" // Set this directly to your explicit asset image path!
         }
     ];      // 🆗 Correctly closes the array
 

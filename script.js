@@ -62,9 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         { 
             title: "Geometry Dash", 
-            category: "Adventure/Peacful", 
+            category: "Adventure/Intense", 
             gameUrl: "https://steezy943.github.io/geometry-dash-web-full/",
             thumbUrl: "Assets/Thumbnails/Geometry Dash.png" // Set this directly to your explicit asset image path!
+        },
+        { 
+            title: "GD FULL V1", 
+            category: "Rythm/Platformer", 
+            gameUrl: "https://steezy943.github.io/Geometry-Dash-Full1/",
+            thumbUrl: "Assets/Thumbnails/Geometry Dash V1.png" // Set this directly to your explicit asset image path!
         }
     ];      // 🆗 Correctly closes the array
 

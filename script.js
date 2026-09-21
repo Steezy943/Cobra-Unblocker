@@ -84,6 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Action/Platformer", 
             gameUrl: "https://steezy943.github.io/hollow-knight-silksong/",
             thumbUrl: "Assets/Thumbnails/HollowKnightSilk.jpg" 
+        },
+        { 
+            title: "Clover Pit", 
+            category: "Intense/LuckBased", 
+            gameUrl: "https://steezy943.github.io/clover-pit-port/",
+            thumbUrl: "Assets/Thumbnails/CloverPit.jpg" 
         }
     ];
 

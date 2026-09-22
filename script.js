@@ -102,6 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Intense/War", 
             gameUrl: "https://steezy943.github.io/tabs-port/",
             thumbUrl: "Assets/Thumbnails/TABS.jpg" 
+        },
+        { 
+            title: "Ravenfield", 
+            category: "Intense/War", 
+            gameUrl: "https://steezy943.github.io/Ravenfield-port/",
+            thumbUrl: "Assets/Thumbnails/RavenField.png" 
         }
     ];
 

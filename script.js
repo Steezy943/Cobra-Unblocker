@@ -90,6 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Intense/LuckBased", 
             gameUrl: "https://steezy943.github.io/clover-pit-port/",
             thumbUrl: "Assets/Thumbnails/CloverPit.jpg" 
+        },
+        { 
+            title: "Fears to Fathom HA", 
+            category: "Intense/LuckBased", 
+            gameUrl: "https://steezy943.github.io/FTFHAPort/",
+            thumbUrl: "Assets/Thumbnails/F2FHA.jpg" 
         }
     ];
 

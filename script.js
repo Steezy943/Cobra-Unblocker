@@ -96,6 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Intense/Horror", 
             gameUrl: "https://steezy943.github.io/FTFHAPort/",
             thumbUrl: "Assets/Thumbnails/F2FHA.jpg" 
+        },
+        { 
+            title: "TABS", 
+            category: "Intense/War", 
+            gameUrl: "https://steezy943.github.io/tabs-port/",
+            thumbUrl: "Assets/Thumbnails/TABS.jpg" 
         }
     ];
 

@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         { 
             title: "Fears to Fathom HA", 
-            category: "Intense/LuckBased", 
+            category: "Intense/Horror", 
             gameUrl: "https://steezy943.github.io/FTFHAPort/",
             thumbUrl: "Assets/Thumbnails/F2FHA.jpg" 
         }

@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { 
             title: "Ultrakill", 
             category: "Action/Shooter/Platformer", 
-            gameUrl: "https://steezy943.github.io/Ultrakill-Port/",
+            gameUrl: "https://steezy943.github.io/ultrakill-web/",
             thumbUrl: "Assets/Thumbnails/Ultrakill.jpg" 
         },
         { 

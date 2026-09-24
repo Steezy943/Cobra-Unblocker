@@ -112,8 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { 
             title: "20 Minutes Till Dawn", 
             category: "Survival/Rougelike/Intense", 
-            gameUrl: "https://steezy943.github.io/Ravenfield-port/",
-            thumbUrl: "Assets/Thumbnails/RavenField.png" 
+            gameUrl: "https://steezy943.github.io/20-minutes-webport/",
+            thumbUrl: "Assets/Thumbnails/20minstd.png" 
         }
     ];
 

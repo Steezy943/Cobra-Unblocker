@@ -114,6 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Survival/Rougelike/Intense", 
             gameUrl: "https://steezy943.github.io/20-minutes-webport/",
             thumbUrl: "Assets/Thumbnails/20minstd.png" 
+        },
+        { 
+            title: "A Game About Climbing", 
+            category: "Rage/Adventure", 
+            gameUrl: "https://steezy943.github.io/adgac-webport/",
+            thumbUrl: "Assets/Thumbnails/adgac.png" 
         }
     ];
 

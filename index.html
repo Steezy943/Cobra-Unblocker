@@ -4,15 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cobra</title>
-    <!-- Core browser assets -->
     <link rel="icon" type="image/png" href="favicon.png">
-    <!-- Core site styles -->
     <link rel="stylesheet" href="style.css">
-    <!-- Disclaimer pop-up styles -->
     <link rel="stylesheet" href="disclaimer.css">
-    <style>
-        .splash-screen { pointer-events: none !important; }
-    </style>
 </head>
 <body>
 
@@ -24,20 +18,19 @@
     <!-- MAIN APP STRUCTURE -->
     <div class="site-container layout-side-wrapper">
         
-        <!-- MINIMALIST BLACK & WHITE SIDE TERMINAL BAR -->
+        <!-- SIDE TERMINAL BAR -->
         <aside class="cobra-side-dock">
             <div class="dock-brand" onclick="window.switchZone('dashboard-zone')">cobra</div>
             <div class="side-tabs-rail" id="cobra-tabs-dock">
-                <!-- Advanced interactive icon glyphs inject dynamically here -->
+                <!-- Advanced tab icons dynamically append inside here -->
             </div>
             <div class="dock-footer-btn" onclick="window.switchZone('settings-zone')" title="Cobra Configurations">⚙️</div>
         </aside>
 
-        <!-- RIGHTHAND VIEWPORT FRAME -->
+        <!-- VIEWPORT FRAME CONTAINER -->
         <div class="viewport-main-wrapper">
             <!-- HEADER BAR -->
             <header class="top-bar">
-                <button class="home-icon-btn" id="btn-home" onclick="window.switchZone('dashboard-zone')" title="Go to Dashboard">🏠</button>
                 <div class="top-bar-right">
                     <div class="user-profile">
                         <div class="status-dot"></div>
@@ -50,7 +43,7 @@
             <main class="main-content">
 
                 <!-- 0. THE MAIN SEARCH HUB VIEW -->
-                <div id="dashboard-zone" class="view-zone active">
+                <div id="dashboard-zone" class="view-zone">
                     <div class="portal-hero">
                         <span class="sub-welcome">WELCOME TO</span>
                         <h1 class="portal-logo-text">COBRA</h1>
@@ -59,7 +52,7 @@
                             <input type="text" placeholder="Search unblocked elements, proxy sites, games..." class="portal-search-input">
                         </div>
 
-                        <!-- CENTRAL HUB BUTTON LINKS WITH GRAPHIC ICON UPGRADES -->
+                        <!-- CENTRAL HUB BUTTON LINKS -->
                         <div class="portal-buttons-grid">
                             <button class="portal-hub-btn" onclick="window.switchZone('proxy-zone')">
                                 <img src="Assets/Img/proxyicon.png" alt="" style="width: 16px; height: 16px; object-fit: contain; filter: brightness(0) invert(1);"> Launch Proxy
@@ -87,79 +80,40 @@
                 <div id="games-zone" class="view-zone">
                     <div class="content-section">
                         <h2 class="section-title">All Unblocked Games</h2>
-                        
-                        <div class="games-search-box" style="margin-bottom: 20px; max-width: 400px;">
+                        <div class="games-search-box" style="margin-bottom: 30px; max-width: 400px;">
                             <input type="text" id="games-search-input" placeholder="Search games...">
                         </div>
-
                         <div class="card-grid" id="games-grid-container">
-                            <!-- Dynamic content generation -->
+                            <!-- Dynamic content injection container -->
                         </div>
                     </div>
                 </div>
 
                 <!-- GAME VIEWPORT LAYER -->
                 <div id="player-zone" class="view-zone">
-                    <div class="player-container">
-                        <div class="player-header">
-                            <h2 id="game-frame-title">Loading Game...</h2>
-                            <div class="player-controls">
-                                <button class="control-btn" id="btn-about-blank">🌐 Open about:blank</button>
-                                <button class="control-btn" id="btn-fullscreen">📺 Fullscreen</button>
-                            </div>
+                    <div class="player-container" style="background: #0a0a0a; padding: 1.5rem; border: 1px solid var(--border-gray); border-radius: 8px;">
+                        <div class="player-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                            <h2 id="game-frame-title" style="font-size:1.1rem; text-transform:uppercase; letter-spacing:1px;">Loading Game...</h2>
                         </div>
-                        <div class="iframe-wrapper">
-                            <iframe id="cobra-game-iframe" src="" allowfullscreen></iframe>
+                        <div class="iframe-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; background:#000; border:1px solid var(--border-gray); border-radius:4px; overflow:hidden;">
+                            <iframe id="cobra-game-iframe" src="" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
                         </div>
                     </div>
                 </div>
 
-                <!-- OTHER NAV ZONES -->
-                <div id="proxy-zone" class="view-zone">
-                    <h2 class="section-title">🔒 Proxy / Unblocker</h2>
-                    <p class="coming-soon-text">Stealth browser node terminal config loading...</p>
-                </div>
-
-                <div id="chat-zone" class="view-zone">
-                    <h2 class="section-title">💬 Full Chat Zone</h2>
-                    <p class="coming-soon-text">Global public chat rooms loading...</p>
-                </div>
-
-                <div id="music-zone" class="view-zone">
-                    <h2 class="section-title">🎵 Music Zone</h2>
-                    <p class="coming-soon-text">Stream your playlist while gaming.</p>
-                </div>
-
-                <div id="movies-zone" class="view-zone">
-                    <h2 class="section-title">🎬 Movies Zone</h2>
-                    <p class="coming-soon-text">Unblocked streaming movies panel.</p>
-                </div>
-
-                <div id="apps-zone" class="view-zone">
-                    <h2 class="section-title">📱 Apps Zone</h2>
-                    <p class="coming-soon-text">Unblocked web application proxies.</p>
-                </div>
-
-                <!-- SETTINGS MODULE WITH SIMULATION TOGGLE -->
-                <div id="settings-zone" class="view-zone">
-                    <h2 class="section-title">⚙️ Cobra Configuration Settings</h2>
-                    <div class="settings-card-panel" style="background: var(--sidebar-black); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-gray); max-width: 500px;">
-                        <h3 style="margin-bottom: 1rem; color: #fff; font-size: 1.1rem; font-weight: 600;">Performance Matrix</h3>
-                        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; color: #a0a0a5;">
-                            <span>Active Tab Fluid Light Simulation</span>
-                            <label class="cobra-switch" style="position: relative; display: inline-block; width: 44px; height: 22px;">
-                                <input type="checkbox" id="toggle-fluid-sim" checked style="opacity: 0; width: 0; height: 0;">
-                                <span class="cobra-toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <!-- CODES ZONES PANELS -->
+                <div id="proxy-zone" class="view-zone"><h2 class="section-title">🔒 Proxy Node</h2><p class="coming-soon-text">Stealth terminal configurations loading...</p></div>
+                <div id="chat-zone" class="view-zone"><h2 class="section-title">💬 Chat Matrix</h2><p class="coming-soon-text">Global channels routing initialization...</p></div>
+                <div id="music-zone" class="view-zone"><h2 class="section-title">🎵 Music Hub</h2><p class="coming-soon-text">Audio streaming integration interface...</p></div>
+                <div id="movies-zone" class="view-zone"><h2 class="section-title">🎬 Movie Core</h2><p class="coming-soon-text">Decrypted video streaming panels loading...</p></div>
+                <div id="apps-zone" class="view-zone"><h2 class="section-title">📱 Application Node</h2><p class="coming-soon-text">Sandboxed micro-application containers loading...</p></div>
+                <div id="settings-zone" class="view-zone"><h2 class="section-title">⚙️ Configuration</h2><p class="coming-soon-text">Performance simulation parameters matrix...</p></div>
 
             </main>
         </div>
     </div>
 
-    <!-- LINK ROUTER SCRIPTS -->
+    <!-- SCRIPT LIFECYCLES -->
     <script src="games.js"></script>
     <script src="script.js"></script>
     <script src="disclaimerbase.js"></script>

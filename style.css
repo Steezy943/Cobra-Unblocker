@@ -419,3 +419,13 @@ body {
     border-color: var(--cobra-white);
     background: #141414;
 }
+
+.tab-glyph-symbol {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cobra-tab-item:hover .tab-glyph-symbol {
+    transform: scale(1.12);
+}

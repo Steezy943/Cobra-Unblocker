@@ -3,7 +3,7 @@ window.openTabs = [];
 window.fluidAnimations = {}; 
 
 const iconMap = {
-    "dashboard-zone": "Assets/Img/SiteLogo.png", // Explicitly links Home brand image to avoid blank fallbacks
+    "dashboard-zone": "Assets/Img/SiteLogo.png", 
     "proxy-zone": "Assets/Img/proxyicon.png",
     "games-zone": "Assets/Img/gamesicon.png",
     "music-zone": "Assets/Img/musicicon.png",
@@ -23,7 +23,6 @@ window.switchZone = function(zoneId) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // FIX: Core Home button verification rule tracking
     const exists = window.openTabs.some(tab => tab.id === zoneId);
     if (!exists) {
         const iconPath = iconMap[zoneId] || "Assets/Img/SiteLogo.png";
@@ -43,7 +42,6 @@ window.refreshTabsUI = function(activeZoneId) {
         tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''}`;
         tabEl.id = `side-tab-${tab.id}`;
         
-        // Custom formatting if the node is assigned as the primary layout root
         const dynamicLabel = tab.isHome ? "🏠" : `<img src="${tab.path}" class="tab-glyph-symbol" alt="" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);">`;
 
         tabEl.innerHTML = `
@@ -88,7 +86,6 @@ window.initFluidCanvas = function(tabId) {
             growth: (Math.random() - 0.5) * 0.01
         });
     }
-
     if (window.fluidAnimations[tabId]) { cancelAnimationFrame(window.fluidAnimations[tabId]); }
     function runAnimationLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -105,6 +102,7 @@ window.initFluidCanvas = function(tabId) {
     }
     runAnimationLoop();
 };
+
 window.closeTabItem = function(zoneId) {
     if (window.fluidAnimations[zoneId]) {
         cancelAnimationFrame(window.fluidAnimations[zoneId]);
@@ -119,7 +117,6 @@ window.closeTabItem = function(zoneId) {
         if (iframe) iframe.src = "";
     }
 
-    // FIX: Critical System Void trigger condition validation rule
     if (targetedTab && targetedTab.isHome) {
         document.body.innerHTML = `
             <div class="void-screen-override">
@@ -133,7 +130,6 @@ window.closeTabItem = function(zoneId) {
         const nextTarget = window.openTabs[window.openTabs.length - 1].id;
         window.switchZone(nextTarget);
     } else {
-        // Automatically open and target home node link to avoid blank views
         window.switchZone("dashboard-zone");
     }
 };
@@ -160,14 +156,16 @@ window.renderGames = function(filterText = "") {
         gamesGrid.innerHTML = `<p class="coming-soon-text">No unblocked elements matched your lookup.</p>`;
         return;
     }
-
     filtered.forEach(game => {
         const card = document.createElement("div");
         card.className = "card-circle-wrapper";
         card.innerHTML = `
-            <div class="card-circle-inner">
-                <img src="${game.thumbUrl}" alt="${game.title}" class="card-circle-thumb" onerror="this.style.display='none';">
-                <div class="swirl-text-overlay">
+            <div class="card-circle-inner" style="display: flex; align-items: center; justify-content: center; position: relative;">
+                <img src="${game.thumbUrl}" alt="${game.title}" class="card-circle-thumb" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
+                     style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:1;">
+                <div class="fallback-circle-box" style="display: none; width: 100%; height: 100%; background: #111; align-items: center; justify-content: center; font-size: 2rem; color: #444; position: absolute; top: 0; left: 0; z-index: 0;">🎮</div>
+                <div class="swirl-text-overlay" style="z-index: 2;">
                     <div class="kinetic-trail-container">
                         <div class="swirl-title-layer layer-trail-2">${game.title}</div>
                         <div class="swirl-title-layer layer-trail-1">${game.title}</div>
@@ -183,7 +181,6 @@ window.renderGames = function(filterText = "") {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Force instantiate Dashboard tab inside side dock stack arrays on initialize
     window.switchZone("dashboard-zone");
 
     const portalSearch = document.querySelector(".portal-search-input");
@@ -203,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
         gamesSearchInput.addEventListener("input", (e) => window.renderGames(e.target.value));
     }
 
-    // Smoothly fade out preloader screen at exactly 2.8 seconds
     setTimeout(() => {
         const preloader = document.getElementById("cobra-preloader");
         if (preloader) {

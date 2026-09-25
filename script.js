@@ -7,9 +7,9 @@ window.switchZone = function(zoneId) {
     if (targetZone) {
         targetZone.classList.add("active");
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        console.log("Cobra Router: Switched view to " + zoneId);
+        console.log("Cobra Router: Navigated directly to #" + zoneId);
     } else {
-        console.error("Cobra Router Error: Target zone #" + zoneId + " not found!");
+        console.error("Cobra Router Error: View segment #" + zoneId + " is missing from the document.");
     }
 };
 
@@ -48,13 +48,13 @@ window.launchGameUrl = function(targetUrl, title) {
     }
 };
 
-// 🎮 ENGINE GENERATION
+// 🎮 INTERACTIVE GRID RENDERER
 window.renderGames = function(filterText = "") {
     const gamesGrid = document.getElementById("games-grid-container");
     if (!gamesGrid) return;
     gamesGrid.innerHTML = "";
 
-    // Fallback safely if gamesList array is not initialized globally yet
+    // Safely look up global database array array
     const catalog = window.gamesList || [];
 
     const filtered = catalog.filter(game => 
@@ -89,35 +89,22 @@ window.renderGames = function(filterText = "") {
     });
 };
 
-// Initialize interactive events once DOM completes loading
+// INITIALIZE RUNTIME LISTENERS
 document.addEventListener("DOMContentLoaded", () => {
     const portalSearch = document.querySelector(".portal-search-input");
-    const gamesSearchInput = document.getElementById("games-search-input"); 
-    const hubButtons = document.querySelectorAll(".portal-hub-btn");
+    const gamesSearchInput = document.getElementById("games-search-input");
     const homeBtn = document.getElementById("btn-home");
-    const settingsToggle = document.getElementById("settings-toggle");
 
-    // Dynamic grid button navigation wiring
-    hubButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            const targetZoneId = btn.getAttribute("data-zone");
-            window.switchZone(targetZoneId);
-        });
-    });
-
+    // Home Reset routine
     if (homeBtn) {
         homeBtn.addEventListener("click", () => {
             if (portalSearch) portalSearch.value = "";
             if (gamesSearchInput) gamesSearchInput.value = "";
             window.renderGames();
-            window.switchZone("dashboard-zone");
         });
     }
 
-    if (settingsToggle) {
-        settingsToggle.addEventListener("click", () => window.switchZone("settings-zone"));
-    }
-
+    // Input Synchronization Listeners
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
             const value = e.target.value;
@@ -135,16 +122,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Run initial catalog render engine immediately
+    // Render original arcade inventory catalog immediately
     window.renderGames();
 
-    // 🧹 PRELOADER CLEANUP ENGINE
-    const splash = document.querySelector(".splash-screen");
-    if (splash) {
-        setTimeout(() => {
-            splash.style.display = "none";
-            splash.remove();
-            console.log("Cobra Core: Splash screen barrier removed successfully.");
-        }, 3000);
-    }
+    // 🧹 FORCE REMOVE PRELOADER BARRIER
+    setTimeout(() => {
+        const preloader = document.getElementById("cobra-preloader");
+        if (preloader) {
+            preloader.style.opacity = "0";
+            preloader.style.display = "none";
+            preloader.style.pointerEvents = "none";
+            preloader.remove(); 
+            console.log("Cobra Core: Click interface unblocked completely.");
+        }
+    }, 3200);
 });

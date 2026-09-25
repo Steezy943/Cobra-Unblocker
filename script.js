@@ -87,6 +87,7 @@ window.renderGames = function(filterText = "") {
 };
 
 // Initialize interactive events once DOM completes loading
+// Initialize interactive events once DOM completes loading
 document.addEventListener("DOMContentLoaded", () => {
     const portalSearch = document.querySelector(".portal-search-input");
     const gamesSearchInput = document.getElementById("games-search-input"); 
@@ -134,4 +135,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Run initial catalog render engine immediately
     window.renderGames();
+
+    // 🧹 PRELOADER CLEANUP ENGINE
+    // Completely removes the splash barrier so it stops blocking clicks
+    const splash = document.querySelector(".splash-screen");
+    if (splash) {
+        setTimeout(() => {
+            splash.style.display = "none";
+            splash.remove(); // Drops it completely out of the DOM tree
+            console.log("Cobra Core: Splash screen barrier removed successfully.");
+        }, 3000); // 3 seconds matches your CSS timing chain perfectly
+    }
 });

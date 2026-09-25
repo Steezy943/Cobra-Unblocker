@@ -1,3 +1,6 @@
+// Import the dynamic games array from your separate database file
+import { gamesList } from './games.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     // Interface elements selectors
     const viewZones = document.querySelectorAll(".view-zone");
@@ -5,129 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const homeBtn = document.getElementById("btn-home");
     const gamesGrid = document.getElementById("games-grid-container");
     const portalSearch = document.querySelector(".portal-search-input");
-    const gamesSearchInput = document.getElementById("games-search-input"); // New inside games-zone
+    const gamesSearchInput = document.getElementById("games-search-input"); 
     const hubButtons = document.querySelectorAll(".portal-hub-btn");
-
-    // ==========================================================================
-    // 🎮 COBRA NETWORK DYNAMIC LINK CONFIGURATION CATALOGUE
-    // You can now specify both the EXACT game link and EXACT thumbnail path!
-    // ==========================================================================
-    const gamesList = [
-        { 
-            title: "Untitled Goose Game", 
-            category: "Casual", 
-            gameUrl: "https://steezy943.github.io/untitled-goose-game/",
-            thumbUrl: "Assets/Thumbnails/Untitled Goose Game.jpg" 
-        },
-        { 
-            title: "Hollow Knight", 
-            category: "Action", 
-            gameUrl: "https://steezy943.github.io/hollowknightport/",
-            thumbUrl: "Assets/Thumbnails/Hollow Knight.webp" 
-        },
-        { 
-            title: "Half Life", 
-            category: "Action", 
-            gameUrl: "https://steezy943.github.io/Half-Life/",
-            thumbUrl: "Assets/Thumbnails/Half Life 1.jpg" 
-        },
-        { 
-            title: "Karlson", 
-            category: "Action", 
-            gameUrl: "https://steezy943.github.io/KarlsonWebPort/",
-            thumbUrl: "Assets/Thumbnails/Karlson.png" 
-        },
-        { 
-            title: "PEAK", 
-            category: "Adventure", 
-            gameUrl: "https://steezy943.github.io/Peak-Port/",
-            thumbUrl: "Assets/Thumbnails/Peak.jpg"
-        },
-        { 
-            title: "How To Fish", 
-            category: "Adventure/Action", 
-            gameUrl: "https://steezy943.github.io/HowToFishPort/",
-            thumbUrl: "Assets/Thumbnails/HowToFish.jpg" 
-        },
-        { 
-            title: "Slendy Tubbies", 
-            category: "Adventure/Horror", 
-            gameUrl: "https://steezy943.github.io/slendytubbies-port/",
-            thumbUrl: "Assets/Thumbnails/slendytubbies.jpg" 
-        },
-        { 
-            title: "Cat Goes Fishing", 
-            category: "Adventure/Peacful", 
-            gameUrl: "https://steezy943.github.io/Cat-Goes-Fishing-Port/",
-            thumbUrl: "Assets/Thumbnails/Cat Goes Fishing.jpg" 
-        },
-        { 
-            title: "Geometry Dash [Beta]", 
-            category: "Adventure/Intense", 
-            gameUrl: "https://steezy943.github.io/geometry-dash-web-full/",
-            thumbUrl: "Assets/Thumbnails/Geometry Dash.png" 
-        },
-        { 
-            title: "GD FULL V1", 
-            category: "Rythm/Platformer", 
-            gameUrl: "https://steezy943.github.io/Geometry-Dash-Full1/",
-            thumbUrl: "Assets/Thumbnails/Geometry Dash V1.png" 
-        },
-        { 
-            title: "Ultrakill", 
-            category: "Action/Shooter/Platformer", 
-            gameUrl: "https://steezy943.github.io/ultrakill-web/",
-            thumbUrl: "Assets/Thumbnails/Ultrakill.jpg" 
-        },
-        { 
-            title: "Hollow Knight Silksong", 
-            category: "Action/Platformer", 
-            gameUrl: "https://steezy943.github.io/hollow-knight-silksong/",
-            thumbUrl: "Assets/Thumbnails/HollowKnightSilk.jpg" 
-        },
-        { 
-            title: "Clover Pit", 
-            category: "Intense/LuckBased", 
-            gameUrl: "https://steezy943.github.io/clover-pit-port/",
-            thumbUrl: "Assets/Thumbnails/CloverPit.jpg" 
-        },
-        { 
-            title: "Fears to Fathom HA", 
-            category: "Intense/Horror", 
-            gameUrl: "https://steezy943.github.io/FTFHAPort/",
-            thumbUrl: "Assets/Thumbnails/F2FHA.jpg" 
-        },
-        { 
-            title: "TABS", 
-            category: "Intense/War", 
-            gameUrl: "https://steezy943.github.io/tabs-port/",
-            thumbUrl: "Assets/Thumbnails/TABS.jpg" 
-        },
-        { 
-            title: "Ravenfield", 
-            category: "Intense/War", 
-            gameUrl: "https://steezy943.github.io/Ravenfield-port/",
-            thumbUrl: "Assets/Thumbnails/RavenField.png" 
-        },
-        { 
-            title: "20 Minutes Till Dawn", 
-            category: "Survival/Rougelike/Intense", 
-            gameUrl: "https://steezy943.github.io/20-minutes-webport/",
-            thumbUrl: "Assets/Thumbnails/20minstd.png" 
-        },
-        { 
-            title: "A Game About Climbing", 
-            category: "Rage/Adventure", 
-            gameUrl: "https://steezy943.github.io/adgac-webport/",
-            thumbUrl: "Assets/Thumbnails/adgac.png" 
-        },
-        { 
-            title: "CounterStrike:Source 2d", 
-            category: "Shooting/Intense", 
-            gameUrl: "https://frankplus.github.io/",
-            thumbUrl: "Assets/Thumbnails/CSS2D.png" 
-        }
-    ];
 
     // Core Router Handler
     function switchZone(zoneId) {
@@ -215,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // NEW: Handles the persistent search box within the dedicated Games Zone
+    // Handles the persistent search box within the dedicated Games Zone
     if (gamesSearchInput) {
         gamesSearchInput.addEventListener("input", (e) => {
             const value = e.target.value;

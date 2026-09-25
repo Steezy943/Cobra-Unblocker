@@ -1,4 +1,4 @@
-// 🚀 COBRA SOLID WHITE FLUID ENGINE RUNTIME
+// 🚀 COBRA SOLID WHITE GRAPHICS PHYSICS SOLVER ENGINE
 window.openTabs = []; 
 window.fluidAnimations = {}; 
 window.fluidInstances = {};
@@ -12,6 +12,43 @@ const iconMap = {
     "chat-zone": "Assets/Img/chaticon.png",
     "apps-zone": "Assets/Img/appicon.png",
     "player-zone": "Assets/Img/gamesicon.png"
+};
+
+// FIX: Drag setup must reside at top of file so refreshTabsUI doesn't crash on load
+let sourceDragElement = null;
+window.setupTabDragEvents = function(el, id) {
+    el.addEventListener("dragstart", (e) => {
+        sourceDragElement = el;
+        el.style.opacity = "0.4";
+        e.dataTransfer.effectAllowed = "move";
+    });
+    el.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        return false;
+    });
+    el.addEventListener("drop", (e) => {
+        e.stopPropagation();
+        if (sourceDragElement && sourceDragElement !== el) {
+            const srcIdx = parseInt(sourceDragElement.getAttribute("data-index"));
+            const targetIdx = parseInt(el.getAttribute("data-index"));
+            
+            const movedTab = window.openTabs.splice(srcIdx, 1)[0];
+            window.openTabs.splice(targetIdx, 0, movedTab);
+
+            const srcInst = window.fluidInstances[movedTab.id];
+            const targetInst = window.fluidInstances[id];
+            if(srcInst) srcInst.d.fill(1.0);
+            if(targetInst) targetInst.d.fill(1.0);
+
+            const activeTabItem = document.querySelector(".cobra-tab-item.active-tab");
+            const activeZoneId = activeTabItem ? activeTabItem.id.replace("side-tab-", "") : "dashboard-zone";
+            window.refreshTabsUI(activeZoneId);
+        }
+    });
+    el.addEventListener("dragend", () => {
+        el.style.opacity = "1";
+        sourceDragElement = null;
+    });
 };
 
 window.switchZone = function(zoneId) {
@@ -56,7 +93,6 @@ window.refreshTabsUI = function(activeZoneId) {
             <span class="tab-close-corner" title="Close Window">×</span>
             <span style="position:relative; z-index:2; display:flex; align-items:center; justify-content:center; pointer-events:none;">${dynamicLabel}</span>
         `;
-
         tabEl.addEventListener("click", (e) => {
             if (e.target.classList.contains("tab-close-corner")) return;
             window.switchZone(tab.id);
@@ -74,7 +110,6 @@ window.refreshTabsUI = function(activeZoneId) {
     });
 };
 
-// ⚙️ PHYSICAL GRID FLUID SOLVER (Stam-Derivative Solver Engine)
 window.initFluidSolver = function(tabId) {
     const canvas = document.getElementById(`canvas-${tabId}`);
     if (!canvas) return;
@@ -99,6 +134,7 @@ window.initFluidSolver = function(tabId) {
             v[idx] = (e.movementY || 0) * 0.2;
         }
     };
+
     if (window.fluidAnimations[tabId]) { cancelAnimationFrame(window.fluidAnimations[tabId]); }
     
     function step() {
@@ -142,30 +178,7 @@ window.initFluidSolver = function(tabId) {
     }
     step();
 };
-
-let sourceDragElement = null;
-window.setupTabDragEvents = function(el, id) {
-    el.addEventListener("dragstart", (e) => {
-        sourceDragElement = el;
-        el.style.opacity = "0.4";
-        e.dataTransfer.effectAllowed = "move";
-    });
-    el.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        return false;
-    });
-    el.addEventListener("drop", (e) => {
-        e.stopPropagation();
-        if (sourceDragElement && sourceDragElement !== el) {
-            const srcIdx = parseInt(sourceDragElement.getAttribute("data-index"));
-            const targetIdx = parseInt(el.getAttribute("data-index"));
-            
-            // FIXED: Splice extraction array normalization error
-            const movedTab = window.openTabs.splice(srcIdx, 1)[0];
-            window.openTabs.splice(targetIdx, 0, movedTab);
-
-            const srcInst = window.fluidInstances[movedTab.id];
-            const targetInst = window.fluidInstanwindow.closeTabItem = function(zoneId) {
+window.closeTabItem = function(zoneId) {
     if (window.fluidAnimations[zoneId]) { cancelAnimationFrame(window.fluidAnimations[zoneId]); delete window.fluidAnimations[zoneId]; }
     if (window.fluidInstances[zoneId]) { delete window.fluidInstances[zoneId]; }
 
@@ -177,9 +190,8 @@ window.setupTabDragEvents = function(el, id) {
         if (iframe) iframe.src = "";
     }
 
-    // FIX: Renders a completely clean black screen canvas, then smoothly fades red caution text in over 1 second
+    // FIX: Only triggers if the specific tab being deleted is explicitly marked as Home layout root
     if (targetedTab && targetedTab.isHome) {
-        document.body.style.transition = "background-color 0.4s ease";
         document.body.style.backgroundColor = "#000000";
         document.body.innerHTML = `
             <div class="void-screen-override" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; z-index:999999; display:flex; justify-content:center; align-items:center; color:#ff3333; font-family:monospace; font-size:1.2rem; letter-spacing:1px; opacity:0; transition:opacity 1s ease 0.3s;">
@@ -243,7 +255,7 @@ window.renderGames = function(filterText = "") {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    // FIX: Render modules are compiled immediately, but we hide dashboard initialization values safely behind our 2.8s loader timeline
+    // Generates catalog values safely behind scene spaces right on load
     window.renderGames();
 
     const portalSearch = document.querySelector(".portal-search-input");
@@ -269,23 +281,9 @@ document.addEventListener("DOMContentLoaded", () => {
             preloader.style.opacity = "0"; 
             setTimeout(() => {
                 preloader.remove();
-                // FIX: Triggers window viewport rendering state ONLY after preloader screen is cleared out of background thread spaces
+                // Safe mount hook: switches zone now that drag events are compiled
                 window.switchZone("dashboard-zone");
             }, 500); 
         }
     }, 2800);
 });
-ces[id];
-            if(srcInst) srcInst.d.fill(1.0);
-            if(targetInst) targetInst.d.fill(1.0);
-
-            const activeTabItem = document.querySelector(".cobra-tab-item.active-tab");
-            const activeZoneId = activeTabItem ? activeTabItem.id.replace("side-tab-", "") : "dashboard-zone";
-            window.refreshTabsUI(activeZoneId);
-        }
-    });
-    el.addEventListener("dragend", () => {
-        el.style.opacity = "1";
-        sourceDragElement = null;
-    });
-};

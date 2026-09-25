@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="favicon.png">
-<link rel="stylesheet" href="disclaimer.css">
-<script src="disclaimerbase.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cobra</title>
+    <!-- Core site styles -->
     <link rel="stylesheet" href="style.css">
+    <!-- Disclaimer pop-up styles -->
+    <link rel="stylesheet" href="disclaimer.css">
+    <style>
+        /* Bulletproof fallback: ensure splash screen stops eating clicks immediately after its animation */
+        .splash-screen {
+            pointer-events: none !important;
+        }
+    </style>
 </head>
 <body>
 
     <!-- INTRO SPLASH SCREEN ANIMATION -->
-    <div class="splash-screen">
+    <div class="splash-screen" id="cobra-preloader">
         <img src="Assets/Img/SiteLogo.png" alt="Cobra Logo" class="splash-logo">
     </div>
 
@@ -21,9 +27,10 @@
         
         <!-- TOP CONTROL BAR -->
         <header class="top-bar">
-            <button class="home-icon-btn" id="btn-home" title="Go to Dashboard">🏠</button>
+            <!-- Fixed: added direct global routing action on click -->
+            <button class="home-icon-btn" id="btn-home" onclick="window.switchZone('dashboard-zone')" title="Go to Dashboard">🏠</button>
             <div class="top-bar-right">
-                <button class="settings-btn" id="settings-toggle" title="Settings" data-zone="settings-zone">⚙️</button>
+                <button class="settings-btn" id="settings-toggle" onclick="window.switchZone('settings-zone')" title="Settings">⚙️</button>
                 <div class="user-profile">
                     <div class="status-dot"></div>
                     <span class="username">Player_One</span>
@@ -45,13 +52,14 @@
                     </div>
 
                     <!-- CENTRAL HUB BUTTON LINKS -->
+                    <!-- Fixed: added robust direct onclick listeners as failproof navigation layers -->
                     <div class="portal-buttons-grid">
-                        <button class="portal-hub-btn" data-zone="proxy-zone">🔒 Launch Proxy</button>
-                        <button class="portal-hub-btn" data-zone="games-zone">🎮 Browse Games</button>
-                        <button class="portal-hub-btn" data-zone="music-zone">🎵 Music Station</button>
-                        <button class="portal-hub-btn" data-zone="movies-zone">🎬 Movie Stream</button>
-                        <button class="portal-hub-btn" data-zone="chat-zone">💬 Chat Room</button>
-                        <button class="portal-hub-btn" data-zone="apps-zone">📱 Unblocked Apps</button>
+                        <button class="portal-hub-btn" onclick="window.switchZone('proxy-zone')">🔒 Launch Proxy</button>
+                        <button class="portal-hub-btn" onclick="window.switchZone('games-zone')">🎮 Browse Games</button>
+                        <button class="portal-hub-btn" onclick="window.switchZone('music-zone')">🎵 Music Station</button>
+                        <button class="portal-hub-btn" onclick="window.switchZone('movies-zone')">🎬 Movie Stream</button>
+                        <button class="portal-hub-btn" onclick="window.switchZone('chat-zone')">💬 Chat Room</button>
+                        <button class="portal-hub-btn" onclick="window.switchZone('apps-zone')">📱 Unblocked Apps</button>
                     </div>
                 </div>
             </div>
@@ -61,13 +69,13 @@
                 <div class="content-section">
                     <h2 class="section-title">All Unblocked Games</h2>
                     
-                    <!-- NEW: GAMES SEARCH BAR -->
+                    <!-- GAMES SEARCH BAR -->
                     <div class="games-search-box" style="margin-bottom: 20px; max-width: 400px;">
                         <input type="text" id="games-search-input" placeholder="Search games..." style="width: 100%; padding: 10px 15px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff;">
                     </div>
 
                     <div class="card-grid" id="games-grid-container">
-                        <!-- Game cards are generated straight from script.js here -->
+                        <!-- Dynamic content generation hub -->
                     </div>
                 </div>
             </div>
@@ -122,9 +130,9 @@
         </main>
     </div>
 
-    <!-- LINK ROUTER SCRIPT -->
-<!-- Add games.js right above script.js at the bottom of index.html -->
-<script src="games.js"></script>
-<script src="script.js"></script>
+    <!-- LINK ROUTER SCRIPTS SECURELY IN ORDER -->
+    <script src="games.js"></script>
+    <script src="script.js"></script>
+    <script src="disclaimerbase.js"></script>
 </body>
 </html>

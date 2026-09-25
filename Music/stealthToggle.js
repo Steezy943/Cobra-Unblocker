@@ -8,7 +8,7 @@
 
     // Define which layout zone this copy of the script is protecting.
     // Options: "chat-zone", "music-zone", "proxy-zone", "movies-zone", "apps-zone"
-    const TARGET_ZONE_ID = "movies-zone"; 
+    const TARGET_ZONE_ID = "music-zone"; 
 
     // ==========================================================================
     // ENGINE OPERATIONS CORE (Do not modify code elements below this line)

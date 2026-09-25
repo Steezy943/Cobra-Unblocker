@@ -7,7 +7,7 @@ setTimeout(() => {
     // Adjust "Assets/Img/SiteLogo" here if it has a file extension like .png or .ico
     overlay.innerHTML = `
         <div class="disclaimer-content">
-            <img src="Assets/Img/SiteLogo" alt="Site Logo" class="disclaimer-logo">
+            <img src="Assets/Img/SiteLogo.png" alt="Site Logo" class="disclaimer-logo">
             <p class="disclaimer-text">
                 Report any problems like (games not working/proxy not working/music not working/chat not working) in the issues tab on the GitHub page 
                 <a href="https://github.com" target="_blank" class="disclaimer-link">https://github.com</a>.

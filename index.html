@@ -27,7 +27,6 @@
         
         <!-- TOP CONTROL BAR -->
         <header class="top-bar">
-            <!-- Fixed: added direct global routing action on click -->
             <button class="home-icon-btn" id="btn-home" onclick="window.switchZone('dashboard-zone')" title="Go to Dashboard">🏠</button>
             <div class="top-bar-right">
                 <button class="settings-btn" id="settings-toggle" onclick="window.switchZone('settings-zone')" title="Settings">⚙️</button>
@@ -37,6 +36,13 @@
                 </div>
             </div>
         </header>
+
+        <!-- DYNAMIC WORKSPACE TAB DOCK SYSTEM -->
+        <div class="workspace-tabs-container">
+            <div class="workspace-tabs-scroll" id="cobra-tabs-dock">
+                <!-- Tabs are generated and injected dynamically here by script.js -->
+            </div>
+        </div>
 
         <!-- MAIN CENTRAL CONTENT HUB -->
         <main class="main-content">
@@ -52,7 +58,6 @@
                     </div>
 
                     <!-- CENTRAL HUB BUTTON LINKS -->
-                    <!-- Fixed: added robust direct onclick listeners as failproof navigation layers -->
                     <div class="portal-buttons-grid">
                         <button class="portal-hub-btn" onclick="window.switchZone('proxy-zone')">🔒 Launch Proxy</button>
                         <button class="portal-hub-btn" onclick="window.switchZone('games-zone')">🎮 Browse Games</button>

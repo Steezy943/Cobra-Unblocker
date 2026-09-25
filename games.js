@@ -1,5 +1,4 @@
-// 🎮 COBRA NETWORK DYNAMIC LINK CONFIGURATION CATALOGUE
-// Add, remove, or modify items here without touching main script functionality.
+// 🎮 COBRA NETWORK DATA STORE (Ensure "export" is removed)
 window.gamesList = [
     { 
         title: "Untitled Goose Game", 

@@ -114,5 +114,11 @@ export const gamesList = [
         category: "Shooting/Intense", 
         gameUrl: "https://frankplus.github.io/",
         thumbUrl: "Assets/Thumbnails/CSS2D.png" 
+    },
+    { 
+        title: "Minecraft Alpha v1.2.6", 
+        category: "Survival/Adventure", 
+        gameUrl: "https://eaglerports.github.io/a1.2.6/",
+        thumbUrl: "Assets/Thumbnails/MC126.png" 
     }
 ];

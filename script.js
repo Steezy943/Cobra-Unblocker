@@ -1,5 +1,16 @@
-// 🚀 COBRA ADVANCED GLOBAL NAV ARCHITECTURE & KINETIC TAB SYSTEM
-window.openTabs = []; // Array nodes payload: { id: string, label: string, isPinned: boolean }
+// 🚀 COBRA SOLID WHITE FLUID ENGINE RUNTIME
+window.openTabs = []; 
+window.fluidAnimations = {}; 
+
+const glyphMap = {
+    "proxy-zone": "🔒",
+    "games-zone": "🎮",
+    "music-zone": "🎵",
+    "movies-zone": "🎬",
+    "chat-zone": "💬",
+    "apps-zone": "📱",
+    "player-zone": "🎯"
+};
 
 window.switchZone = function(zoneId) {
     const viewZones = document.querySelectorAll(".view-zone");
@@ -9,108 +20,121 @@ window.switchZone = function(zoneId) {
     if (targetZone) {
         targetZone.classList.add("active");
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        console.log("Cobra Router: Switched view to " + zoneId);
-    } else {
-        console.error("Cobra Router Error: Target zone #" + zoneId + " not found!");
     }
 
-    // Dashboard and settings views act as external control spaces outside the navigation ribbon
     if (zoneId === "dashboard-zone" || zoneId === "settings-zone") {
         document.querySelectorAll(".cobra-tab-item").forEach(t => t.classList.remove("active-tab"));
-        const slider = document.getElementById("cobra-liquid-slider");
-        if (slider) { slider.style.width = "0px"; } // Turn slider off off-view
         return;
     }
 
-    // Verify if entry array node instance is current
-    const foundIndex = window.openTabs.findIndex(tab => tab.id === zoneId);
-    if (foundIndex === -1) {
-        let friendlyLabel = zoneId.replace("-zone", "").toUpperCase();
-        if (zoneId === "player-zone") friendlyLabel = "🎮 PLAYER LAYER";
-        
-        window.openTabs.push({ id: zoneId, label: friendlyLabel, isPinned: false });
+    const exists = window.openTabs.some(tab => tab.id === zoneId);
+    if (!exists) {
+        const icon = glyphMap[zoneId] || "📁";
+        window.openTabs.push({ id: zoneId, symbol: icon });
     }
 
     window.refreshTabsUI(zoneId);
 };
 
-// Orchestrates DOM generation framework overlays
 window.refreshTabsUI = function(activeZoneId) {
     const tabsDock = document.getElementById("cobra-tabs-dock");
     if (!tabsDock) return;
     tabsDock.innerHTML = "";
 
-    // Sort order logic: keep pinned items locked cleanly to the left margin
-    window.openTabs.sort((a, b) => (b.isPinned - a.isPinned));
-
     window.openTabs.forEach(tab => {
         const tabEl = document.createElement("div");
-        tabEl.id = `tab-anchor-${tab.id}`;
-        tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''} ${tab.isPinned ? 'pinned-tab' : ''}`;
+        tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''}`;
+        tabEl.id = `side-tab-${tab.id}`;
         
         tabEl.innerHTML = `
-            <div class="tab-status-pulse"></div>
-            <span class="tab-title-text">${tab.label}</span>
-            <div class="tab-actions-group">
-                <span class="tab-pin-toggle" title="Pin Task Window">📌</span>
-                <span class="tab-close-btn" title="Close Panel">×</span>
-            </div>
+            <canvas class="tab-fluid-canvas" id="canvas-${tab.id}"></canvas>
+            <span class="tab-close-corner" title="Close Window">×</span>
+            <span class="tab-glyph-symbol">${tab.symbol}</span>
         `;
 
-        // Switch to the target view zone on click
         tabEl.addEventListener("click", (e) => {
-            if (e.target.classList.contains('tab-close-btn') || e.target.classList.contains('tab-pin-toggle')) return;
+            if (e.target.classList.contains("tab-close-corner")) return;
             window.switchZone(tab.id);
         });
 
-        // Pin button trigger handler
-        const pinBtn = tabEl.querySelector(".tab-pin-toggle");
-        pinBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            tab.isPinned = !tab.isPinned;
-            window.refreshTabsUI(activeZoneId);
-        });
-
-        // Close button click listener
-        const closeBtn = tabEl.querySelector(".tab-close-btn");
-        closeBtn.addEventListener("click", (e) => {
+        const closeX = tabEl.querySelector(".tab-close-corner");
+        closeX.addEventListener("click", (e) => {
             e.stopPropagation();
             window.closeTabItem(tab.id);
         });
 
         tabsDock.appendChild(tabEl);
-    });
 
-    // Fire the hardware-accelerated liquid animation update loop frame
-    setTimeout(() => { window.animateLiquidSlider(activeZoneId); }, 40);
+        // Deploy white smoke simulation thread loop
+        window.initFluidCanvas(tab.id);
+    });
 };
 
-// Liquid Slide Physics Calculations Engine
-window.animateLiquidSlider = function(activeZoneId) {
-    const slider = document.getElementById("cobra-liquid-slider");
-    const activeTabEl = document.getElementById(`tab-anchor-${activeZoneId}`);
-    const tabsDock = document.getElementById("cobra-tabs-dock");
+// 🌀 SOLID WHITE SMOKE / INK EMULATOR FLUID ENGINE
+window.initFluidCanvas = function(tabId) {
+    const canvas = document.getElementById(`canvas-${tabId}`);
+    if (!canvas) return;
     
-    if (!slider || !tabsDock) return;
-    
-    if (!activeTabEl) {
-        slider.style.width = "0px";
-        return;
+    const ctx = canvas.getContext("2d");
+    canvas.width = 48;
+    canvas.height = 48;
+
+    let particles = [];
+    // Populate layout array nodes with custom velocity settings
+    for (let i = 0; i < 15; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            radius: Math.random() * 4 + 2,
+            alpha: Math.random() * 0.3 + 0.1,
+            growth: (Math.random() - 0.5) * 0.02
+        });
     }
 
-    // Measure the exact position of the active tab element relative to the dock container row
-    const dockRect = tabsDock.getBoundingClientRect();
-    const tabRect = activeTabEl.getBoundingClientRect();
-    
-    const offsetLeft = tabRect.left - dockRect.left;
-    const currentWidth = tabRect.width;
+    if (window.fluidAnimations[tabId]) { cancelAnimationFrame(window.fluidAnimations[tabId]); }
+    function runAnimationLoop() {
+        const toggleSwitch = document.getElementById("toggle-fluid-sim");
+        const animationAllowed = toggleSwitch ? toggleSwitch.checked : true;
 
-    // Apply high-performance CSS transform animations instead of changing slow positioning variables
-    slider.style.width = `${currentWidth}px`;
-    slider.style.transform = `translateX(${offsetLeft}px)`;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (animationAllowed) {
+            // Draw a subtle translucent black backdrop slate trail
+            ctx.fillStyle = "rgba(10, 10, 10, 0.15)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.radius += p.growth;
+
+                // Edge bounce macro parameters
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                if (p.radius < 1 || p.radius > 6) p.growth *= -1;
+
+                // Render pure bone-white monochromatic nodes
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+                ctx.fill();
+            });
+        }
+
+        window.fluidAnimations[tabId] = requestAnimationFrame(runAnimationLoop);
+    }
+
+    runAnimationLoop();
 };
 
 window.closeTabItem = function(zoneId) {
+    if (window.fluidAnimations[zoneId]) {
+        cancelAnimationFrame(window.fluidAnimations[zoneId]);
+        delete window.fluidAnimations[zoneId];
+    }
+
     window.openTabs = window.openTabs.filter(tab => tab.id !== zoneId);
     
     if (zoneId === "player-zone") {
@@ -160,8 +184,6 @@ window.launchGameUrl = function(targetUrl, title) {
         };
     }
 };
-
-// 🎮 INTERACTIVE GRID GENERATION ENGINE
 window.renderGames = function(filterText = "") {
     const gamesGrid = document.getElementById("games-grid-container");
     if (!gamesGrid) return;
@@ -201,7 +223,6 @@ window.renderGames = function(filterText = "") {
     });
 };
 
-// Initialize listeners on DOM complete loading
 document.addEventListener("DOMContentLoaded", () => {
     const portalSearch = document.querySelector(".portal-search-input");
     const gamesSearchInput = document.getElementById("games-search-input");
@@ -232,10 +253,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Run dynamic catalog matrix immediately
     window.renderGames();
 
-    // 🧹 FORCE REMOVE SPLASH PRELOADER OVERLAY
     setTimeout(() => {
         const preloader = document.getElementById("cobra-preloader");
         if (preloader) {
@@ -243,7 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
             preloader.style.display = "none";
             preloader.style.pointerEvents = "none";
             preloader.remove(); 
-            console.log("Cobra Core: Interface execution parameters initialized.");
         }
     }, 3200);
 });

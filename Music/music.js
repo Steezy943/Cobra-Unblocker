@@ -1,4 +1,9 @@
-// 🎵 COBRA CORE MATRIX AUDIO STREAMING DASHBOARD SUBSYSTEM
+// 🎵 COBRA CORE GLOBAL AUDIO PLAYER & DATASTORE MODULE
+// Maintain background context variables globally so switching tabs never kills playback
+if (!window.cobraAudioInstance) {
+    window.cobraAudioInstance = new Audio();
+}
+
 window.initMusicDashboard = function() {
     const musicZone = document.getElementById("music-zone");
     if (!musicZone) return;
@@ -6,13 +11,10 @@ window.initMusicDashboard = function() {
     // A. BONE-DRY MARKUP OVERRIDE INJECTION
     musicZone.innerHTML = `
         <div class="music-dashboard-container">
-            
             <!-- MAIN LEFT PANELS COLUMN (GRAPHS, DATA AND CONTROLS GRIDS) -->
             <div class="music-main-workspace-feed">
-                
                 <!-- ROW 1: OVERVIEW ANALYTICS AND EARNINGS MATRICES -->
                 <div class="music-dashboard-grid-row">
-                    <!-- Analytics Streams Graph Card Module -->
                     <div class="music-card-wrapper streams-graph-card">
                         <div class="card-header-flex">
                             <div class="metric-block">
@@ -20,14 +22,12 @@ window.initMusicDashboard = function() {
                                 <h2 class="metric-value">255,850</h2>
                             </div>
                             <div class="platform-nodes-cluster" style="display: flex; align-items: center; gap: 12px;">
-                                <!-- FIXED: Injected your brand-new refreshicon.png asset cleanly with monochromatic filters -->
                                 <img src="Music/Icons/refreshicon.png" alt="Refresh Metrics" title="Re-sync Stream Logs" style="width: 14px; height: 14px; object-fit: contain; filter: brightness(0) invert(0.4); cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.filter='brightness(0) invert(1)'" onmouseout="this.style.filter='brightness(0) invert(0.4)'" onclick="this.style.transform='rotate(360deg)'">
                                 <span class="platform-icon-badge" title="Spotify Node">🎵</span>
                                 <span class="platform-icon-badge" title="YouTube Node">📺</span>
                                 <span class="platform-icon-badge" title="Apple Music">🍏</span>
                             </div>
                         </div>
-                        <!-- Monochromatic Sparkline Graph Canvas Hook -->
                         <div class="mock-graph-vector-canvas">
                             <div class="graph-line-pulse"></div>
                             <div class="graph-target-node"></div>
@@ -37,7 +37,6 @@ window.initMusicDashboard = function() {
                         </div>
                     </div>
 
-                    <!-- Earnings Financial Matrix Card Module -->
                     <div class="music-card-wrapper earnings-meter-card">
                         <div class="metric-block">
                             <span class="metric-label">Earnings</span>
@@ -54,7 +53,6 @@ window.initMusicDashboard = function() {
 
                 <!-- ROW 2: TARGET AUDIENCE GRAPH AND TRACKS CATALOG FEED -->
                 <div class="music-dashboard-grid-row">
-                    <!-- Target Audience Bar Graph Card Module -->
                     <div class="music-card-wrapper audience-chart-card">
                         <h3 class="panel-section-title">Target Audience</h3>
                         <div class="audience-bars-container">
@@ -68,7 +66,6 @@ window.initMusicDashboard = function() {
                         </div>
                     </div>
 
-                    <!-- Top Releases Dynamic List Feeding Track Blocks -->
                     <div class="music-card-wrapper top-releases-card">
                         <div class="card-header-flex" style="margin-bottom: 12px;">
                             <h3 class="panel-section-title">Top Releases</h3>
@@ -79,22 +76,17 @@ window.initMusicDashboard = function() {
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- RIGHT PANEL SIDEBAR COLUMN (LIVE PARAMETERS STATISTICS AND INTEGRATED PLAYER) -->
             <div class="music-sidebar-workspace-panel">
-                
-                <!-- Live Listeners Statistic Matrix Card Module -->
                 <div class="music-card-wrapper listeners-stats-card">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
                         <div class="metric-block">
                             <span class="metric-label">Listeners Now</span>
                             <h2 class="metric-value">1,283</h2>
                         </div>
-                        <!-- UI Alignment: Added physical notification icon asset via folder path layout -->
                         <img src="Music/Icons/notificationicon.png" alt="" style="width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(1); cursor: pointer;">
                     </div>
-                    
                     <div class="geography-demographics-stack">
                         <div class="geo-row-item"><span>🇺🇸 United States</span><span class="geo-percentage">70%</span></div>
                         <div class="geo-row-item"><span>🇦🇪 Dubai</span><span class="geo-percentage">18%</span></div>
@@ -105,50 +97,48 @@ window.initMusicDashboard = function() {
 
                 <!-- Integrated Media Player Window Dock Capsule -->
                 <div class="music-card-wrapper media-player-dock-card">
-                    <div class="player-album-art-frame">
-                        <div class="fallback-vinyl-disk">🎵</div>
+                    <div class="player-album-art-frame" style="display: flex; align-items: center; gap: 12px; position: relative;">
+                        <!-- Injected dynamic album graphic cover art elements image tag -->
+                        <img id="player-cover-art-target" src="Music/Coverart/placeholder" alt="" style="width: 44px; height: 44px; border-radius: 4px; object-fit: cover; border: 1px solid #222;">
                         <div class="player-overlay-text-details">
-                            <h4 id="player-active-track-title">Let Me Rest</h4>
-                            <p id="player-active-artist-name">Wizkid</p>
+                            <h4 id="player-active-track-title">No Track Selected</h4>
+                            <p id="player-active-artist-name">Click a release below to stream</p>
                         </div>
                     </div>
-                    <!-- Audio Navigation Control Macros Interface Panel -->
                     <div class="player-audio-controls-row">
-                        <div class="timeline-bar-scrub"><div class="timeline-fill" style="width: 35%;"></div></div>
+                        <div class="timeline-bar-scrub"><div class="timeline-fill" id="audio-timeline-fill" style="width: 0%;"></div></div>
                         <div class="controls-buttons-cluster">
                             <button class="audio-macro-btn" id="btn-audio-prev">⏮</button>
-                            <!-- UI Alignment: Localized custom assets for your interactive music play and music pause action buttons -->
                             <button class="audio-macro-btn play-pause-toggle-circle" id="btn-audio-toggle" style="padding: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; border: 1px solid #fff;">
-                                <img id="player-macro-state-img" src="Music/Icons/musicpause.png" alt="" style="width: 12px; height: 12px; object-fit: contain;">
+                                <img id="player-macro-state-img" src="Music/Icons/musicplay.png" alt="" style="width: 12px; height: 12px; object-fit: contain;">
                             </button>
                             <button class="audio-macro-btn" id="btn-audio-next">⏭</button>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     `;
 
-    // B. CENTRAL ARCHITECTURE CATALOG DATASTORE ARRAY
+    // B. EXACT PATH MAPPING MATCHING YOUR REPOSITORY TREE SCREENSHOT
     const tracksCatalog = [
-        { id: "01", title: "God's Time", artist: "Jcole", url: "#" },
-        { id: "02", title: "Dreamer", artist: "Shasha P", url: "#" },
-        { id: "03", title: "All for You", artist: "Drake", url: "#" },
-        { id: "04", title: "Pray", artist: "Eminem", url: "#" },
-        { id: "05", title: "You", artist: "Asap Rocky", url: "#" },
-        { id: "06", title: "Always on my heart", artist: "Usher", url: "#" }
+        { id: "01", title: "FLOUNDER", artist: "Smokedope2016", file: "Music/Songs/FLOUNDER.mp3", cover: "Music/Coverart/flounder.jpg" },
+        { id: "02", title: "In Da Party", artist: "Smokedope2016", file: "Music/Songs/In Da Party.mp3", cover: "Music/Coverart/daparty.jpg" },
+        { id: "03", title: "Sleep", artist: "Smokedope2016", file: "Music/Songs/Sleep.mp3", cover: "Music/Coverart/sleepsd.jpg" },
+        { id: "04", title: "IM NOT GOD BUT I WISH I WAS (feat, Joeyy)", artist: "Smokedope2016", file: "Music/Songs/smokedope2016 - IM NOT GOD BUT I WISH I WAS (feat, Joeyy).mp3", cover: "Music/Coverart/ING.jpg" }
     ];
 
-    // C. GENERATE DYNAMIC CATALOG INTERFACE ROWS
+    let currentTrackIndex = -1;
+
+    // C. GENERATE TRACK ENTRIES IN CATALOG CONTAINER
     const catalogScroller = document.getElementById("music-catalog-scroller");
     if (catalogScroller) {
-        tracksCatalog.forEach(track => {
+        tracksCatalog.forEach((track, index) => {
             const trackRow = document.createElement("div");
             trackRow.className = "music-track-list-row";
             trackRow.innerHTML = `
                 <span class="track-index-digit">${track.id}</span>
-                <div class="track-thumbnail-avatar">🎵</div>
+                <img src="${track.cover}" alt="" style="width: 28px; height: 28px; border-radius: 4px; object-fit: cover; border: 1px solid #222;">
                 <div class="track-title-meta-group">
                     <span class="track-core-title">${track.title}</span>
                     <span class="track-core-artist">${track.artist}</span>
@@ -157,38 +147,86 @@ window.initMusicDashboard = function() {
             `;
 
             trackRow.addEventListener("click", () => {
-                document.getElementById("player-active-track-title").textContent = track.title;
-                document.getElementById("player-active-artist-name").textContent = track.artist;
-                
-                document.querySelectorAll(".music-track-list-row").forEach(r => r.classList.remove("active"));
-                trackRow.classList.add("active");
+                currentTrackIndex = index;
+                playTrack(track);
             });
 
             catalogScroller.appendChild(trackRow);
         });
     }
 
-    // D. PLAYER LOGIC EVENT UTILITIES WIRE LISTENERS
+    function playTrack(track) {
+        document.getElementById("player-active-track-title").textContent = track.title;
+        document.getElementById("player-active-artist-name").textContent = track.artist;
+        document.getElementById("player-cover-art-target").src = track.cover;
+
+        window.cobraAudioInstance.src = track.file;
+        window.cobraAudioInstance.play()
+            .then(() => {
+                document.getElementById("player-macro-state-img").src = "Music/Icons/musicpause.png";
+            })
+            .catch(err => console.log("Audio play error: Run site on localhost server node context.", err));
+
+        const rows = document.querySelectorAll(".music-track-list-row");
+        rows.forEach(r => r.classList.remove("active"));
+        if(rows[currentTrackIndex]) rows[currentTrackIndex].classList.add("active");
+    }
+
+    // D. PERSISTENT PLAYER AUDIO RE-SYNC AND PROGRESS INTERFACING UPDATES
     const toggleBtn = document.getElementById("btn-audio-toggle");
     const stateImg = document.getElementById("player-macro-state-img");
+    const timelineFill = document.getElementById("audio-timeline-fill");
+
+    if (window.cobraAudioInstance.src && window.cobraAudioInstance.src !== "") {
+        if (!window.cobraAudioInstance.paused) {
+            stateImg.src = "Music/Icons/musicpause.png";
+        }
+        const decodeSrc = decodeURIComponent(window.cobraAudioInstance.src);
+        const matchTrack = tracksCatalog.find(t => decodeSrc.includes(t.file));
+        if (matchTrack) {
+            document.getElementById("player-active-track-title").textContent = matchTrack.title;
+            document.getElementById("player-active-artist-name").textContent = matchTrack.artist;
+            document.getElementById("player-cover-art-target").src = matchTrack.cover;
+        }
+    }
     if (toggleBtn && stateImg) {
         toggleBtn.onclick = function() {
-            if (stateImg.src.includes("musicpause.png")) {
+            if (window.cobraAudioInstance.src === "" || window.cobraAudioInstance.src.endsWith("music-zone")) {
+                if(tracksCatalog.length > 0) { currentTrackIndex = 0; playTrack(tracksCatalog[0]); }
+                return;
+            }
+            if (!window.cobraAudioInstance.paused) {
+                window.cobraAudioInstance.pause();
                 stateImg.src = "Music/Icons/musicplay.png";
             } else {
+                window.cobraAudioInstance.play();
                 stateImg.src = "Music/Icons/musicpause.png";
             }
         };
     }
+
+    window.cobraAudioInstance.ontimeupdate = function() {
+        if (window.cobraAudioInstance.duration && timelineFill) {
+            const pct = (window.cobraAudioInstance.currentTime / window.cobraAudioInstance.duration) * 100;
+            timelineFill.style.width = `${pct}%`;
+        }
+    };
+
+    window.cobraAudioInstance.onended = function() {
+        if (currentTrackIndex > -1 && currentTrackIndex < tracksCatalog.length - 1) {
+            currentTrackIndex++;
+            playTrack(tracksCatalog[currentTrackIndex]);
+        } else {
+            stateImg.src = "Music/Icons/musicplay.png";
+            if(timelineFill) timelineFill.style.width = "0%";
+        }
+    };
 };
 
-// CORE INTEGRATION MAPPING RULE: Forces compilation directly whenever standard zone swaps cross over this path link
 document.addEventListener("DOMContentLoaded", () => {
-    // Standard initialization block if dashboard opens directly
     window.initMusicDashboard();
 });
 
-// Intercept hook targeting live window state switches inside master script frameworks
 const originalSwitchZone = window.switchZone;
 window.switchZone = function(zoneId) {
     if (originalSwitchZone) originalSwitchZone(zoneId);

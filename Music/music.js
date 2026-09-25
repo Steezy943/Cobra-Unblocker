@@ -40,7 +40,7 @@ window.initMusicDashboard = function() {
                     <div class="music-card-wrapper earnings-meter-card">
                         <div class="metric-block">
                             <span class="metric-label">Earnings</span>
-                            <h2 class="metric-value">$7,343</h2>
+                            <h2 class="metric-value">$102,941</h2>
                         </div>
                         <div class="progress-bars-stack">
                             <div class="progress-bar-row"><span>Clearing</span><div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div></div>

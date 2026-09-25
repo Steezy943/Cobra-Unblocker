@@ -15,7 +15,6 @@
     --cobra-white: #ffffff;
     --cobra-white-muted: #888888;
     --border-gray: #1a1a1a;
-    --glow-strength: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -29,11 +28,58 @@ body {
     background-color: var(--bg-black);
     color: var(--cobra-white);
     min-height: 100vh;
-    overflow: hidden; /* Prevent native window double scrolling */
+    overflow: hidden;
+}
+
+/* FIX: Fluid Zoom In -> Smooth Zoom Out Cinematic Preloader Engine */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 1;
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.splash-logo {
+    max-width: 180px;
+    height: auto;
+    transform: scale(0.8);
+    opacity: 0;
+    animation: cinematicSequence 2.8s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+}
+
+@keyframes cinematicSequence {
+    0% {
+        opacity: 0;
+        transform: scale(0.85);
+        filter: blur(5px);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1.03);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.1);
+        filter: blur(3px);
+    }
 }
 
 /* ==========================================================================
-   LAYOUT FIXES (Prevents Sidebar Breaking)
+   SIDEBAR LAYOUT ARCHITECTURE (Fixed Headers & Dynamic Overlaps)
    ========================================================================= */
 .layout-side-wrapper {
     display: flex;
@@ -46,18 +92,18 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    overflow-y: auto;
-    background: linear-gradient(180deg, #000000 0%, #050505 100%);
+    overflow: hidden;
+    position: relative;
 }
 
 .cobra-side-dock {
-    width: 85px; /* Widened slightly to contain brand text cleanly */
+    width: 75px;
     background-color: var(--sidebar-black);
     border-right: 1px solid var(--border-gray);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 0;
+    padding: 1.5rem 0;
     justify-content: space-between;
     height: 100vh;
     flex-shrink: 0;
@@ -66,59 +112,28 @@ body {
 
 .dock-brand {
     font-family: 'SnakeStitch', sans-serif;
-    font-size: 0.95rem; /* Downscaled to guarantee text stays contained */
+    font-size: 0.9rem;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
     color: var(--cobra-white);
-    transition: letter-spacing 0.3s ease, transform 0.2s;
-    text-shadow: 0 0 8px var(--glow-strength);
+    transition: all 0.3s ease;
 }
 
 .dock-brand:hover {
     transform: scale(1.05);
     letter-spacing: 3px;
 }
-
-/* ==========================================================================
-   NAVIGATION HEADERS & SWITCHES
-   ========================================================================= */
 .top-bar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; /* Clean layout shift: profile safely right-aligned */
     align-items: center;
-    padding: 1.5rem 2.5rem;
+    padding: 1.25rem 2.5rem;
     width: 100%;
     border-bottom: 1px solid var(--border-gray);
-}
-
-/* Clean UI Upgrade: Styled interactive home indicator */
-.home-icon-btn {
-    background-color: transparent;
-    border: 1px solid var(--border-gray);
-    color: var(--cobra-white-muted);
-    font-size: 1rem;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.home-icon-btn:hover {
-    color: var(--cobra-white);
-    border-color: var(--cobra-white);
-    background: #111;
-    transform: translateY(-1px);
-}
-
-.top-bar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    height: 65px;
+    background: #000;
 }
 
 .user-profile {
@@ -127,9 +142,9 @@ body {
     gap: 0.65rem;
     background: #0d0d0d;
     padding: 0.5rem 1.25rem;
-    border-radius: 20px; /* Modern pill capsule design */
+    border-radius: 20px;
     border: 1px solid var(--border-gray);
-    height: 38px;
+    height: 36px;
 }
 
 .status-dot {
@@ -138,16 +153,10 @@ body {
     background-color: var(--cobra-white);
     border-radius: 50%;
     box-shadow: 0 0 8px #fff;
-    animation: pulseGlow 2s infinite ease-in-out;
-}
-
-@keyframes pulseGlow {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
 }
 
 /* ==========================================================================
-   STARK HERO & PORTAL INTERFACES
+   VIEWPORT ZONE COMPONENT ENGINE
    ========================================================================= */
 .main-content {
     flex-grow: 1;
@@ -155,6 +164,8 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    height: calc(100vh - 65px);
+    overflow-y: auto;
 }
 
 .portal-hero {
@@ -163,9 +174,8 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2rem 1rem;
     width: 100%;
-    min-height: 70vh;
+    min-height: 65vh;
 }
 
 .sub-welcome {
@@ -182,7 +192,6 @@ body {
     color: var(--cobra-white);
     letter-spacing: 6px;
     margin-bottom: 2rem;
-    text-shadow: 0 0 20px rgba(255,255,255,0.05);
 }
 
 .portal-search-box {
@@ -191,7 +200,8 @@ body {
     margin-bottom: 3rem;
 }
 
-.portal-search-input {
+/* Unified styling fix for input boundaries */
+.portal-search-input, #games-search-input {
     width: 100%;
     padding: 1.1rem 1.5rem;
     font-size: 0.95rem;
@@ -202,27 +212,19 @@ body {
     outline: none;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    letter-spacing: 0.5px;
 }
 
-.portal-search-input:focus {
+.portal-search-input:focus, #games-search-input:focus {
     border-color: var(--cobra-white);
     background-color: #111;
-    box-shadow: 0 0 25px rgba(255,255,255,0.03);
 }
 
-/* Monochromatic Clean Hub Buttons */
 .portal-buttons-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
     max-width: 850px;
     width: 100%;
-}
-
-@media (max-width: 768px) {
-    .portal-buttons-grid { grid-template-columns: repeat(2, 1fr); }
-    .portal-logo-text { font-size: 3.5rem; }
 }
 
 .portal-hub-btn {
@@ -238,18 +240,15 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s ease;
 }
+
 .portal-hub-btn:hover {
     background-color: #121212;
     color: var(--cobra-white);
     border-color: var(--cobra-white);
     transform: translateY(-2px);
 }
-
-/* ==========================================================================
-   ARCADE PANEL & ADVANCED KINETIC SWIRL TRAIL ENGINE
-   ========================================================================= */
 .section-title {
     margin-bottom: 2.5rem;
     font-size: 1.3rem;
@@ -258,7 +257,6 @@ body {
     text-transform: uppercase;
     border-bottom: 1px solid var(--border-gray);
     padding-bottom: 0.75rem;
-    color: var(--cobra-white);
 }
 
 .card-grid {
@@ -293,7 +291,6 @@ body {
     transition: transform 0.5s ease, filter 0.4s ease;
 }
 
-/* Kinetic Swirl Overlay Canvas Layer */
 .swirl-text-overlay {
     position: absolute;
     top: 0;
@@ -307,10 +304,9 @@ body {
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s steps(4, end); /* Gives an intentional retro digital tick */
+    transition: opacity 0.3s ease;
 }
 
-/* The Kinetic Swirling Trail Containers */
 .kinetic-trail-container {
     position: relative;
     width: 100%;
@@ -320,10 +316,9 @@ body {
     justify-content: center;
 }
 
-/* Stacked text layers to form the spatial trail */
 .swirl-title-layer {
     position: absolute;
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -332,100 +327,61 @@ body {
     opacity: 0;
     transform: scale(0.3) rotate(-180deg);
     transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Delay configurations generating the physical depth shadow trail */
-.card-circle-wrapper:hover .swirl-title-layer.layer-primary {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-    transition-delay: 0.15s;
-    z-index: 5;
-}
-.card-circle-wrapper:hover .swirl-title-layer.layer-trail-1 {
-    opacity: 0.4;
-    color: #888;
-    transform: scale(0.85) rotate(-15deg);
-    transition-delay: 0.08s;
-    z-index: 4;
-}
-.card-circle-wrapper:hover .swirl-title-layer.layer-trail-2 {
-    opacity: 0.15;
-    color: #444;
-    transform: scale(0.7) rotate(-30deg);
-    transition-delay: 0.02s;
-    z-index: 3;
-}
+.card-circle-wrapper:hover .swirl-title-layer.layer-primary { opacity: 1; transform: scale(1) rotate(0deg); transition-delay: 0.12s; z-index: 5; }
+.card-circle-wrapper:hover .swirl-title-layer.layer-trail-1 { opacity: 0.4; color: #888; transform: scale(0.9) rotate(-12deg); transition-delay: 0.06s; z-index: 4; }
+.card-circle-wrapper:hover .swirl-title-layer.layer-trail-2 { opacity: 0.15; color: #444; transform: scale(0.8) rotate(-24deg); transition-delay: 0.01s; z-index: 3; }
+
 .swirl-category {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--cobra-white-muted);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-top: 0.25rem;
     opacity: 0;
     transform: translateY(10px);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+    transition: all 0.4s ease 0.15s;
 }
 
-/* Interactive Card Triggers */
-.card-circle-wrapper:hover .card-circle-inner {
-    border-color: var(--cobra-white);
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
-}
-.card-circle-wrapper:hover .card-circle-thumb {
-    transform: scale(1.1) rotate(3deg);
-    filter: blur(2px) grayscale(100%);
-}
+.card-circle-wrapper:hover .card-circle-inner { border-color: var(--cobra-white); box-shadow: 0 0 25px rgba(255, 255, 255, 0.08); }
+.card-circle-wrapper:hover .card-circle-thumb { transform: scale(1.1) rotate(3deg); filter: blur(2px) grayscale(100%); }
 .card-circle-wrapper:hover .swirl-text-overlay { opacity: 1; }
 .card-circle-wrapper:hover .swirl-category { opacity: 1; transform: translateY(0); }
 
-/* ==========================================================================
-   ACTIVE VIEWPORTS TERMINAL
-   ========================================================================= */
 .view-zone { display: none; width: 100%; }
 .view-zone.active { display: block; animation: viewFadeIn 0.35s ease-out; }
+@keyframes viewFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-@keyframes viewFadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+.side-tabs-rail { display: flex; flex-direction: column; gap: 0.85rem; width: 100%; align-items: center; }
+.cobra-tab-item { position: relative; width: 44px; height: 44px; border-radius: 6px; border: 1px solid var(--border-gray); background: #0d0d0d; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
+.cobra-tab-item:hover, .cobra-tab-item.active-tab { border-color: var(--cobra-white); background: #141414; }
+.tab-close-corner { position: absolute; top: 1px; right: 4px; font-size: 0.7rem; color: rgba(255,255,255,0.2); z-index: 10; opacity: 0; transition: opacity 0.2s; }
+.cobra-tab-item:hover .tab-close-corner { opacity: 1; }
+.tab-close-corner:hover { color: #fff; }
+.tab-fluid-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; border-radius: 5px; }
 
-.coming-soon-text { color: var(--cobra-white-muted); margin-top: 3rem; font-size: 0.9rem; text-align: center; letter-spacing: 0.5px; }
-
-/* Dynamic Rails System */
-.side-tabs-rail {
+/* FIX: Absolute Core System Override Matrix State */
+.void-screen-override {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    z-index: 999999;
     display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    width: 100%;
-    align-items: center;
-}
-
-.cobra-tab-item {
-    position: relative;
-    width: 44px;
-    height: 44px;
-    border-radius: 6px;
-    border: 1px solid var(--border-gray);
-    background: #0d0d0d;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    align-items: center;
+    color: #ff3333;
+    font-family: monospace;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    opacity: 0;
+    animation: criticalFadeIn 2s ease-forward forwards;
 }
-
-.cobra-tab-item:hover, .cobra-tab-item.active-tab {
-    border-color: var(--cobra-white);
-    background: #141414;
-}
-
-.tab-glyph-symbol {
-    position: relative;
-    z-index: 2;
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.cobra-tab-item:hover .tab-glyph-symbol {
-    transform: scale(1.12);
-}
+@keyframes criticalFadeIn { to { opacity: 1; } }

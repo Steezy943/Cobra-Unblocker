@@ -2,15 +2,15 @@
 window.openTabs = []; 
 window.fluidAnimations = {}; 
 
-// Updated to map directly to your brand new asset images
 const iconMap = {
+    "dashboard-zone": "Assets/Img/SiteLogo.png", // Explicitly links Home brand image to avoid blank fallbacks
     "proxy-zone": "Assets/Img/proxyicon.png",
     "games-zone": "Assets/Img/gamesicon.png",
     "music-zone": "Assets/Img/musicicon.png",
     "movies-zone": "Assets/Img/movieicon.png",
     "chat-zone": "Assets/Img/chaticon.png",
     "apps-zone": "Assets/Img/appicon.png",
-    "player-zone": "Assets/Img/gamesicon.png" // Reuses your game icon for the active viewport
+    "player-zone": "Assets/Img/gamesicon.png"
 };
 
 window.switchZone = function(zoneId) {
@@ -23,15 +23,11 @@ window.switchZone = function(zoneId) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    if (zoneId === "dashboard-zone" || zoneId === "settings-zone") {
-        document.querySelectorAll(".cobra-tab-item").forEach(t => t.classList.remove("active-tab"));
-        return;
-    }
-
+    // FIX: Core Home button verification rule tracking
     const exists = window.openTabs.some(tab => tab.id === zoneId);
     if (!exists) {
         const iconPath = iconMap[zoneId] || "Assets/Img/SiteLogo.png";
-        window.openTabs.push({ id: zoneId, path: iconPath });
+        window.openTabs.push({ id: zoneId, path: iconPath, isHome: zoneId === "dashboard-zone" });
     }
 
     window.refreshTabsUI(zoneId);
@@ -47,11 +43,13 @@ window.refreshTabsUI = function(activeZoneId) {
         tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''}`;
         tabEl.id = `side-tab-${tab.id}`;
         
-        // Replaced flat text emoji placeholder with a styled monochromatic image block
+        // Custom formatting if the node is assigned as the primary layout root
+        const dynamicLabel = tab.isHome ? "🏠" : `<img src="${tab.path}" class="tab-glyph-symbol" alt="" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);">`;
+
         tabEl.innerHTML = `
             <canvas class="tab-fluid-canvas" id="canvas-${tab.id}"></canvas>
             <span class="tab-close-corner" title="Close Window">×</span>
-            <img src="${tab.path}" class="tab-glyph-symbol" alt="Tab Icon" style="width: 20px; height: 20px; object-fit: contain; position: relative; z-index: 2; filter: brightness(0) invert(1);">
+            <span style="position:relative; z-index:2; display:flex; align-items:center; justify-content:center;">${dynamicLabel}</span>
         `;
 
         tabEl.addEventListener("click", (e) => {
@@ -70,7 +68,6 @@ window.refreshTabsUI = function(activeZoneId) {
     });
 };
 
-// 🌀 SOLID WHITE SMOKE / INK EMULATOR FLUID ENGINE
 window.initFluidCanvas = function(tabId) {
     const canvas = document.getElementById(`canvas-${tabId}`);
     if (!canvas) return;
@@ -80,54 +77,41 @@ window.initFluidCanvas = function(tabId) {
     canvas.height = 44;
 
     let particles = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 10; i++) {
         particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.8,
-            vy: (Math.random() - 0.5) * 0.8,
-            radius: Math.random() * 4 + 2,
-            alpha: Math.random() * 0.3 + 0.1,
-            growth: (Math.random() - 0.5) * 0.02
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.6,
+            radius: Math.random() * 3 + 1,
+            alpha: Math.random() * 0.2 + 0.1,
+            growth: (Math.random() - 0.5) * 0.01
         });
     }
+
     if (window.fluidAnimations[tabId]) { cancelAnimationFrame(window.fluidAnimations[tabId]); }
     function runAnimationLoop() {
-        const toggleSwitch = document.getElementById("toggle-fluid-sim");
-        const animationAllowed = toggleSwitch ? toggleSwitch.checked : true;
-
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (animationAllowed) {
-            ctx.fillStyle = "rgba(10, 10, 10, 0.15)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.radius += p.growth;
-
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-                if (p.radius < 1 || p.radius > 6) p.growth *= -1;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
-                ctx.fill();
-            });
-        }
+        particles.forEach(p => {
+            p.x += p.vx; p.y += p.vy; p.radius += p.growth;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+            ctx.fill();
+        });
         window.fluidAnimations[tabId] = requestAnimationFrame(runAnimationLoop);
     }
     runAnimationLoop();
 };
-
 window.closeTabItem = function(zoneId) {
     if (window.fluidAnimations[zoneId]) {
         cancelAnimationFrame(window.fluidAnimations[zoneId]);
         delete window.fluidAnimations[zoneId];
     }
 
+    const targetedTab = window.openTabs.find(tab => tab.id === zoneId);
     window.openTabs = window.openTabs.filter(tab => tab.id !== zoneId);
     
     if (zoneId === "player-zone") {
@@ -135,10 +119,21 @@ window.closeTabItem = function(zoneId) {
         if (iframe) iframe.src = "";
     }
 
+    // FIX: Critical System Void trigger condition validation rule
+    if (targetedTab && targetedTab.isHome) {
+        document.body.innerHTML = `
+            <div class="void-screen-override">
+                <span>You shouldn't be here, refresh the site...</span>
+            </div>
+        `;
+        return;
+    }
+
     if (window.openTabs.length > 0) {
         const nextTarget = window.openTabs[window.openTabs.length - 1].id;
         window.switchZone(nextTarget);
     } else {
+        // Automatically open and target home node link to avoid blank views
         window.switchZone("dashboard-zone");
     }
 };
@@ -146,46 +141,20 @@ window.closeTabItem = function(zoneId) {
 window.launchGameUrl = function(targetUrl, title) {
     const titleEl = document.getElementById("game-frame-title");
     const iframe = document.getElementById("cobra-game-iframe");
-    
     if (titleEl) titleEl.textContent = title;
     if (iframe) {
         iframe.src = targetUrl;
         window.switchZone("player-zone");
-
-        document.getElementById("btn-fullscreen").onclick = () => {
-            if (iframe.requestFullscreen) iframe.requestFullscreen();
-            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
-        };
-
-        document.getElementById("btn-about-blank").onclick = () => {
-            const popup = window.open("about:blank", "_blank");
-            if (!popup) {
-                alert("Please clear browser blocking pop-up alerts!");
-                return;
-            }
-            popup.document.body.style.margin = "0";
-            popup.document.body.style.height = "100vh";
-            popup.document.body.style.backgroundColor = "#000000";
-            
-            const newIframe = popup.document.createElement("iframe");
-            newIframe.src = targetUrl;
-            newIframe.style.width = "100%";
-            newIframe.style.height = "100%";
-            newIframe.style.border = "none";
-            
-            popup.document.body.appendChild(newIframe);
-        };
     }
 };
+
 window.renderGames = function(filterText = "") {
     const gamesGrid = document.getElementById("games-grid-container");
     if (!gamesGrid) return;
     gamesGrid.innerHTML = "";
 
     const catalog = window.gamesList || [];
-    const filtered = catalog.filter(game => 
-        game.title.toLowerCase().includes(filterText.toLowerCase())
-    );
+    const filtered = catalog.filter(game => game.title.toLowerCase().includes(filterText.toLowerCase()));
 
     if (filtered.length === 0) {
         gamesGrid.innerHTML = `<p class="coming-soon-text">No unblocked elements matched your lookup.</p>`;
@@ -197,9 +166,7 @@ window.renderGames = function(filterText = "") {
         card.className = "card-circle-wrapper";
         card.innerHTML = `
             <div class="card-circle-inner">
-                <img src="${game.thumbUrl}" alt="${game.title}" class="card-circle-thumb" 
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="fallback-circle-box">🎮</div>
+                <img src="${game.thumbUrl}" alt="${game.title}" class="card-circle-thumb" onerror="this.style.display='none';">
                 <div class="swirl-text-overlay">
                     <div class="kinetic-trail-container">
                         <div class="swirl-title-layer layer-trail-2">${game.title}</div>
@@ -210,26 +177,17 @@ window.renderGames = function(filterText = "") {
                 </div>
             </div>
         `;
-
-        card.addEventListener("click", () => {
-            window.launchGameUrl(game.gameUrl, game.title);
-        });
+        card.addEventListener("click", () => window.launchGameUrl(game.gameUrl, game.title));
         gamesGrid.appendChild(card);
     });
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Force instantiate Dashboard tab inside side dock stack arrays on initialize
+    window.switchZone("dashboard-zone");
+
     const portalSearch = document.querySelector(".portal-search-input");
     const gamesSearchInput = document.getElementById("games-search-input");
-    const homeBtn = document.getElementById("btn-home");
-
-    if (homeBtn) {
-        homeBtn.addEventListener("click", () => {
-            if (portalSearch) portalSearch.value = "";
-            if (gamesSearchInput) gamesSearchInput.value = "";
-            window.renderGames();
-        });
-    }
 
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
@@ -241,22 +199,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
     if (gamesSearchInput) {
-        gamesSearchInput.addEventListener("input", (e) => {
-            window.renderGames(e.target.value);
-        });
+        gamesSearchInput.addEventListener("input", (e) => window.renderGames(e.target.value));
     }
 
-    window.renderGames();
-
+    // Smoothly fade out preloader screen at exactly 2.8 seconds
     setTimeout(() => {
         const preloader = document.getElementById("cobra-preloader");
         if (preloader) {
             preloader.style.opacity = "0";
-            preloader.style.display = "none";
-            preloader.style.pointerEvents = "none";
-            preloader.remove(); 
+            setTimeout(() => preloader.remove(), 500);
         }
-    }, 3200);
+    }, 2800);
 });

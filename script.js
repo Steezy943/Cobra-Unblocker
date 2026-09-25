@@ -14,7 +14,7 @@ const iconMap = {
     "player-zone": "Assets/Img/gamesicon.png"
 };
 
-// FIX: Drag setup must reside at top of file so refreshTabsUI doesn't crash on load
+// CRITICAL FIX: Drag setup modules are hoisted to the absolute top block 
 let sourceDragElement = null;
 window.setupTabDragEvents = function(el, id) {
     el.addEventListener("dragstart", (e) => {
@@ -190,7 +190,7 @@ window.closeTabItem = function(zoneId) {
         if (iframe) iframe.src = "";
     }
 
-    // FIX: Only triggers if the specific tab being deleted is explicitly marked as Home layout root
+    // CRITICAL FIX: Only acts as a system crash if you explicitly click the "x" trigger close icon on the Home Tab
     if (targetedTab && targetedTab.isHome) {
         document.body.style.backgroundColor = "#000000";
         document.body.innerHTML = `
@@ -255,7 +255,7 @@ window.renderGames = function(filterText = "") {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Generates catalog values safely behind scene spaces right on load
+    // Instantly process list rendering arrays into viewport containers 
     window.renderGames();
 
     const portalSearch = document.querySelector(".portal-search-input");
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
             preloader.style.opacity = "0"; 
             setTimeout(() => {
                 preloader.remove();
-                // Safe mount hook: switches zone now that drag events are compiled
+                // Core initialization route trigger point
                 window.switchZone("dashboard-zone");
             }, 500); 
         }

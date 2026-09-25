@@ -1,5 +1,8 @@
-// 🚀 GLOBAL NAVIGATION ROUTER ENGINE
+// 🚀 COBRA CORE GLOBAL NAVIGATION & TAB MONITOR
+window.openTabs = []; 
+
 window.switchZone = function(zoneId) {
+    // 1. Structural View Component Swap
     const viewZones = document.querySelectorAll(".view-zone");
     viewZones.forEach(zone => zone.classList.remove("active"));
     
@@ -7,9 +10,77 @@ window.switchZone = function(zoneId) {
     if (targetZone) {
         targetZone.classList.add("active");
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        console.log("Cobra Router: Navigated directly to #" + zoneId);
+        console.log("Cobra Router: Switched view to " + zoneId);
     } else {
-        console.error("Cobra Router Error: View segment #" + zoneId + " is missing from the document.");
+        console.error("Cobra Router Error: Target zone #" + zoneId + " not found!");
+    }
+
+    // 2. Dashboard and Settings views shouldn't create permanent standalone ribbon items
+    if (zoneId === "dashboard-zone" || zoneId === "settings-zone") {
+        document.querySelectorAll(".cobra-tab-item").forEach(t => t.classList.remove("active-tab"));
+        return;
+    }
+
+    // 3. Automated Tab Generator
+    const exists = window.openTabs.some(tab => tab.id === zoneId);
+    if (!exists) {
+        let friendlyLabel = zoneId.replace("-zone", "").toUpperCase();
+        if (zoneId === "player-zone") friendlyLabel = "🎮 ACTIVE GAME";
+        
+        window.openTabs.push({ id: zoneId, label: friendlyLabel });
+    }
+
+    window.refreshTabsUI(zoneId);
+};
+
+// Redraws the upper workspace ribbon dock options dynamically
+window.refreshTabsUI = function(activeZoneId) {
+    const tabsDock = document.getElementById("cobra-tabs-dock");
+    if (!tabsDock) return;
+    tabsDock.innerHTML = "";
+
+    window.openTabs.forEach(tab => {
+        const tabEl = document.createElement("div");
+        tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''}`;
+        
+        tabEl.innerHTML = `
+            <span class="tab-title-text">${tab.label}</span>
+            <span class="tab-close-btn" data-close="${tab.id}">×</span>
+        `;
+
+        // Switch to the target view zone on click
+        tabEl.addEventListener("click", (e) => {
+            if (e.target.classList.contains("tab-close-btn")) return; 
+            window.switchZone(tab.id);
+        });
+
+        // Close button click listener
+        const closeX = tabEl.querySelector(".tab-close-btn");
+        closeX.addEventListener("click", (e) => {
+            e.stopPropagation();
+            window.closeTabItem(tab.id);
+        });
+
+        tabsDock.appendChild(tabEl);
+    });
+};
+
+// Closes a workspace tab and returns the view to a safe baseline
+window.closeTabItem = function(zoneId) {
+    window.openTabs = window.openTabs.filter(tab => tab.id !== zoneId);
+    
+    // Clear the game frame if closing the active player viewport
+    if (zoneId === "player-zone") {
+        const iframe = document.getElementById("cobra-game-iframe");
+        if (iframe) iframe.src = "";
+    }
+
+    // Fallback routing logic
+    if (window.openTabs.length > 0) {
+        const nextTarget = window.openTabs[window.openTabs.length - 1].id;
+        window.switchZone(nextTarget);
+    } else {
+        window.switchZone("dashboard-zone");
     }
 };
 
@@ -26,7 +97,6 @@ window.launchGameUrl = function(targetUrl, title) {
             if (iframe.requestFullscreen) iframe.requestFullscreen();
             else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
         };
-
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
             if (!popup) {
@@ -48,13 +118,12 @@ window.launchGameUrl = function(targetUrl, title) {
     }
 };
 
-// 🎮 INTERACTIVE GRID RENDERER
+// 🎮 INTERACTIVE GRID GENERATION ENGINE
 window.renderGames = function(filterText = "") {
     const gamesGrid = document.getElementById("games-grid-container");
     if (!gamesGrid) return;
     gamesGrid.innerHTML = "";
 
-    // Safely look up global database array array
     const catalog = window.gamesList || [];
 
     const filtered = catalog.filter(game => 
@@ -89,13 +158,12 @@ window.renderGames = function(filterText = "") {
     });
 };
 
-// INITIALIZE RUNTIME LISTENERS
+// Initialize listeners on DOM complete loading
 document.addEventListener("DOMContentLoaded", () => {
     const portalSearch = document.querySelector(".portal-search-input");
     const gamesSearchInput = document.getElementById("games-search-input");
     const homeBtn = document.getElementById("btn-home");
 
-    // Home Reset routine
     if (homeBtn) {
         homeBtn.addEventListener("click", () => {
             if (portalSearch) portalSearch.value = "";
@@ -104,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Input Synchronization Listeners
     if (portalSearch) {
         portalSearch.addEventListener("input", (e) => {
             const value = e.target.value;
@@ -122,10 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Render original arcade inventory catalog immediately
+    // Run dynamic catalog matrix immediately
     window.renderGames();
 
-    // 🧹 FORCE REMOVE PRELOADER BARRIER
+    // 🧹 FORCE REMOVE SPLASH PRELOADER OVERLAY
     setTimeout(() => {
         const preloader = document.getElementById("cobra-preloader");
         if (preloader) {
@@ -133,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
             preloader.style.display = "none";
             preloader.style.pointerEvents = "none";
             preloader.remove(); 
-            console.log("Cobra Core: Click interface unblocked completely.");
+            console.log("Cobra Core: Interface execution parameters initialized.");
         }
     }, 3200);
 });

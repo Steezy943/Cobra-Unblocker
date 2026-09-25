@@ -19,21 +19,21 @@
         <img src="Assets/Img/SiteLogo.png" alt="Cobra Logo" class="splash-logo">
     </div>
 
-    <!-- MAIN SIDEWAYS APP GRID -->
+    <!-- MAIN APP STRUCTURE -->
     <div class="site-container layout-side-wrapper">
         
-        <!-- 🌀 FUTURISTIC SIDE TAB CONTROLLER DOCK -->
+        <!-- MINIMALIST BLACK & WHITE SIDE TERMINAL BAR -->
         <aside class="cobra-side-dock">
-            <div class="dock-brand" onclick="window.switchZone('dashboard-zone')">🐍</div>
+            <div class="dock-brand" onclick="window.switchZone('dashboard-zone')"> cobra </div>
             <div class="side-tabs-rail" id="cobra-tabs-dock">
                 <!-- Advanced interactive icon glyphs inject dynamically here -->
             </div>
             <div class="dock-footer-btn" onclick="window.switchZone('settings-zone')" title="Cobra Configurations">⚙️</div>
         </aside>
 
-        <!-- RIGHTHAND VIEWPORT VIEWPORT FRAME -->
+        <!-- RIGHTHAND VIEWPORT FRAME -->
         <div class="viewport-main-wrapper">
-            <!-- TOP BAR -->
+            <!-- HEADER BAR -->
             <header class="top-bar">
                 <button class="home-icon-btn" id="btn-home" onclick="window.switchZone('dashboard-zone')" title="Go to Dashboard">🏠</button>
                 <div class="top-bar-right">
@@ -126,16 +126,16 @@
                     <p class="coming-soon-text">Unblocked web application proxies.</p>
                 </div>
 
-                <!-- UPGRADED SETTINGS MODULE WITH ACTIVE SYSTEM TOGGLES -->
+                <!-- SETTINGS MODULE WITH SIMULATION TOGGLE -->
                 <div id="settings-zone" class="view-zone">
                     <h2 class="section-title">⚙️ Cobra Configuration Settings</h2>
-                    <div class="settings-card-panel" style="background: var(--sidebar-black); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-gray); max-width: 500px;">
-                        <h3 style="margin-bottom: 1rem; color: #fff;">Performance Settings</h3>
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <span>Active Tab Fluid Simulation Engine</span>
-                            <label class="cobra-switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                    <div class="settings-card-panel" style="background: var(--sidebar-black); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-gray); max-width: 500px;">
+                        <h3 style="margin-bottom: 1rem; color: #fff; font-size: 1.1rem; font-weight: 600;">Performance Matrix</h3>
+                        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; color: #a0a0a5;">
+                            <span>Active Tab Fluid Light Simulation</span>
+                            <label class="cobra-switch" style="position: relative; display: inline-block; width: 44px; height: 22px;">
                                 <input type="checkbox" id="toggle-fluid-sim" checked style="opacity: 0; width: 0; height: 0;">
-                                <span class="cobra-toggle-slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .3s; border-radius: 34px;"></span>
+                                <span class="cobra-toggle-slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .3s; border-radius: 22px; border: 1px solid #444;"></span>
                             </label>
                         </div>
                     </div>

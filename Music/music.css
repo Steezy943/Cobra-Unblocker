@@ -1,1 +1,456 @@
+/* ==========================================================================
+   COBRA MATRIX DEDICATED AUDIO DASHBOARD VISUAL COMPONENT SUITE
+   ========================================================================= */
+.music-dashboard-container {
+    display: flex;
+    height: 75vh;
+    width: 100%;
+    background: #000000;
+    gap: 20px;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
 
+/* SIDE PANEL COLUMN 1: GENERAL WORKSPACE GRID CONTROLLERS */
+.music-main-workspace-feed {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.music-dashboard-grid-row {
+    display: flex;
+    gap: 20px;
+    flex-grow: 1;
+    height: 50%;
+}
+
+.music-card-wrapper {
+    background: #060606;
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    padding: 20px;
+    flex-grow: 1;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* CORE GRAPH SPARKLINE DESIGN LOGIC BLOCK PARAMETERS */
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.metric-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #555;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.platform-nodes-cluster {
+    display: flex;
+    gap: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.platform-icon-badge {
+    background: #111;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-gray);
+    transition: color 0.2s;
+}
+
+.platform-icon-badge:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+.mock-graph-vector-canvas {
+    flex-grow: 1;
+    position: relative;
+    border-bottom: 1px solid #141414;
+    margin: 15px 0 8px 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(255,255,255,0.01) 100%);
+}
+
+/* Recreates your visual graph wave natively via layered absolute canvas masks */
+.graph-line-pulse {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #444 30%, #fff 60%, #444 100%);
+    top: 40%;
+}
+
+.graph-target-node {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+    left: 60%;
+    top: calc(40% - 3px);
+}
+.graph-months-labels-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: #444;
+    text-transform: uppercase;
+}
+
+/* EARNINGS BARS VERTICAL STACK SETUPS */
+.progress-bars-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.progress-bar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.bar-track {
+    width: 65%;
+    height: 4px;
+    background: #111;
+    border-radius: 2px;
+    border: 1px solid #1a1a1a;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+/* AUDIENCE GRAPH TRACK PARAMETERS OVERRIDES */
+.panel-section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+.audience-bars-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-grow: 1;
+    margin-top: 15px;
+}
+
+.audience-bar-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.audience-bar-column span {
+    font-size: 0.65rem;
+    color: #444;
+}
+
+.bar-track-vertical {
+    width: 4px;
+    height: 70px;
+    background: #111;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.vertical-fill {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+/* RELEASES CATALOG TRACK ENTRIES CONTROLLERS */
+.view-all-action {
+    font-size: 0.7rem;
+    color: #555;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.view-all-action:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.releases-tracks-scroller {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 10px;
+}
+
+.music-track-list-row {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background: #0c0c0c;
+    border: 1px solid #141414;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.music-track-list-row:hover, .music-track-list-row.active {
+    border-color: #fff;
+    background: #111;
+}
+
+.track-index-digit {
+    font-size: 0.75rem;
+    color: #444;
+    font-weight: 700;
+    width: 24px;
+    font-family: monospace;
+}
+
+.track-thumbnail-avatar {
+    width: 28px;
+    height: 28px;
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+.track-title-meta-group {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.track-core-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-core-artist {
+    font-size: 0.65rem;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-row-arrow-trigger {
+    font-size: 0.75rem;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.music-track-list-row:hover .track-row-arrow-trigger {
+    color: #fff;
+}
+
+/* SIDE PANEL COLUMN 2: STATISTICS AND MEDIA DOCK SYSTEM */
+.music-sidebar-workspace-panel {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.listeners-stats-card {
+    width: 100%;
+    flex-grow: 1;
+}
+
+.geography-demographics-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.geo-row-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 500;
+}
+
+.geo-percentage {
+    font-family: monospace;
+    font-weight: 700;
+    color: #fff;
+}
+
+.media-player-dock-card {
+    width: 100%;
+    height: 180px;
+    flex-shrink: 0;
+    margin-top: auto;
+    padding: 14px;
+    background: #030303;
+}
+
+.player-album-art-frame {
+    flex-grow: 1;
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid var(--border-gray);
+    background: linear-gradient(135deg, #111 0%, #000 100%);
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.fallback-vinyl-disk {
+    width: 44px;
+    height: 44px;
+    background: #000;
+    border: 1px solid #222;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
+
+.player-overlay-text-details {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.player-overlay-text-details h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-overlay-text-details p {
+    font-size: 0.7rem;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-audio-controls-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.timeline-bar-scrub {
+    width: 100%;
+    height: 3px;
+    background: #111;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.timeline-fill {
+    height: 100%;
+    background: #ffffff;
+}
+
+.controls-buttons-cluster {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.audio-macro-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.audio-macro-btn:hover {
+    color: #fff;
+}
+
+.play-pause-toggle-circle {
+    width: 28px;
+    height: 28px;
+    background: #ffffff;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    transition: all 0.2s ease;
+}
+
+.play-pause-toggle-circle:hover {
+    background: #000000;
+    border-color: #ffffff;
+}
+
+/* Inverts image icon masks natively when hovering the circle toggle btn */
+.play-pause-toggle-circle:hover img {
+    filter: brightness(0) invert(1);
+}
+
+/* DYNAMIC SCROLLER RAILS PANEL TRACK PARAMS */
+.releases-tracks-scroller::-webkit-scrollbar {
+    width: 4px;
+}
+
+.releases-tracks-scroller::-webkit-scrollbar-thumb {
+    background: #141414;
+    border-radius: 2px;
+}

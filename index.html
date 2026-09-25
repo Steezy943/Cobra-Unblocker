@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cobra</title>
+    <!-- Core browser assets -->
     <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Core site styles stylesheets cascade -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Chat/chat.css"> <!-- Linked independent chat styles module path -->
     <link rel="stylesheet" href="disclaimer.css">
 </head>
 <body>
@@ -52,7 +56,7 @@
                             <input type="text" placeholder="Search unblocked elements, proxy sites, games..." class="portal-search-input">
                         </div>
 
-                        <!-- CENTRAL HUB BUTTON LINKS -->
+                        <!-- CENTRAL HUB BUTTON LINKS WITH GRAPHIC ICON UPGRADES -->
                         <div class="portal-buttons-grid">
                             <button class="portal-hub-btn" onclick="window.switchZone('proxy-zone')">
                                 <img src="Assets/Img/proxyicon.png" alt="" style="width: 16px; height: 16px; object-fit: contain; filter: brightness(0) invert(1);"> Launch Proxy
@@ -101,9 +105,14 @@
                     </div>
                 </div>
 
-                <!-- CODES ZONES PANELS -->
+                <!-- 2. CHAT MATRIX ZONE HOOK -->
+                <div id="chat-zone" class="view-zone">
+                    <!-- Injected dynamically by Chat/chat.js to keep layout bone-dry -->
+                    <div id="cobra-chat-mount"></div>
+                </div>
+
+                <!-- OTHER NAV CODES PANELS -->
                 <div id="proxy-zone" class="view-zone"><h2 class="section-title">🔒 Proxy Node</h2><p class="coming-soon-text">Stealth terminal configurations loading...</p></div>
-                <div id="chat-zone" class="view-zone"><h2 class="section-title">💬 Chat Matrix</h2><p class="coming-soon-text">Global channels routing initialization...</p></div>
                 <div id="music-zone" class="view-zone"><h2 class="section-title">🎵 Music Hub</h2><p class="coming-soon-text">Audio streaming integration interface...</p></div>
                 <div id="movies-zone" class="view-zone"><h2 class="section-title">🎬 Movie Core</h2><p class="coming-soon-text">Decrypted video streaming panels loading...</p></div>
                 <div id="apps-zone" class="view-zone"><h2 class="section-title">📱 Application Node</h2><p class="coming-soon-text">Sandboxed micro-application containers loading...</p></div>
@@ -113,9 +122,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT LIFECYCLES -->
+    <!-- SCRIPT LIFECYCLES ORDER -->
     <script src="games.js"></script>
     <script src="script.js"></script>
+    <script src="Chat/chat.js"></script> <!-- Linked chat middleware controller module -->
     <script src="disclaimerbase.js"></script>
 </body>
 </html>

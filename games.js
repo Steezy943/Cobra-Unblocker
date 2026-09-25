@@ -119,6 +119,6 @@ export const gamesList = [
         title: "Minecraft Alpha v1.2.6", 
         category: "Survival/Adventure", 
         gameUrl: "https://eaglerports.github.io/a1.2.6/",
-        thumbUrl: "Assets/Thumbnails/MC126.png" 
+        thumbUrl: "Assets/Thumbnails/MC126.jpg" 
     }
 ];

@@ -7,21 +7,21 @@
 }
 
 :root {
-    --bg-black: #0a0a0c;
-    --sidebar-black: #121214;
-    --card-black: #1a1a1e;
+    --bg-black: #000000;
+    --sidebar-black: #0a0a0a;
+    --card-black: #111111;
     --cobra-white: #ffffff;
-    --cobra-white-muted: #e0e0e4;
+    --cobra-white-muted: #cccccc;
     --text-white: #ffffff;
-    --text-gray: #8e8e93;
-    --border-gray: #2c2c32;
+    --text-gray: #777777;
+    --border-gray: #222222;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 body {
@@ -32,7 +32,7 @@ body {
 }
 
 /* ==========================================================================
-   SPLASH SCREEN PRELOADER (1s Fade-in, 0.5s Hold, 1s Fade-out)
+   SPLASH PRELOADER ENGINE
    ========================================================================= */
 .splash-screen {
     position: fixed;
@@ -45,8 +45,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeOutScreen 0.5s ease forwards;
-    animation-delay: 2.5s;
+    animation: fadeOutScreen 0.5s ease forwards 2.5s;
     pointer-events: none;
 }
 
@@ -64,535 +63,196 @@ body {
     100% { opacity: 0; transform: scale(1.05); } 
 }
 
-@keyframes fadeOutScreen {
-    to { opacity: 0; visibility: hidden; }
-}
+@keyframes fadeOutScreen { to { opacity: 0; visibility: hidden; } }
 
-.site-container {
+/* ==========================================================================
+   SIDE NAVIGATION LAYOUT WRAPPERS
+   ========================================================================= */
+.layout-side-wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row !important;
     min-height: 100vh;
-    opacity: 0;
-    animation: fadeInContent 0.5s ease forwards;
-    animation-delay: 2.7s;
     width: 100%;
 }
 
-@keyframes fadeInContent {
-    to { opacity: 1; }
-}
-
-/* ==========================================================================
-   ROUTING VIEW ZONES
-   ========================================================================= */
-.view-zone {
-    display: none;
-    width: 100%;
-}
-
-.view-zone.active {
-    display: block;
-}
-
-.coming-soon-text {
-    color: var(--text-gray);
-    margin-top: 2rem;
-    font-size: 1.1rem;
-    text-align: center;
-}
-/* ==========================================================================
-   HEADER TOP BAR
-   ========================================================================= */
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2.5rem 1rem 2.5rem;
-    width: 100%;
-}
-
-.home-icon-btn {
-    background-color: var(--sidebar-black);
-    border: 1px solid var(--border-gray);
-    color: var(--text-white);
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.2s, transform 0.2s;
-}
-
-.home-icon-btn:hover {
-    border-color: var(--cobra-white);
-    transform: scale(1.05);
-}
-
-.top-bar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.settings-btn {
-    background-color: var(--sidebar-black);
-    border: 1px solid var(--border-gray);
-    color: var(--text-white);
-    font-size: 1.1rem;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 38px;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.2s, transform 0.2s;
-}
-
-.settings-btn:hover {
-    border-color: var(--cobra-white);
-    transform: rotate(45deg);
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--sidebar-black);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    border: 1px solid var(--border-gray);
-    height: 38px;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background-color: #ffffff;
-    border-radius: 50%;
-}
-
-/* ==========================================================================
-   MAIN CORE CONTAINER LAYOUT
-   ========================================================================= */
-.main-content {
+.viewport-main-wrapper {
     flex-grow: 1;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100vh;
 }
 
 /* ==========================================================================
-   PORTAL HOMEPAGE DASHBOARD HERO STYLES
+   STARK HIGH-CONTRAST VERTICAL SIDEBAR
    ========================================================================= */
-.portal-hero {
+.cobra-side-dock {
+    width: 70px;
+    background-color: var(--sidebar-black);
+    border-right: 1px solid var(--border-gray);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 4rem 1rem;
-    width: 100%;
-    min-height: 65vh;
+    padding: 2rem 0;
+    justify-content: space-between;
+    height: 100vh;
+    z-index: 10;
+    flex-shrink: 0;
 }
 
-.sub-welcome {
-    font-size: 1.2rem;
-    font-weight: 600;
-    letter-spacing: 4px;
-    color: var(--text-gray);
-    margin-bottom: 0.5rem;
-}
-
-.portal-logo-text {
+.dock-brand {
     font-family: 'SnakeStitch', sans-serif;
-    font-size: 5rem;
-    color: var(--cobra-white);
-    letter-spacing: 4px;
-    margin-bottom: 2.5rem;
-}
-.portal-search-box {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 3.5rem;
-}
-
-.portal-search-input {
-    width: 100%;
-    padding: 1.2rem 2rem;
     font-size: 1.1rem;
-    background-color: var(--sidebar-black);
-    border: 1px solid var(--border-gray);
-    color: white;
-    border-radius: 30px;
-    outline: none;
-    text-align: center;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.portal-search-input:focus {
-    border-color: var(--cobra-white);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.portal-buttons-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    max-width: 850px;
-    width: 100%;
-}
-
-@media (max-width: 768px) {
-    .portal-buttons-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .portal-logo-text {
-        font-size: 3.5rem;
-    }
-}
-
-.portal-hub-btn {
-    background-color: var(--sidebar-black);
-    color: var(--text-white);
-    border: 1px solid var(--border-gray);
-    padding: 1.2rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+    color: var(--cobra-white);
+    transition: transform 0.2s;
 }
-
-.portal-hub-btn:hover {
-    transform: translateY(-3px);
-    background-color: var(--card-black);
-    border-color: var(--cobra-white);
-}
-
-/* ==========================================================================
-   🌀 DYNAMIC GAMES CIRCLE SWIRL CATALOGUE
-   ========================================================================= */
-.section-title {
-    margin-bottom: 3rem;
-    font-size: 1.8rem;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border-gray);
-    padding-bottom: 0.5rem;
-}
-
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 2.5rem;
-    width: 100%;
-    justify-content: center;
-}
-
-.card-circle-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1; 
-    cursor: pointer;
-    perspective: 1000px;
-}
-
-.card-circle-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%; 
-    overflow: hidden;
-    background-color: var(--card-black);
-    border: 2px solid var(--border-gray);
-    transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.card-circle-thumb {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease;
-}
-
-.fallback-circle-box {
+.dock-brand:hover { transform: scale(1.05); }
+.side-tabs-rail {
     display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     width: 100%;
-    height: 100%;
-    background-color: #1f1f24;
+    align-items: center;
+}
+
+/* Stark Monochromatic Tab Card Layout */
+.cobra-tab-item {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    border: 1px solid var(--border-gray);
+    background: #0d0d0d;
+    display: flex;
     align-items: center;
     justify-content: center;
-    color: #8e8e93;
-    font-size: 2.5rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+    animation: tabSlideIn 0.3s ease-out forwards;
 }
-.swirl-text-overlay {
+
+@keyframes tabSlideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.cobra-tab-item.active-tab {
+    border-color: var(--cobra-white);
+    background-color: #161616;
+}
+
+/* Monochromatic Particle Fluid Canvas Overlay Box */
+.tab-fluid-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    opacity: 0;
+    z-index: 1;
     pointer-events: none;
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-.swirl-title {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--cobra-white);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
-    transform: scale(0.3) rotate(-180deg); 
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+.cobra-tab-item.active-tab .tab-fluid-canvas { opacity: 0.9; }
 
-.swirl-category {
-    font-size: 0.8rem;
-    color: var(--text-gray);
-    margin-top: 0.25rem;
-    transform: scale(0.3) rotate(-180deg);
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s;
-}
-
-.card-circle-wrapper:hover .card-circle-inner {
-    border-color: var(--cobra-white);
-    transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-}
-
-.card-circle-wrapper:hover .card-circle-thumb {
-    transform: scale(1.1);
-    filter: blur(2px);
-}
-
-.card-circle-wrapper:hover .swirl-text-overlay {
-    opacity: 1;
-}
-
-.card-circle-wrapper:hover .swirl-title,
-.card-circle-wrapper:hover .swirl-category {
-    transform: scale(1) rotate(0deg); 
-}
-
-/* ==========================================================================
-   🎮 GAME CHASSIS & PLAYER VIEWPORT STYLES
-   ========================================================================= */
-.player-container {
-    width: 100%;
-    background-color: var(--sidebar-black);
-    border: 1px solid var(--border-gray);
-    border-radius: 16px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.player-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.player-controls {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.control-btn {
-    background-color: var(--card-black);
-    color: var(--text-white);
-    border: 1px solid var(--border-gray);
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-}
-
-.control-btn:hover {
-    background-color: var(--cobra-white);
-    color: black;
-    border-color: var(--cobra-white);
-}
-
-.iframe-wrapper {
+.tab-glyph-symbol {
     position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-    height: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #000;
-    border: 1px solid var(--border-gray);
-}
-
-.iframe-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-/* ==========================================================================
-   ⚡ COBRA KINETIC NEON FLUID TAB SYSTEM
-   ========================================================================= */
-.workspace-tabs-container {
-    width: 100%;
-    background-color: #050508;
-    border-bottom: 1px solid #1a1a24;
-    padding: 0.75rem 2.5rem 0 2.5rem;
-    position: relative;
-}
-
-.workspace-tabs-scroll {
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-
-.workspace-tabs-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-.workspace-tabs-rail {
-    display: flex;
-    align-items: flex-end;
-    gap: 0.35rem;
-    padding-bottom: 2px;
     z-index: 2;
+    transition: transform 0.2s;
+    filter: grayscale(100%); /* Keeps symbols flat and monochromatic */
 }
+.cobra-tab-item:hover .tab-glyph-symbol { transform: scale(1.1); }
 
-/* Base Tab Presentation Layout */
-.cobra-tab-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    background: rgba(18, 18, 20, 0.4);
-    border: 1px solid #1a1a24;
-    border-bottom: none;
-    color: #62627a;
-    padding: 0.7rem 1.2rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    border-radius: 10px 10px 0 0;
-    cursor: pointer;
-    user-select: none;
-    transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease;
-    min-width: 130px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Active Highlight state configuration */
-.cobra-tab-item.active-tab {
-    color: #ffffff;
-    background: #0d0d12;
-    border-color: #2c2c3d;
-}
-
-.cobra-tab-item:hover:not(.active-tab) {
-    color: #a3a3c2;
-    background: rgba(26, 26, 30, 0.6);
-}
-
-/* Unique feature: Animated Background Pulse Node Signal */
-.tab-status-pulse {
-    width: 6px;
-    height: 6px;
-    background-color: #38bdf8;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #38bdf8;
-    animation: tabHeartbeat 2s infinite ease-in-out;
-}
-
-@keyframes tabHeartbeat {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #38bdf8; }
-}
-
-/* Unique feature: Pinned Mode Tab Layout Variation */
-.cobra-tab-item.pinned-tab {
-    min-width: 45px;
-    width: 45px;
-    padding: 0.7rem 0;
-    justify-content: center;
-}
-
-.cobra-tab-item.pinned-tab .tab-title-text,
-.cobra-tab-item.pinned-tab .tab-close-btn,
-.cobra-tab-item.pinned-tab .tab-pin-toggle {
-    display: none; /* Hide texts, show only core emblem symbols */
-}
-
-.cobra-tab-item.pinned-tab::before {
-    content: "📌";
-    font-size: 0.85rem;
-}
-
-/* Interactive Utility Icon Actions Layout mapping */
-.tab-actions-group {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
+/* Compact close icon macro mapping */
+.tab-close-corner {
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.2);
+    z-index: 3;
     opacity: 0;
-    transform: translateX(5px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s, color 0.2s;
 }
+.cobra-tab-item:hover .tab-close-corner { opacity: 1; }
+.tab-close-corner:hover { color: #ffffff; }
 
-.cobra-tab-item:hover .tab-actions-group,
-.cobra-tab-item.active-tab .tab-actions-group {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.tab-pin-toggle {
-    font-size: 0.7rem;
-    color: #4b4b63;
-    transition: color 0.2s;
-}
-.tab-pin-toggle:hover { color: #eab308; }
-
-.tab-close-btn {
-    font-size: 0.85rem;
-    color: #4b4b63;
+.dock-footer-btn {
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-gray);
     transition: color 0.2s, transform 0.2s;
 }
-.tab-close-btn:hover {
-    color: #f43f5e;
-    transform: scale(1.2);
-}
+.dock-footer-btn:hover { color: #ffffff; transform: rotate(30deg); }
 
-/* 🌀 ULTRA COOL FLUID LIQUID BOTTOM HORIZONTAL ACCENT TRACKER TRACKER */
-.liquid-tab-slider {
+/* Monochromatic Settings Switches */
+.cobra-switch input:checked + .cobra-toggle-slider { background-color: var(--cobra-white); border-color: var(--cobra-white); }
+.cobra-toggle-slider:before {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #38bdf8, #818cf8);
-    box-shadow: 0 -2px 10px rgba(56, 189, 248, 0.4);
-    z-index: 1;
-    pointer-events: none;
-    border-radius: 2px;
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), width 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-    transform-origin: left center;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #888;
+    transition: .2s;
+    border-radius: 50%;
 }
+.cobra-switch input:checked + .cobra-toggle-slider:before { transform: translateX(24px); background-color: #000; }
+
+/* ==========================================================================
+   VIEWPORTS & HUB INTERFACES
+   ========================================================================= */
+.view-zone { display: none; width: 100%; }
+.view-zone.active { display: block; }
+.coming-soon-text { color: var(--text-gray); margin-top: 2rem; font-size: 1rem; text-align: center; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2.5rem; width: 100%; }
+.home-icon-btn { background-color: var(--sidebar-black); border: 1px solid var(--border-gray); color: var(--text-white); font-size: 1.1rem; padding: 0.5rem; border-radius: 4px; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s; }
+.home-icon-btn:hover { border-color: var(--cobra-white); }
+.top-bar-right { display: flex; align-items: center; gap: 1rem; }
+.user-profile { display: flex; align-items: center; gap: 0.5rem; background: var(--sidebar-black); padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid var(--border-gray); height: 36px; }
+.status-dot { width: 6px; height: 6px; background-color: #ffffff; border-radius: 50%; }
+
+.main-content { flex-grow: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem; }
+.portal-hero { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 1rem; width: 100%; min-height: 65vh; }
+.sub-welcome { font-size: 1rem; font-weight: 600; letter-spacing: 6px; color: var(--text-gray); margin-bottom: 0.5rem; }
+.portal-logo-text { font-family: 'SnakeStitch', sans-serif; font-size: 5rem; color: var(--cobra-white); letter-spacing: 4px; margin-bottom: 2.5rem; }
+.portal-search-box { width: 100%; max-width: 600px; margin-bottom: 3.5rem; }
+.portal-search-input { width: 100%; padding: 1rem 1.5rem; font-size: 1rem; background-color: var(--sidebar-black); border: 1px solid var(--border-gray); color: white; border-radius: 4px; outline: none; text-align: center; transition: border-color 0.2s; }
+.portal-search-input:focus { border-color: var(--cobra-white); }
+
+.portal-buttons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; max-width: 850px; width: 100%; }
+@media (max-width: 768px) { .portal-buttons-grid { grid-template-columns: repeat(2, 1fr); } .portal-logo-text { font-size: 3.5rem; } }
+.portal-hub-btn { background-color: var(--sidebar-black); color: var(--text-white); border: 1px solid var(--border-gray); padding: 1.1rem; font-size: 0.95rem; font-weight: 600; border-radius: 4px; cursor: pointer; transition: border-color 0.2s, background-color 0.2s; }
+.portal-hub-btn:hover { background-color: #111; border-color: var(--cobra-white); }
+
+/* ARCADE PANEL */
+.section-title { margin-bottom: 2.5rem; font-size: 1.5rem; font-weight: 600; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-gray); padding-bottom: 0.5rem; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 2rem; width: 100%; justify-content: center; }
+.card-circle-wrapper { position: relative; width: 100%; aspect-ratio: 1 / 1; cursor: pointer; perspective: 1000px; }
+.card-circle-inner { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background-color: var(--card-black); border: 1px solid var(--border-gray); transition: border-color 0.3s, box-shadow 0.3s; }
+.card-circle-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease, filter 0.3s; }
+.fallback-circle-box { display: flex; width: 100%; height: 100%; background-color: #0f0f14; align-items: center; justify-content: center; color: #555; font-size: 2rem; }
+.swirl-text-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.swirl-title { font-size: 1.1rem; font-weight: bold; color: var(--cobra-white); text-transform: uppercase; letter-spacing: 0.5px; text-align: center; transform: scale(0.8) translateY(5px); transition: transform 0.3s; }
+.swirl-category { font-size: 0.75rem; color: var(--text-gray); margin-top: 0.25rem; transform: scale(0.8) translateY(5px); transition: transform 0.3s 0.05s; }
+
+.card-circle-wrapper:hover .card-circle-inner { border-color: var(--cobra-white); box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
+.card-circle-wrapper:hover .card-circle-thumb { transform: scale(1.05); filter: blur(3px) grayscale(100%); }
+.card-circle-wrapper:hover .swirl-text-overlay { opacity: 1; }
+.card-circle-wrapper:hover .swirl-title, .card-circle-wrapper:hover .swirl-category { transform: scale(1) translateY(0); }
+
+.player-container { width: 100%; background-color: var(--sidebar-black); border: 1px solid var(--border-gray); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+.player-header { display: flex; justify-content: space-between; align-items: center; }
+.player-controls { display: flex; gap: 0.5rem; }
+.control-btn { background-color: var(--card-black); color: var(--text-white); border: 1px solid var(--border-gray); padding: 0.4rem 0.8rem; font-weight: 600; font-size: 0.85rem; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; }
+.control-btn:hover { background-color: var(--cobra-white); color: #000; border-color: var(--cobra-white); }
+.iframe-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 4px; overflow: hidden; background-color: #000; border: 1px solid var(--border-gray); }
+.iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }

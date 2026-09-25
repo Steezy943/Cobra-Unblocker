@@ -1,6 +1,6 @@
-// 🚀 COBRA SOLID WHITE FLUID ENGINE RUNTIME
+// 🚀 COBRA REAL-TIME PHYSICS FLUID ENGINE & DRAG ROUTERS
 window.openTabs = []; 
-window.fluidAnimations = {}; 
+window.fluidInstances = {}; 
 
 const iconMap = {
     "dashboard-zone": "Assets/Img/SiteLogo.png", 
@@ -23,6 +23,10 @@ window.switchZone = function(zoneId) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    if (zoneId === "dashboard-zone" || zoneId === "settings-zone") {
+        document.querySelectorAll(".cobra-tab-item").forEach(t => t.classList.remove("active-tab"));
+    }
+
     const exists = window.openTabs.some(tab => tab.id === zoneId);
     if (!exists) {
         const iconPath = iconMap[zoneId] || "Assets/Img/SiteLogo.png";
@@ -37,19 +41,22 @@ window.refreshTabsUI = function(activeZoneId) {
     if (!tabsDock) return;
     tabsDock.innerHTML = "";
 
-    window.openTabs.forEach(tab => {
+    window.openTabs.forEach((tab, index) => {
         const tabEl = document.createElement("div");
         tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''}`;
         tabEl.id = `side-tab-${tab.id}`;
+        tabEl.setAttribute("draggable", "true");
+        tabEl.setAttribute("data-index", index);
         
         const dynamicLabel = tab.isHome ? "🏠" : `<img src="${tab.path}" class="tab-glyph-symbol" alt="" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);">`;
 
         tabEl.innerHTML = `
             <canvas class="tab-fluid-canvas" id="canvas-${tab.id}"></canvas>
             <span class="tab-close-corner" title="Close Window">×</span>
-            <span style="position:relative; z-index:2; display:flex; align-items:center; justify-content:center;">${dynamicLabel}</span>
+            <span style="position:relative; z-index:2; display:flex; align-items:center; justify-content:center; pointer-events:none;">${dynamicLabel}</span>
         `;
 
+        // Interactive mouse click tracking configurations
         tabEl.addEventListener("click", (e) => {
             if (e.target.classList.contains("tab-close-corner")) return;
             window.switchZone(tab.id);
@@ -61,53 +68,128 @@ window.refreshTabsUI = function(activeZoneId) {
             window.closeTabItem(tab.id);
         });
 
+        // Initialize drag-and-drop sort events to enable manual reordering
+        window.setupTabDragEvents(tabEl, tab.id);
+
         tabsDock.appendChild(tabEl);
-        window.initFluidCanvas(tab.id);
+        window.initFluidSolver(tab.id);
     });
 };
 
-window.initFluidCanvas = function(tabId) {
+// ⚙️ PHYSICAL GRID FLUID SOLVER (Stam-Derivative Solver Engine)
+window.initFluidSolver = function(tabId) {
     const canvas = document.getElementById(`canvas-${tabId}`);
     if (!canvas) return;
-    
     const ctx = canvas.getContext("2d");
-    canvas.width = 44;
-    canvas.height = 44;
+    canvas.width = 44; canvas.height = 44;
 
-    let particles = [];
-    for (let i = 0; i < 10; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.6,
-            vy: (Math.random() - 0.5) * 0.6,
-            radius: Math.random() * 3 + 1,
-            alpha: Math.random() * 0.2 + 0.1,
-            growth: (Math.random() - 0.5) * 0.01
-        });
-    }
+    const RES = 16; 
+    let u = new Float32Array(RES * RES), v = new Float32Array(RES * RES);
+    let u_prev = new Float32Array(RES * RES), v_prev = new Float32Array(RES * RES);
+    let d = new Float32Array(RES * RES), d_prev = new Float32Array(RES * RES);
+
+    window.fluidInstances[tabId] = { u, v, u_prev, v_prev, d, d_prev, RES };
+
+    canvas.onmousemove = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = Math.floor(((e.clientX - rect.left) / rect.width) * RES);
+        const my = Math.floor(((e.clientY - rect.top) / rect.height) * RES);
+        if (mx > 0 && mx < RES-1 && my > 0 && my < RES-1) {
+            const idx = mx + my * RES;
+            d[idx] = 1.0; 
+            u[idx] = (e.movementX || 0) * 0.2;
+            v[idx] = (e.movementY || 0) * 0.2;
+        }
+    };
     if (window.fluidAnimations[tabId]) { cancelAnimationFrame(window.fluidAnimations[tabId]); }
-    function runAnimationLoop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.x += p.vx; p.y += p.vy; p.radius += p.growth;
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
-            ctx.fill();
-        });
-        window.fluidAnimations[tabId] = requestAnimationFrame(runAnimationLoop);
+    
+    function step() {
+        const toggleSwitch = document.getElementById("toggle-fluid-sim");
+        if (toggleSwitch && !toggleSwitch.checked) {
+            ctx.clearRect(0,0,44,44);
+            window.fluidAnimations[tabId] = requestAnimationFrame(step);
+            return;
+        }
+
+        // Dissipation rates
+        for(let i=0; i<RES*RES; i++) {
+            d[i] *= 0.94; u[i] *= 0.92; v[i] *= 0.92;
+            u[i] += (Math.random()-0.5)*0.02; v[i] += (Math.random()-0.5)*0.02;
+        }
+
+        // Advection velocity mapping loops
+        for (let y=1; y<RES-1; y++) {
+            for (let x=1; x<RES-1; x++) {
+                let xp = x - u[x+y*RES], yp = y - v[x+y*RES];
+                if(xp<0.5) xp=0.5; if(xp>RES-1.5) xp=RES-1.5;
+                if(yp<0.5) yp=0.5; if(yp>RES-1.5) yp=RES-1.5;
+                let i0=Math.floor(xp), i1=i0+1, j0=Math.floor(yp), j1=j0+1;
+                let s1=xp-i0, s0=1-s1, t1=yp-j0, t0=1-t1;
+                d_prev[x+y*RES] = s0*(t0*d[i0+j0*RES]+t1*d[i0+j1*RES])+s1*(t0*d[i1+j0*RES]+t1*d[i1+j1*RES]);
+            }
+        }
+        d.set(d_prev);
+
+        // Render fluid pixel buffers to local context canvas layer
+        ctx.fillStyle = "rgba(0,0,0,0.2)";
+        ctx.fillRect(0,0,44,44);
+        const cellW = 44/RES;
+        for(let y=0; y<RES; y++) {
+            for(let x=0; x<RES; x++) {
+                let den = d[x+y*RES];
+                if(den > 0.02) {
+                    ctx.fillStyle = `rgba(255,255,255,${Math.min(den, 0.45)})`;
+                    ctx.fillRect(x*cellW, y*cellW, cellW+0.5, cellW+0.5);
+                }
+            }
+        }
+        window.fluidAnimations[tabId] = requestAnimationFrame(step);
     }
-    runAnimationLoop();
+    step();
 };
 
+// 🔀 DRAG-AND-DROP TAB POSITION RECALCULATOR RENDER ENGINE
+let sourceDragElement = null;
+window.setupTabDragEvents = function(el, id) {
+    el.addEventListener("dragstart", (e) => {
+        sourceDragElement = el;
+        el.style.opacity = "0.4";
+        e.dataTransfer.effectAllowed = "move";
+    });
+    el.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        return false;
+    });
+    el.addEventListener("drop", (e) => {
+        e.stopPropagation();
+        if (sourceDragElement && sourceDragElement !== el) {
+            const srcIdx = parseInt(sourceDragElement.getAttribute("data-index"));
+            const targetIdx = parseInt(el.getAttribute("data-index"));
+            
+            // Re-sort core tab array memory arrays
+            const movedTab = window.openTabs.splice(srcIdx, 1)[0];
+            window.openTabs.splice(targetIdx, 0, movedTab);
+
+            // Splat structural velocity impact loops into both interacting items
+            const srcInst = window.fluidInstances[movedTab.id];
+            const targetInst = window.fluidInstances[id];
+            if(srcInst) srcInst.d.fill(1.0);
+            if(targetInst) targetInst.d.fill(1.0);
+
+            // Re-render tabs list layout structure elements safely
+            const activeTabItem = document.querySelector(".cobra-tab-item.active-tab");
+            const activeZoneId = activeTabItem ? activeTabItem.id.replace("side-tab-", "") : "dashboard-zone";
+            window.refreshTabsUI(activeZoneId);
+        }
+    });
+    el.addEventListener("dragend", () => {
+        el.style.opacity = "1";
+        sourceDragElement = null;
+    });
+};
 window.closeTabItem = function(zoneId) {
-    if (window.fluidAnimations[zoneId]) {
-        cancelAnimationFrame(window.fluidAnimations[zoneId]);
-        delete window.fluidAnimations[zoneId];
-    }
+    if (window.fluidAnimations[zoneId]) { cancelAnimationFrame(window.fluidAnimations[zoneId]); delete window.fluidAnimations[zoneId]; }
+    if (window.fluidInstances[zoneId]) { delete window.fluidInstances[zoneId]; }
 
     const targetedTab = window.openTabs.find(tab => tab.id === zoneId);
     window.openTabs = window.openTabs.filter(tab => tab.id !== zoneId);
@@ -117,9 +199,10 @@ window.closeTabItem = function(zoneId) {
         if (iframe) iframe.src = "";
     }
 
+    // FIX: Core Home button void verification rule tracking fix
     if (targetedTab && targetedTab.isHome) {
         document.body.innerHTML = `
-            <div class="void-screen-override">
+            <div class="void-screen-override" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000000;z-index:999999;display:flex;justify-content:center;align-items:center;color:#ff3333;font-family:monospace;font-size:1.2rem;letter-spacing:1px;">
                 <span>You shouldn't be here, refresh the site...</span>
             </div>
         `;
@@ -127,8 +210,7 @@ window.closeTabItem = function(zoneId) {
     }
 
     if (window.openTabs.length > 0) {
-        const nextTarget = window.openTabs[window.openTabs.length - 1].id;
-        window.switchZone(nextTarget);
+        window.switchZone(window.openTabs[window.openTabs.length - 1].id);
     } else {
         window.switchZone("dashboard-zone");
     }
@@ -138,10 +220,7 @@ window.launchGameUrl = function(targetUrl, title) {
     const titleEl = document.getElementById("game-frame-title");
     const iframe = document.getElementById("cobra-game-iframe");
     if (titleEl) titleEl.textContent = title;
-    if (iframe) {
-        iframe.src = targetUrl;
-        window.switchZone("player-zone");
-    }
+    if (iframe) { iframe.src = targetUrl; window.switchZone("player-zone"); }
 };
 
 window.renderGames = function(filterText = "") {
@@ -156,14 +235,13 @@ window.renderGames = function(filterText = "") {
         gamesGrid.innerHTML = `<p class="coming-soon-text">No unblocked elements matched your lookup.</p>`;
         return;
     }
+
     filtered.forEach(game => {
         const card = document.createElement("div");
         card.className = "card-circle-wrapper";
         card.innerHTML = `
             <div class="card-circle-inner" style="display: flex; align-items: center; justify-content: center; position: relative;">
-                <img src="${game.thumbUrl}" alt="${game.title}" class="card-circle-thumb" 
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
-                     style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:1;">
+                <img src="${game.thumbUrl}" alt="${game.title}" class="card-circle-thumb" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:1;">
                 <div class="fallback-circle-box" style="display: none; width: 100%; height: 100%; background: #111; align-items: center; justify-content: center; font-size: 2rem; color: #444; position: absolute; top: 0; left: 0; z-index: 0;">🎮</div>
                 <div class="swirl-text-overlay" style="z-index: 2;">
                     <div class="kinetic-trail-container">
@@ -181,7 +259,11 @@ window.renderGames = function(filterText = "") {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    // BUG FIX: Mount the Home button into active tab memory tracking instantly on boot
     window.switchZone("dashboard-zone");
+    
+    // BUG FIX: Forces total catalog population inside views without waiting for user typing actions
+    window.renderGames();
 
     const portalSearch = document.querySelector(".portal-search-input");
     const gamesSearchInput = document.getElementById("games-search-input");
@@ -202,9 +284,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
         const preloader = document.getElementById("cobra-preloader");
-        if (preloader) {
-            preloader.style.opacity = "0";
-            setTimeout(() => preloader.remove(), 500);
-        }
+        if (preloader) { preloader.style.opacity = "0"; setTimeout(() => preloader.remove(), 500); }
     }, 2800);
 });

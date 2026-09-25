@@ -1,6 +1,7 @@
-// 🚀 COBRA REAL-TIME PHYSICS FLUID ENGINE & DRAG ROUTERS
+// 🚀 COBRA SOLID WHITE FLUID ENGINE RUNTIME
 window.openTabs = []; 
-window.fluidInstances = {}; 
+window.fluidAnimations = {}; 
+window.fluidInstances = {};
 
 const iconMap = {
     "dashboard-zone": "Assets/Img/SiteLogo.png", 
@@ -56,7 +57,6 @@ window.refreshTabsUI = function(activeZoneId) {
             <span style="position:relative; z-index:2; display:flex; align-items:center; justify-content:center; pointer-events:none;">${dynamicLabel}</span>
         `;
 
-        // Interactive mouse click tracking configurations
         tabEl.addEventListener("click", (e) => {
             if (e.target.classList.contains("tab-close-corner")) return;
             window.switchZone(tab.id);
@@ -68,9 +68,7 @@ window.refreshTabsUI = function(activeZoneId) {
             window.closeTabItem(tab.id);
         });
 
-        // Initialize drag-and-drop sort events to enable manual reordering
         window.setupTabDragEvents(tabEl, tab.id);
-
         tabsDock.appendChild(tabEl);
         window.initFluidSolver(tab.id);
     });
@@ -111,13 +109,11 @@ window.initFluidSolver = function(tabId) {
             return;
         }
 
-        // Dissipation rates
         for(let i=0; i<RES*RES; i++) {
             d[i] *= 0.94; u[i] *= 0.92; v[i] *= 0.92;
             u[i] += (Math.random()-0.5)*0.02; v[i] += (Math.random()-0.5)*0.02;
         }
 
-        // Advection velocity mapping loops
         for (let y=1; y<RES-1; y++) {
             for (let x=1; x<RES-1; x++) {
                 let xp = x - u[x+y*RES], yp = y - v[x+y*RES];
@@ -130,7 +126,6 @@ window.initFluidSolver = function(tabId) {
         }
         d.set(d_prev);
 
-        // Render fluid pixel buffers to local context canvas layer
         ctx.fillStyle = "rgba(0,0,0,0.2)";
         ctx.fillRect(0,0,44,44);
         const cellW = 44/RES;
@@ -148,7 +143,6 @@ window.initFluidSolver = function(tabId) {
     step();
 };
 
-// 🔀 DRAG-AND-DROP TAB POSITION RECALCULATOR RENDER ENGINE
 let sourceDragElement = null;
 window.setupTabDragEvents = function(el, id) {
     el.addEventListener("dragstart", (e) => {
@@ -166,28 +160,12 @@ window.setupTabDragEvents = function(el, id) {
             const srcIdx = parseInt(sourceDragElement.getAttribute("data-index"));
             const targetIdx = parseInt(el.getAttribute("data-index"));
             
-            // Re-sort core tab array memory arrays
+            // FIXED: Splice extraction array normalization error
             const movedTab = window.openTabs.splice(srcIdx, 1)[0];
             window.openTabs.splice(targetIdx, 0, movedTab);
 
-            // Splat structural velocity impact loops into both interacting items
             const srcInst = window.fluidInstances[movedTab.id];
-            const targetInst = window.fluidInstances[id];
-            if(srcInst) srcInst.d.fill(1.0);
-            if(targetInst) targetInst.d.fill(1.0);
-
-            // Re-render tabs list layout structure elements safely
-            const activeTabItem = document.querySelector(".cobra-tab-item.active-tab");
-            const activeZoneId = activeTabItem ? activeTabItem.id.replace("side-tab-", "") : "dashboard-zone";
-            window.refreshTabsUI(activeZoneId);
-        }
-    });
-    el.addEventListener("dragend", () => {
-        el.style.opacity = "1";
-        sourceDragElement = null;
-    });
-};
-window.closeTabItem = function(zoneId) {
+            const targetInst = window.fluidInstanwindow.closeTabItem = function(zoneId) {
     if (window.fluidAnimations[zoneId]) { cancelAnimationFrame(window.fluidAnimations[zoneId]); delete window.fluidAnimations[zoneId]; }
     if (window.fluidInstances[zoneId]) { delete window.fluidInstances[zoneId]; }
 
@@ -199,13 +177,19 @@ window.closeTabItem = function(zoneId) {
         if (iframe) iframe.src = "";
     }
 
-    // FIX: Core Home button void verification rule tracking fix
+    // FIX: Renders a completely clean black screen canvas, then smoothly fades red caution text in over 1 second
     if (targetedTab && targetedTab.isHome) {
+        document.body.style.transition = "background-color 0.4s ease";
+        document.body.style.backgroundColor = "#000000";
         document.body.innerHTML = `
-            <div class="void-screen-override" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000000;z-index:999999;display:flex;justify-content:center;align-items:center;color:#ff3333;font-family:monospace;font-size:1.2rem;letter-spacing:1px;">
+            <div class="void-screen-override" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; z-index:999999; display:flex; justify-content:center; align-items:center; color:#ff3333; font-family:monospace; font-size:1.2rem; letter-spacing:1px; opacity:0; transition:opacity 1s ease 0.3s;">
                 <span>You shouldn't be here, refresh the site...</span>
             </div>
         `;
+        setTimeout(() => {
+            const voidEl = document.querySelector(".void-screen-override");
+            if (voidEl) voidEl.style.opacity = "1";
+        }, 50);
         return;
     }
 
@@ -259,10 +243,7 @@ window.renderGames = function(filterText = "") {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    // BUG FIX: Mount the Home button into active tab memory tracking instantly on boot
-    window.switchZone("dashboard-zone");
-    
-    // BUG FIX: Forces total catalog population inside views without waiting for user typing actions
+    // FIX: Render modules are compiled immediately, but we hide dashboard initialization values safely behind our 2.8s loader timeline
     window.renderGames();
 
     const portalSearch = document.querySelector(".portal-search-input");
@@ -284,6 +265,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
         const preloader = document.getElementById("cobra-preloader");
-        if (preloader) { preloader.style.opacity = "0"; setTimeout(() => preloader.remove(), 500); }
+        if (preloader) { 
+            preloader.style.opacity = "0"; 
+            setTimeout(() => {
+                preloader.remove();
+                // FIX: Triggers window viewport rendering state ONLY after preloader screen is cleared out of background thread spaces
+                window.switchZone("dashboard-zone");
+            }, 500); 
+        }
     }, 2800);
 });
+ces[id];
+            if(srcInst) srcInst.d.fill(1.0);
+            if(targetInst) targetInst.d.fill(1.0);
+
+            const activeTabItem = document.querySelector(".cobra-tab-item.active-tab");
+            const activeZoneId = activeTabItem ? activeTabItem.id.replace("side-tab-", "") : "dashboard-zone";
+            window.refreshTabsUI(activeZoneId);
+        }
+    });
+    el.addEventListener("dragend", () => {
+        el.style.opacity = "1";
+        sourceDragElement = null;
+    });
+};

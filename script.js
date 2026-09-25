@@ -1,7 +1,4 @@
-// Import the dynamic games array from your separate database file
-import { gamesList } from './games.js';
-
-// 🚀 Expose navigation to the global scope so inline bindings never fail
+// 🚀 GLOBAL NAVIGATION ROUTER ENGINE
 window.switchZone = function(zoneId) {
     const viewZones = document.querySelectorAll(".view-zone");
     viewZones.forEach(zone => zone.classList.remove("active"));
@@ -10,6 +7,9 @@ window.switchZone = function(zoneId) {
     if (targetZone) {
         targetZone.classList.add("active");
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        console.log("Cobra Router: Switched view to " + zoneId);
+    } else {
+        console.error("Cobra Router Error: Target zone #" + zoneId + " not found!");
     }
 };
 
@@ -54,7 +54,10 @@ window.renderGames = function(filterText = "") {
     if (!gamesGrid) return;
     gamesGrid.innerHTML = "";
 
-    const filtered = gamesList.filter(game => 
+    // Fallback safely if gamesList array is not initialized globally yet
+    const catalog = window.gamesList || [];
+
+    const filtered = catalog.filter(game => 
         game.title.toLowerCase().includes(filterText.toLowerCase())
     );
 
@@ -86,7 +89,6 @@ window.renderGames = function(filterText = "") {
     });
 };
 
-// Initialize interactive events once DOM completes loading
 // Initialize interactive events once DOM completes loading
 document.addEventListener("DOMContentLoaded", () => {
     const portalSearch = document.querySelector(".portal-search-input");
@@ -137,13 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
     window.renderGames();
 
     // 🧹 PRELOADER CLEANUP ENGINE
-    // Completely removes the splash barrier so it stops blocking clicks
     const splash = document.querySelector(".splash-screen");
     if (splash) {
         setTimeout(() => {
             splash.style.display = "none";
-            splash.remove(); // Drops it completely out of the DOM tree
+            splash.remove();
             console.log("Cobra Core: Splash screen barrier removed successfully.");
-        }, 3000); // 3 seconds matches your CSS timing chain perfectly
+        }, 3000);
     }
 });

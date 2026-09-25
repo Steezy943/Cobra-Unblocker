@@ -1,5 +1,5 @@
 // 🎵 COBRA CORE MATRIX AUDIO STREAMING DASHBOARD SUBSYSTEM
-document.addEventListener("DOMContentLoaded", () => {
+window.initMusicDashboard = function() {
     const musicZone = document.getElementById("music-zone");
     if (!musicZone) return;
 
@@ -19,11 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span class="metric-label">Streams</span>
                                 <h2 class="metric-value">255,850</h2>
                             </div>
-                            <div class="platform-nodes-cluster">
+                            <div class="platform-nodes-cluster" style="display: flex; align-items: center; gap: 12px;">
+                                <!-- FIXED: Injected your brand-new refreshicon.png asset cleanly with monochromatic filters -->
+                                <img src="Music/Icons/refreshicon.png" alt="Refresh Metrics" title="Re-sync Stream Logs" style="width: 14px; height: 14px; object-fit: contain; filter: brightness(0) invert(0.4); cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.filter='brightness(0) invert(1)'" onmouseout="this.style.filter='brightness(0) invert(0.4)'" onclick="this.style.transform='rotate(360deg)'">
                                 <span class="platform-icon-badge" title="Spotify Node">🎵</span>
                                 <span class="platform-icon-badge" title="YouTube Node">📺</span>
                                 <span class="platform-icon-badge" title="Apple Music">🍏</span>
-                                <span class="platform-icon-badge" title="Soundcloud">☁️</span>
                             </div>
                         </div>
                         <!-- Monochromatic Sparkline Graph Canvas Hook -->
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="metric-label">Listeners Now</span>
                             <h2 class="metric-value">1,283</h2>
                         </div>
-                        <!-- UI Alignment: Added physical notification icon asset via your new folder path layout -->
+                        <!-- UI Alignment: Added physical notification icon asset via folder path layout -->
                         <img src="Music/Icons/notificationicon.png" alt="" style="width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(1); cursor: pointer;">
                     </div>
                     
@@ -116,8 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="timeline-bar-scrub"><div class="timeline-fill" style="width: 35%;"></div></div>
                         <div class="controls-buttons-cluster">
                             <button class="audio-macro-btn" id="btn-audio-prev">⏮</button>
-                            <!-- UI Alignment: Added localized custom assets for your interactive music play and music pause action buttons -->
-                            <button class="audio-macro-btn play-pause-toggle-circle" id="btn-audio-toggle" style="padding: 0; display: flex; align-items: center; justify-content: center;">
+                            <!-- UI Alignment: Localized custom assets for your interactive music play and music pause action buttons -->
+                            <button class="audio-macro-btn play-pause-toggle-circle" id="btn-audio-toggle" style="padding: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; border: 1px solid #fff;">
                                 <img id="player-macro-state-img" src="Music/Icons/musicpause.png" alt="" style="width: 12px; height: 12px; object-fit: contain;">
                             </button>
                             <button class="audio-macro-btn" id="btn-audio-next">⏭</button>
@@ -171,12 +172,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggleBtn = document.getElementById("btn-audio-toggle");
     const stateImg = document.getElementById("player-macro-state-img");
     if (toggleBtn && stateImg) {
-        toggleBtn.addEventListener("click", () => {
+        toggleBtn.onclick = function() {
             if (stateImg.src.includes("musicpause.png")) {
                 stateImg.src = "Music/Icons/musicplay.png";
             } else {
                 stateImg.src = "Music/Icons/musicpause.png";
             }
-        });
+        };
     }
+};
+
+// CORE INTEGRATION MAPPING RULE: Forces compilation directly whenever standard zone swaps cross over this path link
+document.addEventListener("DOMContentLoaded", () => {
+    // Standard initialization block if dashboard opens directly
+    window.initMusicDashboard();
 });
+
+// Intercept hook targeting live window state switches inside master script frameworks
+const originalSwitchZone = window.switchZone;
+window.switchZone = function(zoneId) {
+    if (originalSwitchZone) originalSwitchZone(zoneId);
+    if (zoneId === "music-zone") {
+        setTimeout(() => { window.initMusicDashboard(); }, 20);
+    }
+};

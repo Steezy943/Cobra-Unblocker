@@ -120,6 +120,12 @@ document.addEventListener("DOMContentLoaded", () => {
             category: "Rage/Adventure", 
             gameUrl: "https://steezy943.github.io/adgac-webport/",
             thumbUrl: "Assets/Thumbnails/adgac.png" 
+        },
+        { 
+            title: "CounterStrike:Source 2d", 
+            category: "Shooting/Intense", 
+            gameUrl: "https://frankplus.github.io/",
+            thumbUrl: "Assets/Thumbnails/CSS2D.png" 
         }
     ];
 

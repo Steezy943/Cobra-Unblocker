@@ -1,4 +1,6 @@
-/* Custom Font Link targeting your precise repository path */
+/* ==========================================================================
+   CUSTOM DESIGN SYSTEM & ARCHITECTURE VARIABLES
+   ========================================================================= */
 @font-face {
     font-family: 'SnakeStitch';
     src: url('Assets/Fonts/SnakeStitch.ttf') format('truetype');
@@ -11,10 +13,9 @@
     --sidebar-black: #0a0a0a;
     --card-black: #111111;
     --cobra-white: #ffffff;
-    --cobra-white-muted: #cccccc;
-    --text-white: #ffffff;
-    --text-gray: #777777;
-    --border-gray: #222222;
+    --cobra-white-muted: #888888;
+    --border-gray: #1a1a1a;
+    --glow-strength: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -26,68 +27,31 @@
 
 body {
     background-color: var(--bg-black);
-    color: var(--text-white);
+    color: var(--cobra-white);
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden; /* Prevent native window double scrolling */
 }
 
 /* ==========================================================================
-   SPLASH PRELOADER ENGINE
-   ========================================================================= */
-.splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    animation: fadeOutScreen 0.5s ease forwards 2.5s;
-    pointer-events: none;
-}
-
-.splash-logo {
-    max-width: 180px;
-    height: auto;
-    opacity: 0;
-    animation: logoSequence 2.5s ease-in-out forwards;
-}
-
-@keyframes logoSequence {
-    0% { opacity: 0; transform: scale(0.9); }
-    40% { opacity: 1; transform: scale(1); } 
-    60% { opacity: 1; }                      
-    100% { opacity: 0; transform: scale(1.05); } 
-}
-
-@keyframes fadeOutScreen { to { opacity: 0; visibility: hidden; } }
-
-/* ==========================================================================
-   SIDE NAVIGATION LAYOUT WRAPPERS
+   LAYOUT FIXES (Prevents Sidebar Breaking)
    ========================================================================= */
 .layout-side-wrapper {
     display: flex;
-    flex-direction: row !important;
-    min-height: 100vh;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
 }
 
 .viewport-main-wrapper {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     height: 100vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #000000 0%, #050505 100%);
 }
 
-/* ==========================================================================
-   STARK HIGH-CONTRAST VERTICAL SIDEBAR
-   ========================================================================= */
 .cobra-side-dock {
-    width: 70px;
+    width: 85px; /* Widened slightly to contain brand text cleanly */
     background-color: var(--sidebar-black);
     border-right: 1px solid var(--border-gray);
     display: flex;
@@ -96,163 +60,362 @@ body {
     padding: 2rem 0;
     justify-content: space-between;
     height: 100vh;
-    z-index: 10;
     flex-shrink: 0;
+    z-index: 100;
 }
 
 .dock-brand {
     font-family: 'SnakeStitch', sans-serif;
-    font-size: 1.1rem;
+    font-size: 0.95rem; /* Downscaled to guarantee text stays contained */
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     cursor: pointer;
     color: var(--cobra-white);
-    transition: transform 0.2s;
-}
-.dock-brand:hover { transform: scale(1.05); }
-.side-tabs-rail {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-    align-items: center;
+    transition: letter-spacing 0.3s ease, transform 0.2s;
+    text-shadow: 0 0 8px var(--glow-strength);
 }
 
-/* Stark Monochromatic Tab Card Layout */
-.cobra-tab-item {
-    position: relative;
-    width: 48px;
-    height: 48px;
-    border-radius: 4px;
+.dock-brand:hover {
+    transform: scale(1.05);
+    letter-spacing: 3px;
+}
+
+/* ==========================================================================
+   NAVIGATION HEADERS & SWITCHES
+   ========================================================================= */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    width: 100%;
+    border-bottom: 1px solid var(--border-gray);
+}
+
+/* Clean UI Upgrade: Styled interactive home indicator */
+.home-icon-btn {
+    background-color: transparent;
     border: 1px solid var(--border-gray);
-    background: #0d0d0d;
+    color: var(--cobra-white-muted);
+    font-size: 1rem;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    border-radius: 6px;
     cursor: pointer;
-    overflow: hidden;
-    transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
-    animation: tabSlideIn 0.3s ease-out forwards;
+    transition: all 0.2s ease;
 }
-
-@keyframes tabSlideIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-.cobra-tab-item.active-tab {
+.home-icon-btn:hover {
+    color: var(--cobra-white);
     border-color: var(--cobra-white);
-    background-color: #161616;
+    background: #111;
+    transform: translateY(-1px);
 }
 
-/* Monochromatic Particle Fluid Canvas Overlay Box */
-.tab-fluid-canvas {
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: #0d0d0d;
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px; /* Modern pill capsule design */
+    border: 1px solid var(--border-gray);
+    height: 38px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--cobra-white);
+    border-radius: 50%;
+    box-shadow: 0 0 8px #fff;
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* ==========================================================================
+   STARK HERO & PORTAL INTERFACES
+   ========================================================================= */
+.main-content {
+    flex-grow: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.portal-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    width: 100%;
+    min-height: 70vh;
+}
+
+.sub-welcome {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--cobra-white-muted);
+    margin-bottom: 0.75rem;
+}
+
+.portal-logo-text {
+    font-family: 'SnakeStitch', sans-serif;
+    font-size: 5.5rem;
+    color: var(--cobra-white);
+    letter-spacing: 6px;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(255,255,255,0.05);
+}
+
+.portal-search-box {
+    width: 100%;
+    max-width: 620px;
+    margin-bottom: 3rem;
+}
+
+.portal-search-input {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    font-size: 0.95rem;
+    background-color: #0c0c0c;
+    border: 1px solid var(--border-gray);
+    color: white;
+    border-radius: 6px;
+    outline: none;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 0.5px;
+}
+
+.portal-search-input:focus {
+    border-color: var(--cobra-white);
+    background-color: #111;
+    box-shadow: 0 0 25px rgba(255,255,255,0.03);
+}
+
+/* Monochromatic Clean Hub Buttons */
+.portal-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    max-width: 850px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .portal-buttons-grid { grid-template-columns: repeat(2, 1fr); }
+    .portal-logo-text { font-size: 3.5rem; }
+}
+
+.portal-hub-btn {
+    background-color: #0c0c0c;
+    color: var(--cobra-white-muted);
+    border: 1px solid var(--border-gray);
+    padding: 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.portal-hub-btn:hover {
+    background-color: #121212;
+    color: var(--cobra-white);
+    border-color: var(--cobra-white);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ARCADE PANEL & ADVANCED KINETIC SWIRL TRAIL ENGINE
+   ========================================================================= */
+.section-title {
+    margin-bottom: 2.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-gray);
+    padding-bottom: 0.75rem;
+    color: var(--cobra-white);
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2.5rem;
+    width: 100%;
+}
+
+.card-circle-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+}
+
+.card-circle-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--card-black);
+    border: 1px solid var(--border-gray);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-circle-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.4s ease;
+}
+
+/* Kinetic Swirl Overlay Canvas Layer */
+.swirl-text-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    background: rgba(0, 0, 0, 0.92);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s steps(4, end); /* Gives an intentional retro digital tick */
 }
 
-.cobra-tab-item.active-tab .tab-fluid-canvas { opacity: 0.9; }
-
-.tab-glyph-symbol {
+/* The Kinetic Swirling Trail Containers */
+.kinetic-trail-container {
     position: relative;
-    z-index: 2;
-    transition: transform 0.2s;
-    filter: grayscale(100%); /* Keeps symbols flat and monochromatic */
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.cobra-tab-item:hover .tab-glyph-symbol { transform: scale(1.1); }
 
-/* Compact close icon macro mapping */
-.tab-close-corner {
+/* Stacked text layers to form the spatial trail */
+.swirl-title-layer {
     position: absolute;
-    top: 1px;
-    right: 3px;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.2);
-    z-index: 3;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cobra-white);
+    text-align: center;
     opacity: 0;
-    transition: opacity 0.2s, color 0.2s;
+    transform: scale(0.3) rotate(-180deg);
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
 }
-.cobra-tab-item:hover .tab-close-corner { opacity: 1; }
-.tab-close-corner:hover { color: #ffffff; }
 
-.dock-footer-btn {
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--text-gray);
-    transition: color 0.2s, transform 0.2s;
+/* Delay configurations generating the physical depth shadow trail */
+.card-circle-wrapper:hover .swirl-title-layer.layer-primary {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    transition-delay: 0.15s;
+    z-index: 5;
 }
-.dock-footer-btn:hover { color: #ffffff; transform: rotate(30deg); }
+.card-circle-wrapper:hover .swirl-title-layer.layer-trail-1 {
+    opacity: 0.4;
+    color: #888;
+    transform: scale(0.85) rotate(-15deg);
+    transition-delay: 0.08s;
+    z-index: 4;
+}
+.card-circle-wrapper:hover .swirl-title-layer.layer-trail-2 {
+    opacity: 0.15;
+    color: #444;
+    transform: scale(0.7) rotate(-30deg);
+    transition-delay: 0.02s;
+    z-index: 3;
+}
+.swirl-category {
+    font-size: 0.7rem;
+    color: var(--cobra-white-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 0.25rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+}
 
-/* Monochromatic Settings Switches */
-.cobra-switch input:checked + .cobra-toggle-slider { background-color: var(--cobra-white); border-color: var(--cobra-white); }
-.cobra-toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
-    background-color: #888;
-    transition: .2s;
-    border-radius: 50%;
+/* Interactive Card Triggers */
+.card-circle-wrapper:hover .card-circle-inner {
+    border-color: var(--cobra-white);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
 }
-.cobra-switch input:checked + .cobra-toggle-slider:before { transform: translateX(24px); background-color: #000; }
+.card-circle-wrapper:hover .card-circle-thumb {
+    transform: scale(1.1) rotate(3deg);
+    filter: blur(2px) grayscale(100%);
+}
+.card-circle-wrapper:hover .swirl-text-overlay { opacity: 1; }
+.card-circle-wrapper:hover .swirl-category { opacity: 1; transform: translateY(0); }
 
 /* ==========================================================================
-   VIEWPORTS & HUB INTERFACES
+   ACTIVE VIEWPORTS TERMINAL
    ========================================================================= */
 .view-zone { display: none; width: 100%; }
-.view-zone.active { display: block; }
-.coming-soon-text { color: var(--text-gray); margin-top: 2rem; font-size: 1rem; text-align: center; }
-.top-bar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2.5rem; width: 100%; }
-.home-icon-btn { background-color: var(--sidebar-black); border: 1px solid var(--border-gray); color: var(--text-white); font-size: 1.1rem; padding: 0.5rem; border-radius: 4px; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s; }
-.home-icon-btn:hover { border-color: var(--cobra-white); }
-.top-bar-right { display: flex; align-items: center; gap: 1rem; }
-.user-profile { display: flex; align-items: center; gap: 0.5rem; background: var(--sidebar-black); padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid var(--border-gray); height: 36px; }
-.status-dot { width: 6px; height: 6px; background-color: #ffffff; border-radius: 50%; }
+.view-zone.active { display: block; animation: viewFadeIn 0.35s ease-out; }
 
-.main-content { flex-grow: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem; }
-.portal-hero { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 1rem; width: 100%; min-height: 65vh; }
-.sub-welcome { font-size: 1rem; font-weight: 600; letter-spacing: 6px; color: var(--text-gray); margin-bottom: 0.5rem; }
-.portal-logo-text { font-family: 'SnakeStitch', sans-serif; font-size: 5rem; color: var(--cobra-white); letter-spacing: 4px; margin-bottom: 2.5rem; }
-.portal-search-box { width: 100%; max-width: 600px; margin-bottom: 3.5rem; }
-.portal-search-input { width: 100%; padding: 1rem 1.5rem; font-size: 1rem; background-color: var(--sidebar-black); border: 1px solid var(--border-gray); color: white; border-radius: 4px; outline: none; text-align: center; transition: border-color 0.2s; }
-.portal-search-input:focus { border-color: var(--cobra-white); }
+@keyframes viewFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-.portal-buttons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; max-width: 850px; width: 100%; }
-@media (max-width: 768px) { .portal-buttons-grid { grid-template-columns: repeat(2, 1fr); } .portal-logo-text { font-size: 3.5rem; } }
-.portal-hub-btn { background-color: var(--sidebar-black); color: var(--text-white); border: 1px solid var(--border-gray); padding: 1.1rem; font-size: 0.95rem; font-weight: 600; border-radius: 4px; cursor: pointer; transition: border-color 0.2s, background-color 0.2s; }
-.portal-hub-btn:hover { background-color: #111; border-color: var(--cobra-white); }
+.coming-soon-text { color: var(--cobra-white-muted); margin-top: 3rem; font-size: 0.9rem; text-align: center; letter-spacing: 0.5px; }
 
-/* ARCADE PANEL */
-.section-title { margin-bottom: 2.5rem; font-size: 1.5rem; font-weight: 600; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-gray); padding-bottom: 0.5rem; }
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 2rem; width: 100%; justify-content: center; }
-.card-circle-wrapper { position: relative; width: 100%; aspect-ratio: 1 / 1; cursor: pointer; perspective: 1000px; }
-.card-circle-inner { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background-color: var(--card-black); border: 1px solid var(--border-gray); transition: border-color 0.3s, box-shadow 0.3s; }
-.card-circle-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease, filter 0.3s; }
-.fallback-circle-box { display: flex; width: 100%; height: 100%; background-color: #0f0f14; align-items: center; justify-content: center; color: #555; font-size: 2rem; }
-.swirl-text-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
-.swirl-title { font-size: 1.1rem; font-weight: bold; color: var(--cobra-white); text-transform: uppercase; letter-spacing: 0.5px; text-align: center; transform: scale(0.8) translateY(5px); transition: transform 0.3s; }
-.swirl-category { font-size: 0.75rem; color: var(--text-gray); margin-top: 0.25rem; transform: scale(0.8) translateY(5px); transition: transform 0.3s 0.05s; }
+/* Dynamic Rails System */
+.side-tabs-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+    align-items: center;
+}
 
-.card-circle-wrapper:hover .card-circle-inner { border-color: var(--cobra-white); box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
-.card-circle-wrapper:hover .card-circle-thumb { transform: scale(1.05); filter: blur(3px) grayscale(100%); }
-.card-circle-wrapper:hover .swirl-text-overlay { opacity: 1; }
-.card-circle-wrapper:hover .swirl-title, .card-circle-wrapper:hover .swirl-category { transform: scale(1) translateY(0); }
+.cobra-tab-item {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    border: 1px solid var(--border-gray);
+    background: #0d0d0d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
-.player-container { width: 100%; background-color: var(--sidebar-black); border: 1px solid var(--border-gray); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
-.player-header { display: flex; justify-content: space-between; align-items: center; }
-.player-controls { display: flex; gap: 0.5rem; }
-.control-btn { background-color: var(--card-black); color: var(--text-white); border: 1px solid var(--border-gray); padding: 0.4rem 0.8rem; font-weight: 600; font-size: 0.85rem; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; }
-.control-btn:hover { background-color: var(--cobra-white); color: #000; border-color: var(--cobra-white); }
-.iframe-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 4px; overflow: hidden; background-color: #000; border: 1px solid var(--border-gray); }
-.iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.cobra-tab-item:hover, .cobra-tab-item.active-tab {
+    border-color: var(--cobra-white);
+    background: #141414;
+}

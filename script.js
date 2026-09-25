@@ -2,14 +2,15 @@
 window.openTabs = []; 
 window.fluidAnimations = {}; 
 
-const glyphMap = {
-    "proxy-zone": "🔒",
-    "games-zone": "🎮",
-    "music-zone": "🎵",
-    "movies-zone": "🎬",
-    "chat-zone": "💬",
-    "apps-zone": "📱",
-    "player-zone": "🎯"
+// Updated to map directly to your brand new asset images
+const iconMap = {
+    "proxy-zone": "Assets/Img/proxyicon.png",
+    "games-zone": "Assets/Img/gamesicon.png",
+    "music-zone": "Assets/Img/musicicon.png",
+    "movies-zone": "Assets/Img/movieicon.png",
+    "chat-zone": "Assets/Img/chaticon.png",
+    "apps-zone": "Assets/Img/appicon.png",
+    "player-zone": "Assets/Img/gamesicon.png" // Reuses your game icon for the active viewport
 };
 
 window.switchZone = function(zoneId) {
@@ -29,8 +30,8 @@ window.switchZone = function(zoneId) {
 
     const exists = window.openTabs.some(tab => tab.id === zoneId);
     if (!exists) {
-        const icon = glyphMap[zoneId] || "📁";
-        window.openTabs.push({ id: zoneId, symbol: icon });
+        const iconPath = iconMap[zoneId] || "Assets/Img/SiteLogo.png";
+        window.openTabs.push({ id: zoneId, path: iconPath });
     }
 
     window.refreshTabsUI(zoneId);
@@ -46,10 +47,11 @@ window.refreshTabsUI = function(activeZoneId) {
         tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''}`;
         tabEl.id = `side-tab-${tab.id}`;
         
+        // Replaced flat text emoji placeholder with a styled monochromatic image block
         tabEl.innerHTML = `
             <canvas class="tab-fluid-canvas" id="canvas-${tab.id}"></canvas>
             <span class="tab-close-corner" title="Close Window">×</span>
-            <span class="tab-glyph-symbol">${tab.symbol}</span>
+            <img src="${tab.path}" class="tab-glyph-symbol" alt="Tab Icon" style="width: 20px; height: 20px; object-fit: contain; position: relative; z-index: 2; filter: brightness(0) invert(1);">
         `;
 
         tabEl.addEventListener("click", (e) => {
@@ -89,7 +91,6 @@ window.initFluidCanvas = function(tabId) {
             growth: (Math.random() - 0.5) * 0.02
         });
     }
-
     if (window.fluidAnimations[tabId]) { cancelAnimationFrame(window.fluidAnimations[tabId]); }
     function runAnimationLoop() {
         const toggleSwitch = document.getElementById("toggle-fluid-sim");
@@ -120,6 +121,7 @@ window.initFluidCanvas = function(tabId) {
     }
     runAnimationLoop();
 };
+
 window.closeTabItem = function(zoneId) {
     if (window.fluidAnimations[zoneId]) {
         cancelAnimationFrame(window.fluidAnimations[zoneId]);
@@ -175,7 +177,6 @@ window.launchGameUrl = function(targetUrl, title) {
         };
     }
 };
-
 window.renderGames = function(filterText = "") {
     const gamesGrid = document.getElementById("games-grid-container");
     if (!gamesGrid) return;

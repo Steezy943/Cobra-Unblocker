@@ -64,8 +64,6 @@ window.refreshTabsUI = function(activeZoneId) {
         });
 
         tabsDock.appendChild(tabEl);
-
-        // Deploy white smoke simulation thread loop
         window.initFluidCanvas(tab.id);
     });
 };
@@ -76,11 +74,10 @@ window.initFluidCanvas = function(tabId) {
     if (!canvas) return;
     
     const ctx = canvas.getContext("2d");
-    canvas.width = 48;
-    canvas.height = 48;
+    canvas.width = 44;
+    canvas.height = 44;
 
     let particles = [];
-    // Populate layout array nodes with custom velocity settings
     for (let i = 0; i < 15; i++) {
         particles.push({
             x: Math.random() * canvas.width,
@@ -101,7 +98,6 @@ window.initFluidCanvas = function(tabId) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         if (animationAllowed) {
-            // Draw a subtle translucent black backdrop slate trail
             ctx.fillStyle = "rgba(10, 10, 10, 0.15)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -110,25 +106,20 @@ window.initFluidCanvas = function(tabId) {
                 p.y += p.vy;
                 p.radius += p.growth;
 
-                // Edge bounce macro parameters
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
                 if (p.radius < 1 || p.radius > 6) p.growth *= -1;
 
-                // Render pure bone-white monochromatic nodes
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
                 ctx.fill();
             });
         }
-
         window.fluidAnimations[tabId] = requestAnimationFrame(runAnimationLoop);
     }
-
     runAnimationLoop();
 };
-
 window.closeTabItem = function(zoneId) {
     if (window.fluidAnimations[zoneId]) {
         cancelAnimationFrame(window.fluidAnimations[zoneId]);
@@ -184,13 +175,13 @@ window.launchGameUrl = function(targetUrl, title) {
         };
     }
 };
+
 window.renderGames = function(filterText = "") {
     const gamesGrid = document.getElementById("games-grid-container");
     if (!gamesGrid) return;
     gamesGrid.innerHTML = "";
 
     const catalog = window.gamesList || [];
-
     const filtered = catalog.filter(game => 
         game.title.toLowerCase().includes(filterText.toLowerCase())
     );
@@ -209,7 +200,11 @@ window.renderGames = function(filterText = "") {
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div class="fallback-circle-box">🎮</div>
                 <div class="swirl-text-overlay">
-                    <div class="swirl-title">${game.title}</div>
+                    <div class="kinetic-trail-container">
+                        <div class="swirl-title-layer layer-trail-2">${game.title}</div>
+                        <div class="swirl-title-layer layer-trail-1">${game.title}</div>
+                        <div class="swirl-title-layer layer-primary">${game.title}</div>
+                    </div>
                     <div class="swirl-category">${game.category}</div>
                 </div>
             </div>
@@ -218,7 +213,6 @@ window.renderGames = function(filterText = "") {
         card.addEventListener("click", () => {
             window.launchGameUrl(game.gameUrl, game.title);
         });
-
         gamesGrid.appendChild(card);
     });
 };

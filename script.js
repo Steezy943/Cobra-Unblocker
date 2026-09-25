@@ -1,8 +1,7 @@
-// 🚀 COBRA CORE GLOBAL NAVIGATION & TAB MONITOR
-window.openTabs = []; 
+// 🚀 COBRA ADVANCED GLOBAL NAV ARCHITECTURE & KINETIC TAB SYSTEM
+window.openTabs = []; // Array nodes payload: { id: string, label: string, isPinned: boolean }
 
 window.switchZone = function(zoneId) {
-    // 1. Structural View Component Swap
     const viewZones = document.querySelectorAll(".view-zone");
     viewZones.forEach(zone => zone.classList.remove("active"));
     
@@ -15,67 +14,110 @@ window.switchZone = function(zoneId) {
         console.error("Cobra Router Error: Target zone #" + zoneId + " not found!");
     }
 
-    // 2. Dashboard and Settings views shouldn't create permanent standalone ribbon items
+    // Dashboard and settings views act as external control spaces outside the navigation ribbon
     if (zoneId === "dashboard-zone" || zoneId === "settings-zone") {
         document.querySelectorAll(".cobra-tab-item").forEach(t => t.classList.remove("active-tab"));
+        const slider = document.getElementById("cobra-liquid-slider");
+        if (slider) { slider.style.width = "0px"; } // Turn slider off off-view
         return;
     }
 
-    // 3. Automated Tab Generator
-    const exists = window.openTabs.some(tab => tab.id === zoneId);
-    if (!exists) {
+    // Verify if entry array node instance is current
+    const foundIndex = window.openTabs.findIndex(tab => tab.id === zoneId);
+    if (foundIndex === -1) {
         let friendlyLabel = zoneId.replace("-zone", "").toUpperCase();
-        if (zoneId === "player-zone") friendlyLabel = "🎮 ACTIVE GAME";
+        if (zoneId === "player-zone") friendlyLabel = "🎮 PLAYER LAYER";
         
-        window.openTabs.push({ id: zoneId, label: friendlyLabel });
+        window.openTabs.push({ id: zoneId, label: friendlyLabel, isPinned: false });
     }
 
     window.refreshTabsUI(zoneId);
 };
 
-// Redraws the upper workspace ribbon dock options dynamically
+// Orchestrates DOM generation framework overlays
 window.refreshTabsUI = function(activeZoneId) {
     const tabsDock = document.getElementById("cobra-tabs-dock");
     if (!tabsDock) return;
     tabsDock.innerHTML = "";
 
+    // Sort order logic: keep pinned items locked cleanly to the left margin
+    window.openTabs.sort((a, b) => (b.isPinned - a.isPinned));
+
     window.openTabs.forEach(tab => {
         const tabEl = document.createElement("div");
-        tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''}`;
+        tabEl.id = `tab-anchor-${tab.id}`;
+        tabEl.className = `cobra-tab-item ${tab.id === activeZoneId ? 'active-tab' : ''} ${tab.isPinned ? 'pinned-tab' : ''}`;
         
         tabEl.innerHTML = `
+            <div class="tab-status-pulse"></div>
             <span class="tab-title-text">${tab.label}</span>
-            <span class="tab-close-btn" data-close="${tab.id}">×</span>
+            <div class="tab-actions-group">
+                <span class="tab-pin-toggle" title="Pin Task Window">📌</span>
+                <span class="tab-close-btn" title="Close Panel">×</span>
+            </div>
         `;
 
         // Switch to the target view zone on click
         tabEl.addEventListener("click", (e) => {
-            if (e.target.classList.contains("tab-close-btn")) return; 
+            if (e.target.classList.contains('tab-close-btn') || e.target.classList.contains('tab-pin-toggle')) return;
             window.switchZone(tab.id);
         });
 
+        // Pin button trigger handler
+        const pinBtn = tabEl.querySelector(".tab-pin-toggle");
+        pinBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            tab.isPinned = !tab.isPinned;
+            window.refreshTabsUI(activeZoneId);
+        });
+
         // Close button click listener
-        const closeX = tabEl.querySelector(".tab-close-btn");
-        closeX.addEventListener("click", (e) => {
+        const closeBtn = tabEl.querySelector(".tab-close-btn");
+        closeBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             window.closeTabItem(tab.id);
         });
 
         tabsDock.appendChild(tabEl);
     });
+
+    // Fire the hardware-accelerated liquid animation update loop frame
+    setTimeout(() => { window.animateLiquidSlider(activeZoneId); }, 40);
 };
 
-// Closes a workspace tab and returns the view to a safe baseline
+// Liquid Slide Physics Calculations Engine
+window.animateLiquidSlider = function(activeZoneId) {
+    const slider = document.getElementById("cobra-liquid-slider");
+    const activeTabEl = document.getElementById(`tab-anchor-${activeZoneId}`);
+    const tabsDock = document.getElementById("cobra-tabs-dock");
+    
+    if (!slider || !tabsDock) return;
+    
+    if (!activeTabEl) {
+        slider.style.width = "0px";
+        return;
+    }
+
+    // Measure the exact position of the active tab element relative to the dock container row
+    const dockRect = tabsDock.getBoundingClientRect();
+    const tabRect = activeTabEl.getBoundingClientRect();
+    
+    const offsetLeft = tabRect.left - dockRect.left;
+    const currentWidth = tabRect.width;
+
+    // Apply high-performance CSS transform animations instead of changing slow positioning variables
+    slider.style.width = `${currentWidth}px`;
+    slider.style.transform = `translateX(${offsetLeft}px)`;
+};
+
 window.closeTabItem = function(zoneId) {
     window.openTabs = window.openTabs.filter(tab => tab.id !== zoneId);
     
-    // Clear the game frame if closing the active player viewport
     if (zoneId === "player-zone") {
         const iframe = document.getElementById("cobra-game-iframe");
         if (iframe) iframe.src = "";
     }
 
-    // Fallback routing logic
     if (window.openTabs.length > 0) {
         const nextTarget = window.openTabs[window.openTabs.length - 1].id;
         window.switchZone(nextTarget);
@@ -97,6 +139,7 @@ window.launchGameUrl = function(targetUrl, title) {
             if (iframe.requestFullscreen) iframe.requestFullscreen();
             else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
         };
+
         document.getElementById("btn-about-blank").onclick = () => {
             const popup = window.open("about:blank", "_blank");
             if (!popup) {

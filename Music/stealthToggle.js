@@ -4,7 +4,7 @@
 (function() {
     
     // 🎛️ CORE SWITCH: Set to true to LOCK the view, set to false to UNLOCK it instantly.
-    const MAINTENANCE_MODE = true; 
+    const MAINTENANCE_MODE = false; 
 
     // Define which layout zone this copy of the script is protecting.
     // Options: "chat-zone", "music-zone", "proxy-zone", "movies-zone", "apps-zone"

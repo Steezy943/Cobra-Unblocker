@@ -9,7 +9,8 @@
     
     <!-- Core site styles stylesheets cascade -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="Chat/chat.css"> <!-- Linked independent chat styles module path -->
+    <link rel="stylesheet" href="Chat/chat.css">  <!-- Linked chat styles framework -->
+    <link rel="stylesheet" href="Proxy/proxy.css"> <!-- Linked google-replica proxy styles framework -->
     <link rel="stylesheet" href="disclaimer.css">
 </head>
 <body>
@@ -111,8 +112,12 @@
                     <div id="cobra-chat-mount"></div>
                 </div>
 
+                <!-- 3. PROXY NODE SEARCH MOCKUP HOOK -->
+                <div id="proxy-zone" class="view-zone">
+                    <!-- Injected dynamically by Proxy/proxy.js to house the Google replica UI -->
+                </div>
+
                 <!-- OTHER NAV CODES PANELS -->
-                <div id="proxy-zone" class="view-zone"><h2 class="section-title">🔒 Proxy Node</h2><p class="coming-soon-text">Stealth terminal configurations loading...</p></div>
                 <div id="music-zone" class="view-zone"><h2 class="section-title">🎵 Music Hub</h2><p class="coming-soon-text">Audio streaming integration interface...</p></div>
                 <div id="movies-zone" class="view-zone"><h2 class="section-title">🎬 Movie Core</h2><p class="coming-soon-text">Decrypted video streaming panels loading...</p></div>
                 <div id="apps-zone" class="view-zone"><h2 class="section-title">📱 Application Node</h2><p class="coming-soon-text">Sandboxed micro-application containers loading...</p></div>
@@ -125,7 +130,8 @@
     <!-- SCRIPT LIFECYCLES ORDER -->
     <script src="games.js"></script>
     <script src="script.js"></script>
-    <script src="Chat/chat.js"></script> <!-- Linked chat middleware controller module -->
+    <script src="Chat/chat.js"></script>  <!-- Chat routing middleware controller -->
+    <script src="Proxy/proxy.js"></script> <!-- Google replica proxy engine controller -->
     <script src="disclaimerbase.js"></script>
 </body>
 </html>

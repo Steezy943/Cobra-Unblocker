@@ -27,14 +27,14 @@ window.initCobraChat = async function() {
         <div class="chat-container-layout" style="position: relative;">
             
             <!-- COBRA AUTH SYSTEM PROTECTION CONTROLLER LAYER SHIELD -->
-            ${!isAuthed ? `
+            \${!isAuthed ? `
             <div class="chat-auth-shield">
                 <div class="auth-panel-card" id="cobra-auth-card-viewport">
-                    <h2 class="auth-notice-head">Terminal Access Denied</h2>
+                    <h2 class="auth-notice-head">Make an account lol</h2>
                     <p class="auth-notice-sub">Login to access and talk in chat!</p>
                     
                     <div class="auth-form-cluster">
-                        <input type="email" id="auth-email-field" class="auth-terminal-input" placeholder="Enter security email profile...">
+                        <input type="text" id="auth-username-field" class="auth-terminal-input" placeholder="Enter custom username...">
                         <input type="password" id="auth-pass-field" class="auth-terminal-input" placeholder="Enter network code passphrase...">
                     </div>
                     
@@ -62,14 +62,14 @@ window.initCobraChat = async function() {
                 <!-- ACCOUNT FOOTER AREA -->
                 <div class="chat-user-footer">
                     <div class="user-avatar-circle">
-                        <span>${avatarBadge}</span>
-                        <div class="user-status-indicator" style="background: ${isAuthed ? '#00ff66' : '#ff3333'};"></div>
+                        <span>\${avatarBadge}</span>
+                        <div class="user-status-indicator" style="background: \${isAuthed ? '#00ff66' : '#ff3333'};"></div>
                     </div>
                     <div class="user-meta-capsule">
-                        <span class="user-display-name">${userLabel}</span>
-                        <span class="user-status-text">${isAuthed ? 'Encrypted Link Live' : 'Link Offline'}</span>
+                        <span class="user-display-name">\${userLabel}</span>
+                        <span class="user-status-text">\${isAuthed ? 'Encrypted Link Live' : 'Link Offline'}</span>
                     </div>
-                    ${isAuthed ? `<span id="btn-terminal-logout" title="Disconnect Session" style="cursor:pointer; font-size:0.8rem; margin-left:auto; color:#444;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#444'">❌</span>` : ''}
+                    \${isAuthed ? `<span id="btn-terminal-logout" title="Disconnect Session" style="cursor:pointer; font-size:0.8rem; margin-left:auto; color:#444;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#444'">❌</span>` : ''}
                 </div>
             </aside>
 
@@ -89,12 +89,11 @@ window.initCobraChat = async function() {
 
                 <div class="chat-input-outer-wrapper">
                     <div class="chat-input-inner-bar">
-                        <input type="text" id="chat-live-input-box" ${!isAuthed ? 'disabled' : ''} placeholder="${isAuthed ? 'Message #general-discussion...' : 'Access encrypted: Authentication mandatory'}">
+                        <input type="text" id="chat-live-input-box" !isAuthed ? 'disabled' : '' placeholder="{isAuthed ? 'Message #general-discussion...' : 'Access encrypted: Authentication mandatory'}">
                         <div class="chat-input-macros"><span id="chat-submit-trigger" style="cursor:pointer; color:#fff;">⚡</span></div>
                     </div>
                 </div>
             </div>
-
             <!-- COLUMN 3: ROSTER OVERLAY -->
             <aside class="chat-members-sidebar">
                 <div class="members-category-label">Terminal Core</div>
@@ -109,6 +108,7 @@ window.initCobraChat = async function() {
             </aside>
         </div>
     `;
+
     // B. EXIT INITIALIZATION EARLY IF AUTH LAYER HOOK LACKS TOKENS
     if (!isAuthed) {
         setupAuthenticationListeners();
@@ -184,18 +184,17 @@ window.initCobraChat = async function() {
     if (logs) {
         logs.forEach(msg => renderMessagePacket(msg.user_email, msg.message, msg.created_at));
     }
-
     supabase
         .channel('room-changes')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
             const freshPacket = payload.new;
-            renderMessagePacket(freshPacket.user_email, freshPacket.message, freshPacket.created_at);
+            renderMessagePacket(freshPacket.user_email, freshPacket.message, freshPacket.freshPacket.created_at);
         })
         .subscribe();
 
     // F. IN-LINE ROUTER FOR SIGN-UP/LOGIN FORM OVERLAYS
     function setupAuthenticationListeners() {
-        const emailIn = document.getElementById("auth-email-field");
+        const userIn = document.getElementById("auth-username-field");
         const passIn = document.getElementById("auth-pass-field");
         const submitBtn = document.getElementById("btn-execute-login");
         const toggleBtn = document.getElementById("btn-toggle-auth-mode");
@@ -205,32 +204,37 @@ window.initCobraChat = async function() {
         if (toggleBtn) {
             toggleBtn.onclick = () => {
                 registerMode = !registerMode;
-                document.querySelector(".auth-notice-head").textContent = registerMode ? "Create Node Account" : "Terminal Access Denied";
-                noticeSub.textContent = registerMode ? "Register a free security email to join Cobra discussion tracks." : "Login to access and talk in chat!";
+                document.querySelector(".auth-notice-head").textContent = registerMode ? "Create Node Account" : "Make an account lol";
+                noticeSub.textContent = registerMode ? "Register a free security profile name to join Cobra discussion tracks." : "Login to access and talk in chat!";
                 submitBtn.textContent = registerMode ? "Register Account" : "Sign In";
                 toggleBtn.textContent = registerMode ? "Already registered? Sign back in" : "Need a terminal account? Register node";
             };
         }
+
         if (submitBtn) {
             submitBtn.onclick = async () => {
-                const em = emailIn.value.trim();
+                const usernameRaw = userIn.value.trim();
                 const ps = passIn.value;
-                if (!em || !ps) return;
+                if (!usernameRaw || !ps) return;
+
+                // Programmatically convert pure text usernames into database email keys safely
+                const computedEmail = `${usernameRaw.toLowerCase()}@cobra.io`;
 
                 noticeSub.style.color = "#ff3333";
                 if (registerMode) {
                     noticeSub.textContent = "Creating profile credentials matrix...";
-                    const { error } = await supabase.auth.signUp({ email: em, password: ps });
+                    const { error } = await supabase.auth.signUp({ email: computedEmail, password: ps });
                     if (error) { noticeSub.textContent = error.message; }
                     else {
                         noticeSub.style.color = "#00ff66";
                         noticeSub.textContent = "Registration successful! You can sign in now.";
                         registerMode = false;
                         submitBtn.textContent = "Sign In";
+                        document.querySelector(".auth-notice-head").textContent = "Make an account lol";
                     }
                 } else {
                     noticeSub.textContent = "Verifying encrypted credentials token...";
-                    const { error } = await supabase.auth.signInWithPassword({ email: em, password: ps });
+                    const { error } = await supabase.auth.signInWithPassword({ email: computedEmail, password: ps });
                     if (error) { noticeSub.textContent = error.message; }
                     else { window.initCobraChat(); }
                 }

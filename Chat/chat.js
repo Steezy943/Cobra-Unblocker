@@ -94,6 +94,7 @@ window.initCobraChat = async function() {
                     </div>
                 </div>
             </div>
+
             <!-- COLUMN 3: ROSTER OVERLAY -->
             <aside class="chat-members-sidebar">
                 <div class="members-category-label">Terminal Core</div>
@@ -184,11 +185,12 @@ window.initCobraChat = async function() {
     if (logs) {
         logs.forEach(msg => renderMessagePacket(msg.user_email, msg.message, msg.created_at));
     }
+
     supabase
         .channel('room-changes')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
             const freshPacket = payload.new;
-            renderMessagePacket(freshPacket.user_email, freshPacket.message, freshPacket.freshPacket.created_at);
+            renderMessagePacket(freshPacket.user_email, freshPacket.message, freshPacket.created_at);
         })
         .subscribe();
 
@@ -227,7 +229,7 @@ window.initCobraChat = async function() {
                     if (error) { noticeSub.textContent = error.message; }
                     else {
                         noticeSub.style.color = "#00ff66";
-                        noticeSub.textContent = "Registration successful! You can sign in now.";
+                        noticeSub.textContent = "Registration worked! You can sign in now.";
                         registerMode = false;
                         submitBtn.textContent = "Sign In";
                         document.querySelector(".auth-notice-head").textContent = "Make an account lol";

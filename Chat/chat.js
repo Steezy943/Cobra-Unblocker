@@ -1,15 +1,9 @@
-// 💬 COBRA TERMINAL REMADE SUPABASE REALTIME MULTI-CHANNEL ENGINE
-const NEW_SUPABASE_URL = "https://hgpzlhwznbaqjcvddjpt.supabase.co";
+// 💬 COBRA TERMINAL SECURE SUPABASE REALTIME CHAT ENGINE WITH AUTHENTICATION
+const NEW_SUPABASE_URL = "https://supabase.co";
 const NEW_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhncHpsaHd6bmJhcWpjdmRkanB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE4MDQzNTEsImV4cCI6MjEwNzM4MDM1MX0.VrhpMbqnMqnspu4n42lhE0mYvO-DnIfTwo4vMtrKYKw";
 
 let supabase = null;
-
-// Clean verification loop stops initialization crashes if credentials aren't ready yet
-if (
-    NEW_SUPABASE_URL && 
-    !NEW_SUPABASE_URL.includes("YOUR_NEW") && 
-    typeof window.supabase !== 'undefined'
-) {
+if (typeof window.supabase !== 'undefined') {
     supabase = window.supabase.createClient(NEW_SUPABASE_URL, NEW_SUPABASE_ANON_KEY);
 }
 
@@ -17,12 +11,41 @@ window.initCobraChat = async function() {
     const chatMount = document.getElementById("cobra-chat-mount");
     if (!chatMount) return;
 
-    const isConnected = supabase !== null;
+    // 1. Check for an active user session token layout parameters
+    let activeUser = null;
+    if (supabase) {
+        const { data: { user } } = await supabase.auth.getUser();
+        activeUser = user;
+    }
 
-    // A. BONE-DRY VIEW COMPONENT GENERATION
+    const isAuthed = activeUser !== null;
+    const userLabel = isAuthed ? activeUser.email.split('@')[0] : "Guest_Node";
+    const avatarBadge = isAuthed ? userLabel.substring(0, 2).toUpperCase() : "??";
+
+    // A. INJECT THE SYSTEM FRAMEWORK BASE MARKUP
     chatMount.innerHTML = `
-        <div class="chat-container-layout">
+        <div class="chat-container-layout" style="position: relative;">
             
+            <!-- COBRA AUTH SYSTEM PROTECTION CONTROLLER LAYER SHIELD -->
+            ${!isAuthed ? `
+            <div class="chat-auth-shield">
+                <div class="auth-panel-card" id="cobra-auth-card-viewport">
+                    <h2 class="auth-notice-head">Terminal Access Denied</h2>
+                    <p class="auth-notice-sub">Login to access and talk in chat!</p>
+                    
+                    <div class="auth-form-cluster">
+                        <input type="email" id="auth-email-field" class="auth-terminal-input" placeholder="Enter security email profile...">
+                        <input type="password" id="auth-pass-field" class="auth-terminal-input" placeholder="Enter network code passphrase...">
+                    </div>
+                    
+                    <div class="auth-action-btn-row">
+                        <button class="auth-submit-node" id="btn-execute-login">Sign In</button>
+                    </div>
+                    <span class="auth-toggle-alt-link" id="btn-toggle-auth-mode">Need a terminal account? Register node</span>
+                </div>
+            </div>
+            ` : ''}
+
             <!-- COLUMN 1: SIDEBAR TEXT CHANNELS -->
             <aside class="chat-sidebar-channels">
                 <div class="chat-server-header">
@@ -36,73 +59,89 @@ window.initCobraChat = async function() {
                     </div>
                 </div>
                 
-                <!-- ACCOUNT FOOTER -->
+                <!-- ACCOUNT FOOTER AREA -->
                 <div class="chat-user-footer">
                     <div class="user-avatar-circle">
-                        <span>P1</span>
-                        <div class="user-status-indicator" style="background: ${isConnected ? '#00ff66' : '#ff3333'};"></div>
+                        <span>${avatarBadge}</span>
+                        <div class="user-status-indicator" style="background: ${isAuthed ? '#00ff66' : '#ff3333'};"></div>
                     </div>
                     <div class="user-meta-capsule">
-                        <span class="user-display-name">Player_One</span>
-                        <span class="user-status-text">${isConnected ? 'Supabase Realtime Live' : 'Offline Demo Mode'}</span>
+                        <span class="user-display-name">${userLabel}</span>
+                        <span class="user-status-text">${isAuthed ? 'Encrypted Link Live' : 'Link Offline'}</span>
                     </div>
+                    ${isAuthed ? `<span id="btn-terminal-logout" title="Disconnect Session" style="cursor:pointer; font-size:0.8rem; margin-left:auto; color:#444;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#444'">❌</span>` : ''}
                 </div>
             </aside>
 
-            <!-- COLUMN 2: MAIN SCROLL VIEWPORT -->
+            <!-- COLUMN 2: MESSAGE FEED VIEWPORT -->
             <div class="chat-main-feed">
                 <header class="chat-feed-topbar">
                     <div class="active-meta-left"><span class="hashtag-symbol">#</span><span>general-discussion</span></div>
                 </header>
 
                 <div class="chat-messages-container" id="chat-stream-scroller">
-                    <div class="chat-welcome-anchor" id="chat-anchor-node">
+                    <div class="chat-welcome-anchor">
                         <div class="anchor-hashtag-badge">#</div>
                         <h2 class="anchor-main-title">Welcome to #general-discussion!</h2>
-                        <p class="anchor-sub-desc">This is the start of a clean, database-synchronized data stream corridor.</p>
+                        <p class="anchor-sub-desc">This is the start of an encrypted, database-synchronized communication channel.</p>
                     </div>
                 </div>
 
                 <div class="chat-input-outer-wrapper">
                     <div class="chat-input-inner-bar">
-                        <input type="text" id="chat-live-input-box" placeholder="Message #general-discussion...">
+                        <input type="text" id="chat-live-input-box" ${!isAuthed ? 'disabled' : ''} placeholder="${isAuthed ? 'Message #general-discussion...' : 'Access encrypted: Authentication mandatory'}">
                         <div class="chat-input-macros"><span id="chat-submit-trigger" style="cursor:pointer; color:#fff;">⚡</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- COLUMN 3: ROSTER -->
+            <!-- COLUMN 3: ROSTER OVERLAY -->
             <aside class="chat-members-sidebar">
-                <div class="members-category-label">Terminal Nodes</div>
+                <div class="members-category-label">Terminal Core</div>
                 <div class="chat-member-card-row">
                     <div class="member-avatar-badge" style="border-color: #fff; color: #fff;">👑</div>
                     <span class="member-username-string" style="color: #fff; font-weight: 600;">Steezy943</span>
                 </div>
                 <div class="chat-member-card-row">
-                    <div class="member-avatar-badge">P1</div>
-                    <span class="member-username-string">Player_One</span>
+                    <div class="member-avatar-badge">${avatarBadge}</div>
+                    <span class="member-username-string">${userLabel}</span>
                 </div>
             </aside>
         </div>
     `;
+    // B. EXIT INITIALIZATION EARLY IF AUTH LAYER HOOK LACKS TOKENS
+    if (!isAuthed) {
+        setupAuthenticationListeners();
+        return;
+    }
 
     const messageInput = document.getElementById("chat-live-input-box");
     const submitTrigger = document.getElementById("chat-submit-trigger");
     const streamScroller = document.getElementById("chat-stream-scroller");
+    const logoutBtn = document.getElementById("btn-terminal-logout");
 
-    // B. TEXT PACKET GRAPHICS RENDER LOOP
-    function appendMessageToLayout(author, avatar, text, timestamp) {
+    if (logoutBtn) {
+        logoutBtn.onclick = async () => {
+            await supabase.auth.signOut();
+            window.initCobraChat();
+        };
+    }
+
+    // C. STREAM INCOMING DATA BLOCKS ONTO ELEMENT VIEWPORT
+    function renderMessagePacket(senderEmail, text, createdTime) {
         const row = document.createElement("div");
         row.className = "live-message-row";
 
-        const time = timestamp ? new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now";
+        const senderLabel = senderEmail ? senderEmail.split('@')[0] : "Unknown_User";
+        const initialSymbol = senderLabel.substring(0, 2).toUpperCase();
+        const formattedTime = createdTime ? new Date(createdTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now";
 
         row.innerHTML = `
-            <div class="msg-avatar-fallback">${avatar}</div>
+            <div class="msg-avatar-fallback">${initialSymbol}</div>
             <div class="msg-content-block">
                 <div class="msg-header-meta">
-                    <span class="msg-author-name">${author}</span>
-                    <span class="msg-timestamp-label">at ${time}</span>
+                    <span class="msg-author-name">${senderLabel}</span>
+                    <span class="msg-timestamp-label">at ${formattedTime}</span>
                 </div>
                 <p class="msg-text-paragraph">${text}</p>
             </div>
@@ -113,61 +152,94 @@ window.initCobraChat = async function() {
         }
     }
 
-    // C. EVENT ROUTER: DISPATCH STRINGS OUTWARD
-    async function handlePacketTransmission() {
-        if (!messageInput) return;
-        const textVal = messageInput.value.trim();
-        if (textVal === "") return;
+    // D. DATA TRANSMISSION PIPELINE OUTBOUND ROUTER
+    async function firePacketOutward() {
+        if (!messageInput || !supabase) return;
+        const pureText = messageInput.value.trim();
+        if (pureText === "") return;
 
         messageInput.value = "";
 
-        if (isConnected) {
-            // Post onto your new Supabase database instance endpoint
-            const { error } = await supabase
-                .from('messages')
-                .insert([{ author: 'Player_One', avatar: 'P1', message: textVal, channel: 'general' }]);
-            if (error) console.error("Database write exception:", error);
-        } else {
-            // Fallback simulated layout loop for testing styles instantly offline
-            appendMessageToLayout("Player_One", "P1", textVal, null);
-            setTimeout(() => {
-                appendMessageToLayout("Cobra_Bot", "🤖", "Local echo trace accepted. Wire Supabase credentials to save records globally.", null);
-            }, 600);
-        }
+        const { error } = await supabase
+            .from('messages')
+            .insert([{ message: pureText, channel: 'general', user_email: activeUser.email }]);
+
+        if (error) console.error("Database tracking fault exception:", error);
     }
 
-    // D. WIRE EVENTS
     if (messageInput) {
-        messageInput.onkeydown = (e) => { if (e.key === "Enter") { e.preventDefault(); handlePacketTransmission(); } };
+        messageInput.onkeydown = (e) => { if (e.key === "Enter") { e.preventDefault(); firePacketOutward(); } };
     }
     if (submitTrigger) {
-        submitTrigger.onclick = () => { handlePacketTransmission(); };
+        submitTrigger.onclick = () => { firePacketOutward(); };
     }
 
-    // E. LOAD LOGS & OPEN SOCKET CHANNELS IF READY
-    if (isConnected) {
-        const { data } = await supabase
-            .from('messages')
-            .select('*')
-            .order('created_at', { ascending: true })
-            .limit(60);
+    // E. EXTRACT HISTORICAL PACKET LOGS & START LIVE SUBSCRIPTION LOOP
+    const { data: logs } = await supabase
+        .from('messages')
+        .select('*')
+        .order('created_at', { ascending: true })
+        .limit(80);
 
-        if (data) {
-            data.forEach(msg => appendMessageToLayout(msg.author, msg.avatar, msg.message, msg.created_at));
+    if (logs) {
+        logs.forEach(msg => renderMessagePacket(msg.user_email, msg.message, msg.created_at));
+    }
+
+    supabase
+        .channel('room-changes')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+            const freshPacket = payload.new;
+            renderMessagePacket(freshPacket.user_email, freshPacket.message, freshPacket.created_at);
+        })
+        .subscribe();
+
+    // F. IN-LINE ROUTER FOR SIGN-UP/LOGIN FORM OVERLAYS
+    function setupAuthenticationListeners() {
+        const emailIn = document.getElementById("auth-email-field");
+        const passIn = document.getElementById("auth-pass-field");
+        const submitBtn = document.getElementById("btn-execute-login");
+        const toggleBtn = document.getElementById("btn-toggle-auth-mode");
+        const noticeSub = document.querySelector(".auth-notice-sub");
+        let registerMode = false;
+
+        if (toggleBtn) {
+            toggleBtn.onclick = () => {
+                registerMode = !registerMode;
+                document.querySelector(".auth-notice-head").textContent = registerMode ? "Create Node Account" : "Terminal Access Denied";
+                noticeSub.textContent = registerMode ? "Register a free security email to join Cobra discussion tracks." : "Login to access and talk in chat!";
+                submitBtn.textContent = registerMode ? "Register Account" : "Sign In";
+                toggleBtn.textContent = registerMode ? "Already registered? Sign back in" : "Need a terminal account? Register node";
+            };
         }
+        if (submitBtn) {
+            submitBtn.onclick = async () => {
+                const em = emailIn.value.trim();
+                const ps = passIn.value;
+                if (!em || !ps) return;
 
-        // Open live websocket changes monitoring line
-        supabase
-            .channel('room-changes')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-                const incoming = payload.new;
-                appendMessageToLayout(incoming.author, incoming.avatar, incoming.message, incoming.created_at);
-            })
-            .subscribe();
+                noticeSub.style.color = "#ff3333";
+                if (registerMode) {
+                    noticeSub.textContent = "Creating profile credentials matrix...";
+                    const { error } = await supabase.auth.signUp({ email: em, password: ps });
+                    if (error) { noticeSub.textContent = error.message; }
+                    else {
+                        noticeSub.style.color = "#00ff66";
+                        noticeSub.textContent = "Registration successful! You can sign in now.";
+                        registerMode = false;
+                        submitBtn.textContent = "Sign In";
+                    }
+                } else {
+                    noticeSub.textContent = "Verifying encrypted credentials token...";
+                    const { error } = await supabase.auth.signInWithPassword({ email: em, password: ps });
+                    if (error) { noticeSub.textContent = error.message; }
+                    else { window.initCobraChat(); }
+                }
+            };
+        }
     }
 };
 
-// F. LAYOUT VIEW NAVIGATION LIFECYCLES INTEGRATION
+// G. INTERCEPT COMPONENT ROUTING ACTIONS FOR DASHBOARD SIDEBAR
 const coreGlobalSwitch = window.switchZone;
 window.switchZone = function(zoneId) {
     if (coreGlobalSwitch) coreGlobalSwitch(zoneId);
